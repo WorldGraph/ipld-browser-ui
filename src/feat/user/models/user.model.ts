@@ -2,6 +2,7 @@ import { ulid } from 'ulid'
 
 export interface UserModel {
   _id: string
+  _rev: string
   publicKey: string
   userName: string
   email: string
@@ -12,6 +13,7 @@ export interface UserModel {
 
 export const blankUser: UserModel = {
   _id: '',
+  _rev: '',
   publicKey: '',
   userName: 'username',
   email: '',
@@ -22,6 +24,7 @@ export const blankUser: UserModel = {
 
 export class UserResource implements UserModel {
   _id: string
+  _rev: string
   constructor(
     public publicKey: string,
     public userName: string,
@@ -31,5 +34,6 @@ export class UserResource implements UserModel {
     public defaultNamespaceId: string,
   ) {
     this._id = ulid()
+    this._rev = '1'
   }
 }

@@ -8,7 +8,7 @@ export class EntityHeaderService {
   static createEntity = async (name: string, namespaceId = 'default'): Promise<EntityHeader> => {
     try {
       const instance = repoMgr.entHeaders.create(new EntityHeaderResource(namespaceId, name))
-      await instance.save()
+      //       await instance.save()
       return instance
     } catch (err) {
       console.error(`Error creating entity header!`, err)
@@ -18,10 +18,11 @@ export class EntityHeaderService {
 
   static updateEntityName = async (entityId: string, newName: string) => {
     try {
-      const header = await repoMgr.entHeaders.findById(entityId)
+      let header = await repoMgr.entHeaders.findById(entityId)
       if (header == null) throw new Error('No entity found with id' + entityId)
       header.name = newName
-      await header.save()
+      header = { ...header, name: newName }
+      await repoMgr.entHeaders.update(header)
     } catch (err) {
       console.error(`Error in updateEntityClass for entityId ${entityId}`)
       throw err
@@ -29,11 +30,20 @@ export class EntityHeaderService {
   }
 
   static getEntityHeader = async (entityId: string): Promise<EntityHeader> => {
-    await repoMgr.awaitInitialized()
-    const res = await repoMgr.entHeaders.findById(entityId)
-    if (res) return res
+    if (!entityId) {
+      throw new Error(`entityId cannot be undefined in getEntityHeader function.`)
+    }
 
-    throw new Error(`cannot find entity header with id ${entityId}`)
+    try {
+      await repoMgr.awaitInitialized()
+      const res = await repoMgr.entHeaders.findById(entityId)
+      if (res) return res
+
+      throw new Error(`cannot find entity header with id ${entityId}`)
+    } catch (err) {
+      console.error(`Error getting entity id ${entityId}!`)
+      throw err
+    }
   }
 
   static getEntityHeaderCount = async () => {
@@ -44,16 +54,14 @@ export class EntityHeaderService {
 
   static getAllEntityHeaders = async (): Promise<EntityHeader[]> => {
     await repoMgr.awaitInitialized()
-    const res = repoMgr.entHeaders.find({})
-    return res.toArray()
+    return await repoMgr.entHeaders.getAll()
   }
 
   static updateEntityClass = async (entityId: string, classId: string) => {
     try {
       const header = await repoMgr.entHeaders.findById(entityId)
       if (header == null) throw new Error('No entity found with id' + entityId)
-      header.classId = classId
-      await header.save()
+      await repoMgr.entHeaders.update({ ...header, classId: classId })
     } catch (err) {
       console.error(`Error in updateEntityClass for entityId ${entityId}`)
       throw err

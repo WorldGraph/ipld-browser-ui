@@ -61,6 +61,14 @@ export function OutboundRelationDisplay(props: OutboundRelationDisplayProps) {
     return finalGroups
   }, [outboundRelations])
 
+  const groupDefaultArray = React.useMemo(() => {
+    const arr: number[] = []
+    for (let i = 0; i < erGroups.length; i++) {
+      arr.push(i)
+    }
+    return arr
+  }, [erGroups])
+
   React.useEffect(() => {
     const aix: number[] = []
     erGroups.forEach((x, ix) => {
@@ -138,41 +146,30 @@ export function OutboundRelationDisplay(props: OutboundRelationDisplayProps) {
         </Button>
       </Box>
       <Box id="outbound-rel-accordion">
-        <Accordion>
+        <Accordion allowMultiple index={groupDefaultArray}>
           {erGroups.map((group, outerIx) => {
             return (
-              <AccordionItem key={outerIx}>
-                <h3>
-                  <AccordionButton>
-                    <Box flex="1" textAlign="left">
-                      {` ${entityName.length > 30 ? entityName.slice(0, 27) + '...' : entityName}` +
-                        ' ' +
-                        lodash.capitalize(group[0].relationName)}
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h3>
-                <AccordionPanel>
+              <AccordionItem key={outerIx} paddingLeft="0">
+                <AccordionButton fontSize="1.2rem" paddingLeft="0">
+                  <Box flex="1" textAlign="left">
+                    {` ${entityName.length > 30 ? entityName.slice(0, 27) + '...' : entityName}` +
+                      ' ' +
+                      lodash.capitalize(group[0].relationName)}
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+                <AccordionPanel paddingLeft="0" paddingBottom="0" paddingTop="0">
                   {group.map((er, ix) => {
                     return (
-                      <Box
-                        key={er.targetId}
-                        className={css`
-                          display: flex;
-                          flex-direction: row;
-                        `}
-                      >
+                      <Box key={er.targetId}>
                         <Button
-                          className={css`
-                            margin-left: 5px;
-                            color: blue;
-                            z-index: 10;
-                          `}
+                          color="blue"
                           key={er.targetId + 'btn'}
                           onClick={(e) => {
                             e.stopPropagation()
                             navigateWithCtrlSensitivity(`/item/${er.targetId}`, e)
                           }}
+                          variant="unstyled"
                         >
                           {er.targetName}
                         </Button>

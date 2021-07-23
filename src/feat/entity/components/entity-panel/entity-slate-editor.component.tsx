@@ -73,11 +73,11 @@ export function EntitySlateEditor(props: EntitySlateEditorProps) {
   // )
 
   const refreshEntityDropdown = React.useCallback(async (searchString) => {
-    const entities = SearchService.searchEntityHeaders(searchString)
+    const entities = await SearchService.searchEntityHeaders(searchString)
     const indexedItems: IndexedItem[] = entities.map((entity) => {
       return {
-        id: entity.id,
-        name: entity.value,
+        id: entity._id,
+        name: entity.name,
         type: IndexedItemType.ENTITY,
         priority: 0,
       }

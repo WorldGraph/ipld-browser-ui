@@ -33,7 +33,7 @@ export function RelationSelector(props: RelationSelectorProps) {
 
   const updateOptions = React.useCallback(async (searchString: string) => {
     // TODO - search entity class repo here and load results into matches before proceeding
-    const relations = SearchService.searchRelations(searchString)
+    const relations = await SearchService.searchRelations(searchString)
 
     const matches: ReactSelectItem[] = relations.map((relation) => {
       return {

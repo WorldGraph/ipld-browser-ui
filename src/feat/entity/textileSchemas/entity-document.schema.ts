@@ -1,9 +1,6 @@
-import { JSONSchema } from '@textile/threaddb'
-import { CollectionConfig } from '@textile/threaddb/dist/cjs/remote/grpc'
+import { JSONSchema7 } from 'json-schema'
 
-// import { CollectionConfig } from "@textile/threaddb/dist/cjs/remote/grpc"
-
-export const EntityDocumentSchema: JSONSchema = {
+export const EntityDocumentSchema: JSONSchema7 = {
   title: 'EntityDocument',
   type: 'object',
   required: ['_id', 'documentJson'],
@@ -17,8 +14,4 @@ export const EntityDocumentSchema: JSONSchema = {
       description: 'Document JSON',
     },
   },
-}
-export const EntityDocCollection: CollectionConfig = {
-  name: 'EntityDocument',
-  schema: EntityDocumentSchema,
 }

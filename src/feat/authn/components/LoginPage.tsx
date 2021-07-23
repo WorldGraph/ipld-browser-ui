@@ -15,7 +15,6 @@ import { UserService } from '../../user/services/UserService'
 import { userStoreMutators, useUserStore } from '../../user/stores/UserStore'
 
 import { AuthNService } from '../services/AuthNService'
-import { doTextileLogin } from '../textile/TextileSession'
 import { GrLogin } from 'react-icons/gr'
 
 export interface LoggedOutPageProps {
@@ -37,19 +36,18 @@ export function LoginPage(props: LoggedOutPageProps) {
 
   const doLogin = React.useCallback(async () => {
     incrementWaiters()
-    const userPublicKey = await doTextileLogin()
-    await repoMgr.initCollections()
-    const existingUser = await UserService.getUserByPublicKey(userPublicKey)
+    //     await repoMgr.initCollections()
+    //     const existingUser = await UserService.getUserByPublicKey(userPublicKey)
 
-    if (existingUser != null) {
-      setUser(existingUser)
-      resetWaiters()
-      void AuthNService.NavigateToPreviousRoute()
-    } else {
-      currentUserPk.current = userPublicKey
-      decrementWaiters()
-      setProfileModalOpen(true)
-    }
+    //     if (existingUser != null) {
+    //       setUser(existingUser)
+    //       resetWaiters()
+    //       void AuthNService.NavigateToPreviousRoute()
+    //     } else {
+    //       currentUserPk.current = userPublicKey
+    //       decrementWaiters()
+    //       setProfileModalOpen(true)
+    //     }
   }, [])
 
   const saveUser = React.useCallback(async (user: UserModel) => {

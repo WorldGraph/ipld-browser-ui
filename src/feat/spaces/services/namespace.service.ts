@@ -11,8 +11,8 @@ export class NamespaceService {
   }
 
   static createNamespace = async (name: string, owningUser: string): Promise<Namespace> => {
-    const instance = repoMgr.namespaces.create(new NamespaceResource(name, owningUser))
-    await instance.save()
+    const instance = await repoMgr.namespaces.create(new NamespaceResource(name, owningUser))
+    //     await instance.save()
     return instance
   }
 }

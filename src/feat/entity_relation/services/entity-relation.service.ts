@@ -11,8 +11,7 @@ import {
 export class EntityRelationService {
   static getInboundRelationsReadable = async (eid: string): Promise<EntityRelationOneSide[]> => {
     await repoMgr.awaitInitialized()
-    const qry = repoMgr.entRelations.find({ targetId: { $eq: eid } })
-    const relations = await qry.toArray()
+    const relations = await repoMgr.entRelations.find({ targetId: { $eq: eid } })
 
     const mapped = Promise.all(
       relations.map(async (rel) => {
@@ -35,8 +34,8 @@ export class EntityRelationService {
 
   static getOutboundRelationsReadable = async (eid: string): Promise<EntityRelationOneSide[]> => {
     await repoMgr.awaitInitialized()
-    const qry = repoMgr.entRelations.find({ sourceId: { $eq: eid } })
-    const relations = await qry.toArray()
+
+    const relations = await repoMgr.entRelations.find({ sourceId: { $eq: eid } })
 
     const mapped = Promise.all(
       relations.map(async (rel) => {
@@ -58,8 +57,8 @@ export class EntityRelationService {
     return mapped
   }
 
-  static deleteEntityRelation = async (id: string) => {
-    await repoMgr.entRelations.delete(id)
+  static deleteEntityRelation = async (id: string, rev: string) => {
+    await repoMgr.entRelations.deleteById(id, rev)
   }
 
   /**
@@ -76,7 +75,7 @@ export class EntityRelationService {
       const instance = repoMgr.entRelations.create(
         new EntityRelationResource(relationId, sourceId, targetId),
       )
-      await instance.save()
+      //       await instance.save()
       return instance
     } catch (err) {
       console.error(`error writing new entity relation`, err)

@@ -17,7 +17,6 @@ export function EntityCompactSearchResults(props: EntityCompactSearchResultsProp
     }
     void searchEntityNameWithCallback(props.searchString, (res: StringIndexable[]) => {
       setEntitySearchResults(res || [])
-      console.log(`got response`, res)
     })
   }, [props.searchString])
 

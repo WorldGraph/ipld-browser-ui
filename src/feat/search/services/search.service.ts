@@ -1,77 +1,50 @@
 import { repoMgr } from '../../../common/storage/repos/repo-manager.service'
 import { EntityClass } from '../../class/models/entity-class.model'
 import { EntityClassService } from '../../class/services/entity-class.service'
+import { EntityHeader } from '../../entity/model/entity-header.model'
 import { EntityHeaderService } from '../../entity/services/entity-header.service'
 import { StringIndexable } from '../../indexes/models/StringIndexable'
 import { Relation } from '../../relation/models/relation.model'
 import { RelationService } from '../../relation/services/relation.service'
+import { toNumber } from 'lodash'
 
-const entityHeaderCache: StringIndexable[] = []
-const entityClassCache: EntityClass[] = []
-const relationCache: Relation[] = []
+// const entityHeaderCache: StringIndexable[] = []
+// const entityClassCache: EntityClass[] = []
+// const relationCache: Relation[] = []
 
 export class SearchService {
-  static searchEntityHeaders = (searchString: string): StringIndexable[] => {
-    const regex = new RegExp(searchString, 'gi')
-    return entityHeaderCache.filter((item) => {
-      return item.value.search(regex) >= 0
-    })
+  //   static searchEntityHeaders = async (searchString: string): Promise<StringIndexable[]> => {
+  //     const headers = await repoMgr.entHeaders.fullTextSearch(['name'], searchString)
+
+  //     const items: StringIndexable[] = headers.map((header) => {
+  //       return {
+  //         id: header._id,
+  //         namespaceId: header.namespaceId,
+  //         value: header.name,
+  //         isDeprecated: header.isDeprecated,
+  //         classId: header.classId,
+  //         version: toNumber(header._rev),
+  //       }
+  //     })
+
+  //     return items
+  //   }
+
+  static searchEntityHeaders = async (searchString: string): Promise<EntityHeader[]> => {
+    const headers = await repoMgr.entHeaders.fullTextSearch(['name'], searchString)
+
+    return headers
   }
 
-  static searchEntityClasses = (searchString: string): EntityClass[] => {
-    const regex = new RegExp(searchString, 'gi')
-    return entityClassCache.filter((item) => {
-      return item.name.search(regex) >= 0
-    })
+  static searchEntityClasses = async (searchString: string): Promise<EntityClass[]> => {
+    const classes = await repoMgr.classes.fullTextSearch(['name'], searchString)
+
+    return classes
   }
 
-  static searchRelations = (searchString: string): Relation[] => {
-    const regex = new RegExp(searchString, 'gi')
-    return relationCache.filter((item) => {
-      return item.name.search(regex) >= 0
-    })
-  }
+  static searchRelations = async (searchString: string): Promise<Relation[]> => {
+    const classes = await repoMgr.relations.fullTextSearch(['name'], searchString)
 
-  static initEntityHeaderCache = async () => {
-    try {
-      const entities = await EntityHeaderService.getAllEntityHeaders()
-      const mapped = entities.map((ent) => {
-        return {
-          id: ent._id,
-          namespaceId: ent.namespaceId,
-          value: ent.name,
-          isDeprecated: ent.isDeprecated,
-          classId: ent.classId,
-          version: 1,
-        }
-      })
-      entityHeaderCache.push(...mapped)
-    } catch (err) {
-      console.error(`error init entity search cache`, err)
-    }
-  }
-
-  static initClassCache = async () => {
-    try {
-      const classes = await EntityClassService.getAllClasses()
-      entityClassCache.push(...classes)
-    } catch (err) {
-      console.log(`error init entity class cache`)
-    }
-  }
-
-  static initRelationCache = async () => {
-    try {
-      const relations = await RelationService.getAllRelations()
-      relationCache.push(...relations)
-    } catch (err) {
-      console.log(`error init entity class cache`)
-    }
-  }
-
-  static initAllCaches = async () => {
-    await SearchService.initRelationCache()
-    await SearchService.initClassCache()
-    await SearchService.initEntityHeaderCache()
+    return classes
   }
 }

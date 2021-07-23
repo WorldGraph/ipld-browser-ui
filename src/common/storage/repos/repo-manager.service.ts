@@ -1,16 +1,19 @@
-import { Collection, Database } from '@textile/threaddb'
-import { CollectionConfig } from '@textile/threaddb/dist/cjs/remote/grpc'
-
 import { EntityClass } from '../../../feat/class/models/entity-class.model'
 import { EntityClassSchema } from '../../../feat/class/textileSchemas/entity-class.schema'
 import { EntityDocument } from '../../../feat/entity/model/entity-document.model'
 import { EntityHeader } from '../../../feat/entity/model/entity-header.model'
 import { EntityDocumentSchema } from '../../../feat/entity/textileSchemas/entity-document.schema'
 import { EntityHeaderSchema } from '../../../feat/entity/textileSchemas/entity-header.schema'
-import { EntityRelationSchema } from '../../../feat/entity/textileSchemas/entity-relation.schema'
+import {
+  EntityRelationIndexedFields,
+  EntityRelationSchema,
+} from '../../../feat/entity/textileSchemas/entity-relation.schema'
 import { EntityRelation } from '../../../feat/entity_relation/model/entity-relation.model'
 import { UserFavorite } from '../../../feat/preferences/models/user-favorite.model'
-import { UserFavoriteSchema } from '../../../feat/preferences/textileSchemas/user-favorite.schema'
+import {
+  UserFavoriteIndexedFields,
+  UserFavoriteSchema,
+} from '../../../feat/preferences/jsonSchemas/user-favorite.schema'
 import { Relation } from '../../../feat/relation/models/relation.model'
 import { RelationSchema } from '../../../feat/relation/textileSchemas/relation.schema'
 import { SearchService } from '../../../feat/search/services/search.service'
@@ -21,63 +24,25 @@ import { UserSchema } from '../../../feat/user/textileSchemas/user.schema'
 import { ConfigService } from '../../config/config.service'
 import { NotImplementedException } from '../../exceptions/not-implemented.exception'
 import { sleep } from '../../util/sleep'
-import { TextileCollectionNames } from '../enums/TextileCollection'
+import { CollectionNames } from '../enums/TextileCollection'
+import { Repository } from '../generics/repository.generic-class'
 
 export interface RepoConfigOptions {
   localOnly?: boolean
 }
 
 export class RepoService {
-  public db: Database
-  private _users?: Collection<UserModel>
-  private _entHeaders?: Collection<EntityHeader>
-  private _entRelations?: Collection<EntityRelation>
-  private _classes?: Collection<EntityClass>
-  private _relations?: Collection<Relation>
-  private _entDocuments?: Collection<EntityDocument>
-  private _namespaces?: Collection<Namespace>
-  private _userFavorites?: Collection<UserFavorite>
+  private _users?: Repository<UserModel>
+  private _entHeaders?: Repository<EntityHeader>
+  private _entRelations?: Repository<EntityRelation>
+  private _classes?: Repository<EntityClass>
+  private _relations?: Repository<Relation>
+  private _entDocuments?: Repository<EntityDocument>
+  private _namespaces?: Repository<Namespace>
+  private _userFavorites?: Repository<UserFavorite>
   private _initialized = false
 
-  // private collectionSchema: Map<string, JSONSchema> = new Map()
-
-  constructor() {
-    // Initialize collections
-    const coll: CollectionConfig[] = []
-    coll.push({ name: 'EntityHeader', schema: EntityHeaderSchema })
-    coll.push({ name: 'User', schema: UserSchema })
-    coll.push({ name: 'EntityClass', schema: EntityClassSchema })
-    coll.push({ name: 'EntityDocument', schema: EntityDocumentSchema })
-    coll.push({ name: 'EntityRelation', schema: EntityRelationSchema })
-    coll.push({ name: 'Namespace', schema: NamespaceSchema })
-    coll.push({ name: 'Relation', schema: RelationSchema })
-    coll.push({ name: 'UserFavorite', schema: UserFavoriteSchema })
-    try {
-      this.db = new Database(ConfigService.DatabaseName, ...(coll as any))
-    } catch (err) {
-      console.error(`Error initializing collections!`, err)
-      throw err
-    }
-    console.error(`Successfully initialized collections`)
-  }
-
-  public init = async (options: RepoConfigOptions = {}) => {
-    try {
-      await this.db.open(ConfigService.DatabaseVersion)
-    } catch (err) {
-      console.error(`Error init database`, err)
-      throw err
-    }
-
-    // Only authenticate if we have not opted out of remote for testing
-    if (options.localOnly != null && options.localOnly !== true) await this.authenticate()
-
-    this._initialized = true
-  }
-
-  public initSearchIndex = async () => {
-    await SearchService.initEntityHeaderCache()
-  }
+  constructor() {}
 
   public get isInitialized(): boolean {
     return this._initialized
@@ -87,6 +52,8 @@ export class RepoService {
    * Sleep until db is ready
    */
   public awaitInitialized = async (maxWaitMs = 5000) => {
+    // todo - reevaluate need to await init
+    return
     if (this.isInitialized) return
     const msWaitIntervalMs = 50
     const tries = Math.floor(maxWaitMs / msWaitIntervalMs)
@@ -98,121 +65,61 @@ export class RepoService {
     throw new Error('Timed out waiting for repo manager to initialize')
   }
 
-  public authenticate = async () => {
-    console.log(`Authenticating with textile`)
-    const remote = await this.db.remote.setKeyInfo({ key: ConfigService.textileHubKey })
-    await remote.authorize(
-      ConfigService.userPrivateKey.public.toString(),
-      (challengeMsg: Uint8Array) => {
-        return ConfigService.userPrivateKey.sign(challengeMsg)
-      },
-    )
-    // const config = remote.config.metadata
-    remote.config?.metadata?.set('x-textile-thread-name', this.db.dexie.name)
-    remote.config?.metadata?.set('x-textile-thread', this.db.id || '')
-  }
-
-  public dispose = () => {
-    this.db.close()
-  }
-
-  public get entHeaders(): Collection<EntityHeader> {
+  public get entHeaders(): Repository<EntityHeader> {
     if (this._entHeaders == null) {
-      this._entHeaders = this.db.collection(
-        TextileCollectionNames.EntityHeader,
-      ) as Collection<EntityHeader>
+      this._entHeaders = new Repository(EntityHeaderSchema, CollectionNames.EntityHeader)
     }
     return this._entHeaders
   }
 
-  public get userFavorites(): Collection<UserFavorite> {
+  public get userFavorites(): Repository<UserFavorite> {
     if (this._userFavorites == null) {
-      this._userFavorites = this.db.collection(
-        TextileCollectionNames.UserFavorite,
-      ) as Collection<UserFavorite>
+      this._userFavorites = new Repository(UserFavoriteSchema, CollectionNames.UserFavorite)
     }
     return this._userFavorites
   }
-  public get entRelations(): Collection<EntityRelation> {
+  public get entRelations(): Repository<EntityRelation> {
     if (this._entRelations == null) {
-      this._entRelations = this.db.collection(
-        TextileCollectionNames.EntityRelation,
-      ) as Collection<EntityRelation>
+      this._entRelations = new Repository(EntityRelationSchema, CollectionNames.EntityRelation)
     }
     return this._entRelations
   }
-  public get classes(): Collection<EntityClass> {
+  public get classes(): Repository<EntityClass> {
     if (this._classes == null) {
-      this._classes = this.db.collection(
-        TextileCollectionNames.EntityClass,
-      ) as Collection<EntityClass>
+      this._classes = new Repository(EntityClassSchema, CollectionNames.EntityRelation)
     }
     return this._classes
   }
-  public get relations(): Collection<Relation> {
+  public get relations(): Repository<Relation> {
     if (this._relations == null) {
-      this._relations = this.db.collection(TextileCollectionNames.Relation) as Collection<Relation>
+      this._relations = new Repository(RelationSchema, CollectionNames.Relation)
     }
     return this._relations
   }
-  public get entDocuments(): Collection<EntityDocument> {
+  public get entDocuments(): Repository<EntityDocument> {
     if (this._entDocuments == null) {
-      this._entDocuments = this.db.collection(
-        TextileCollectionNames.EntityDocument,
-      ) as Collection<EntityDocument>
+      this._entDocuments = new Repository(EntityDocumentSchema, CollectionNames.EntityDocument)
     }
     return this._entDocuments
   }
-  public get namespaces(): Collection<Namespace> {
+  public get namespaces(): Repository<Namespace> {
     if (this._namespaces == null) {
-      this._namespaces = this.db.collection(
-        TextileCollectionNames.Namespace,
-      ) as Collection<Namespace>
+      this._namespaces = new Repository(NamespaceSchema, CollectionNames.Namespace)
     }
     return this._namespaces
   }
 
-  public get users(): Collection<UserModel> {
+  public get users(): Repository<UserModel> {
     if (this._users == null) {
-      this._users = this.db.collection(TextileCollectionNames.User) as Collection<UserModel>
+      this._users = new Repository(UserSchema, CollectionNames.User)
     }
     return this._users
   }
 
-  public initCollections = async () => {
-    throw new NotImplementedException('Method')
-    // const col = await this.getExistingCollections()
-    // const existingCol = col.map((x) => x.name)
-    // // TODO - figure out how to convert schema object to comparable string to determine if we need to update or not
-    // // Note: may just need to put this off until js-threaddb is ready
-    // // const colSchemaMap = new Map<string, string>()
-    // // col.forEach((x) => {
-    // //   console.log(`${typeof x.schema}. value is ${x.schema}`)
-    // //   colSchemaMap.set(x.name, x.schema as string)
-    // // })
-
-    // for (const item of this.collectionSchema) {
-    //   const colName = item[0]
-    //   const schema = item[1]
-
-    //   if (!existingCol.includes(colName)) {
-    //     console.log(`${colName} collection does not exist.  Creating.`)
-    //     await txClient.createCollection(colName, schema)
-    //   } else {
-    //     // TODO - see if there is a way to checkif update is needed before I actually do the update.
-    //     // console.log(`${colName} collection exists.  Updating.`)
-    //     // await txClient.updateCollection(colName, schema)
-    //   }
-    // }
-  }
-
-  public getExistingCollections = async () => {
-    throw new NotImplementedException('Method')
+  public async init() {
+    await this.entRelations.createIndexes(EntityRelationIndexedFields)
+    await this.userFavorites.createIndexes(UserFavoriteIndexedFields)
   }
 }
 
 export const repoMgr = new RepoService()
-
-export async function initRepoService(): Promise<void> {
-  await repoMgr.init({ localOnly: true })
-}

@@ -1,7 +1,6 @@
-import { JSONSchema } from '@textile/threaddb'
-import { CollectionConfig } from '@textile/threaddb/dist/cjs/remote/grpc'
+import { JSONSchema7 } from 'json-schema'
 
-export const NamespaceSchema: JSONSchema = {
+export const NamespaceSchema: JSONSchema7 = {
   title: 'Namespace',
   type: 'object',
   required: ['_id', 'name', 'owningUser'],
@@ -19,8 +18,4 @@ export const NamespaceSchema: JSONSchema = {
       description: 'owningUser',
     },
   },
-}
-export const NamespaceCollection: CollectionConfig = {
-  name: 'Namespace',
-  schema: NamespaceSchema,
 }

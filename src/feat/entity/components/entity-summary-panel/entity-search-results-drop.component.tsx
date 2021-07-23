@@ -15,6 +15,7 @@ import React from 'react'
 import { StringIndexable } from '../../../indexes/models/StringIndexable'
 import { IndexedItemFilter } from '../../../search/IxSearchModel/IndexedItemFilter'
 import { SearchService } from '../../../search/services/search.service'
+import { EntityHeader } from '../../model/entity-header.model'
 import { EntityLinkItem } from '../common/entity-link-item.component'
 
 export interface EntitySearchResultDropProps {
@@ -30,10 +31,11 @@ export interface EntitySearchResultDropProps {
 export function EntitySearchResultDrop(props: EntitySearchResultDropProps) {
   // if (!props.visible) return <></>
 
-  const [resultEntities, setResultEntities] = React.useState<StringIndexable[]>([])
+  const [resultEntities, setResultEntities] = React.useState<EntityHeader[]>([])
 
-  const refreshResultEntities = React.useCallback((filter: IndexedItemFilter) => {
-    const items = SearchService.searchEntityHeaders(filter.nameSearchTerm || '').slice(0, 4)
+  const refreshResultEntities = React.useCallback(async (filter: IndexedItemFilter) => {
+    const items = await SearchService.searchEntityHeaders(filter.nameSearchTerm || '')
+
     setResultEntities(items)
   }, [])
 
@@ -57,8 +59,8 @@ export function EntitySearchResultDrop(props: EntitySearchResultDropProps) {
         <PopoverCloseButton />
         <PopoverBody paddingLeft="0px">
           <Box>
-            {resultEntities.map((item) => {
-              return <EntityLinkItem key={item.id} item={item} />
+            {resultEntities.map((entity) => {
+              return <EntityLinkItem key={entity._id} item={entity} />
             })}
           </Box>
         </PopoverBody>

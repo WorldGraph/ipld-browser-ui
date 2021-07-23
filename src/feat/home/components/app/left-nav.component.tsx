@@ -63,82 +63,85 @@ export function LeftNav(props: NavStripProps) {
 
   return (
     <Box id="left-nav" backgroundColor="teal.200" width={sidebarWidth}>
-      <Button
-        variant="ghost"
-        size="large"
-        id="worldgraph-btn"
-        className={styleNavlink}
-        leftIcon={<BiWorld className={styleNavIcon} size="24px" />}
-        onClick={(e) => navigateWithCtrlSensitivity('/', e)}
-        ref={homeRef as any}
-      >
-        {isCollapsed ? undefined : 'Worldgraph'}
-      </Button>
-      {/* <SpacesAvatar isCollapsed={isCollapsed} /> */}
-      <Flex direction="column" marginTop="3rem">
-        <Button
-          variant="ghost"
-          size="large"
-          id="home-btn"
-          className={styleNavlink}
-          leftIcon={<GrHome className={styleNavIcon} size="24px" />}
-          onClick={(e) => navigateWithCtrlSensitivity('/', e)}
-          ref={homeRef as any}
-        >
-          {isCollapsed ? undefined : 'Home'}
-        </Button>
-        <Button
-          variant="ghost"
-          size="large"
-          id="search-btn"
-          className={styleNavlink}
-          onClick={() => setShowSearchModal(true)}
-          leftIcon={<GrSearch className={styleNavIcon} size="24px" />}
-        >
-          {isCollapsed ? undefined : 'Search'}
-        </Button>
-        <Button
-          variant="ghost"
-          id="items-btn"
-          size="large"
-          className={styleNavlink}
-          onClick={(e) => navigateWithCtrlSensitivity('/item', e)}
-          leftIcon={<GrProjects className={styleNavIcon} size="24px" />}
-        >
-          {isCollapsed ? undefined : 'Items'}
-        </Button>
-        <Button
-          id="space-select-btn"
-          variant="ghost"
-          size="large"
-          className={styleNavlink}
-          onClick={() => {}}
-          leftIcon={<GrCube className={styleNavIcon} size="24px" />}
-        >
-          {isCollapsed ? undefined : 'Spaces'}
-        </Button>
-        <Button
-          id="admin-btn"
-          variant="ghost"
-          size="large"
-          className={styleNavlink}
-          onClick={(e) => navigateWithCtrlSensitivity('/admin', e)}
-          leftIcon={<GrSettingsOption className={styleNavIcon} size="24px" />}
-        >
-          {isCollapsed ? undefined : 'Admin'}
-        </Button>
-        <Button
-          id="help-btn"
-          variant="ghost"
-          size="large"
-          className={styleNavlink}
-          leftIcon={<GrHelp className={styleNavIcon} size="24px" />}
-          marginBottom="5rem"
-        >
-          {isCollapsed ? undefined : 'Help'}
-        </Button>
+      <Flex id="buttons" direction="column" marginTop="0rem" height="100vh">
+        <Box>
+          <Button
+            variant="ghost"
+            size="large"
+            id="worldgraph-btn"
+            className={styleNavlink}
+            leftIcon={<BiWorld className={styleNavIcon} size="24px" />}
+            onClick={(e) => navigateWithCtrlSensitivity('/', e)}
+            ref={homeRef as any}
+          >
+            {isCollapsed ? undefined : 'Worldgraph'}
+          </Button>
+          {/* <SpacesAvatar isCollapsed={isCollapsed} /> */}
+          <Button
+            marginTop="3rem"
+            variant="ghost"
+            size="large"
+            id="home-btn"
+            className={styleNavlink}
+            leftIcon={<GrHome className={styleNavIcon} size="24px" />}
+            onClick={(e) => navigateWithCtrlSensitivity('/', e)}
+            ref={homeRef as any}
+          >
+            {isCollapsed ? undefined : 'Home'}
+          </Button>
+          <Button
+            variant="ghost"
+            size="large"
+            id="search-btn"
+            className={styleNavlink}
+            onClick={() => setShowSearchModal(true)}
+            leftIcon={<GrSearch className={styleNavIcon} size="24px" />}
+          >
+            {isCollapsed ? undefined : 'Search'}
+          </Button>
+          <Button
+            variant="ghost"
+            id="items-btn"
+            size="large"
+            className={styleNavlink}
+            onClick={(e) => navigateWithCtrlSensitivity('/item', e)}
+            leftIcon={<GrProjects className={styleNavIcon} size="24px" />}
+          >
+            {isCollapsed ? undefined : 'Items'}
+          </Button>
+          <Button
+            id="space-select-btn"
+            variant="ghost"
+            size="large"
+            className={styleNavlink}
+            onClick={() => {}}
+            leftIcon={<GrCube className={styleNavIcon} size="24px" />}
+          >
+            {isCollapsed ? undefined : 'Spaces'}
+          </Button>
+          <Button
+            id="admin-btn"
+            variant="ghost"
+            size="large"
+            className={styleNavlink}
+            onClick={(e) => navigateWithCtrlSensitivity('/admin', e)}
+            leftIcon={<GrSettingsOption className={styleNavIcon} size="24px" />}
+          >
+            {isCollapsed ? undefined : 'Admin'}
+          </Button>
+          <Button
+            id="help-btn"
+            variant="ghost"
+            size="large"
+            className={styleNavlink}
+            leftIcon={<GrHelp className={styleNavIcon} size="24px" />}
+            marginBottom="5rem"
+          >
+            {isCollapsed ? undefined : 'Help'}
+          </Button>
+        </Box>
         <Spacer />
-        <UserAvatar className={styleNavlink} isCollapsed={isCollapsed} />
+        {/* <UserAvatar className={styleNavlink} isCollapsed={isCollapsed} /> */}
         {toggleExpandButton}
       </Flex>
       {showSearchModal && <EntitySearchModal onClose={() => setShowSearchModal(false)} />}

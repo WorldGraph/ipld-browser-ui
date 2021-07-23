@@ -2,7 +2,7 @@ import { Element as SlateNode } from 'slate'
 
 import { NotImplementedException } from '../../../../common/exceptions/not-implemented.exception'
 import { repoMgr } from '../../../../common/storage/repos/repo-manager.service'
-import { EntityClass } from '../../../class/models/entity-class.model'
+import { blankEntityClass, EntityClass } from '../../../class/models/entity-class.model'
 import { EntityClassService } from '../../../class/services/entity-class.service'
 import { EntityRelationService } from '../../../entity_relation/services/entity-relation.service'
 import { StringIndexable } from '../../../indexes/models/StringIndexable'
@@ -84,7 +84,7 @@ export async function rehydrateEntity(
 
   const entClass = await EntityClassService.getEntityClass(entHeader.classId)
 
-  setEntityClass(entClass)
+  setEntityClass(entClass || blankEntityClass)
 
   // Hydrate entity document
   const doc = await EntityDocService.getDocument(entityId)

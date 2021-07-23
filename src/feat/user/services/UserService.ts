@@ -12,7 +12,7 @@ export class UserService {
   static createUser = async (user: UserModel) => {
     try {
       const instance = repoMgr.users.create(user)
-      await instance.save()
+      //       await instance.save()
       return instance
     } catch (err) {
       console.error(`Error saving user`, err)

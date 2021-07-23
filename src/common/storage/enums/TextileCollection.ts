@@ -1,4 +1,4 @@
-export enum TextileCollectionNames {
+export enum CollectionNames {
   EntityClass = 'EntityClass',
   EntityDocument = 'EntityDocument',
   EntityHeader = 'EntityHeader',

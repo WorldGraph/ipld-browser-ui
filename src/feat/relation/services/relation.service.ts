@@ -3,17 +3,15 @@ import { blankRelation, Relation, RelationResource } from '../models/relation.mo
 
 export class RelationService {
   static createRelation = async (name: string, namespaceId: string) => {
-    const rel = repoMgr.relations.create(new RelationResource(namespaceId, name))
-    await rel.save()
+    const rel = await repoMgr.relations.create(new RelationResource(namespaceId, name))
     return rel
   }
-  static getRelation = async (id: string) => {
-    const entClass = repoMgr.relations.findOne({ _id: { $eq: id } })
-    return (await entClass) || blankRelation
+  static getRelation = async (id: string): Promise<Relation> => {
+    const entClass = await repoMgr.relations.findById(id)
+    return entClass || blankRelation
   }
   static getAllRelations = async (): Promise<Relation[]> => {
     await repoMgr.awaitInitialized()
-    const res = repoMgr.relations.find({})
-    return res.toArray()
+    return await repoMgr.relations.getAll()
   }
 }

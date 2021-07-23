@@ -1,7 +1,6 @@
-import { JSONSchema } from '@textile/threaddb'
-import { CollectionConfig } from '@textile/threaddb/dist/cjs/remote/grpc'
+import { JSONSchema7 } from 'json-schema'
 
-export const EntityRelationSchema: JSONSchema = {
+export const EntityRelationSchema: JSONSchema7 = {
   title: 'EntityRelation',
   type: 'object',
   required: ['_id', 'relationId', 'sourceId', 'targetId'],
@@ -24,7 +23,5 @@ export const EntityRelationSchema: JSONSchema = {
     },
   },
 }
-export const EntityRelationCollection: CollectionConfig = {
-  name: 'EntityRelation',
-  schema: EntityRelationSchema,
-}
+
+export const EntityRelationIndexedFields = [['_id'], ['relationId'], ['sourceId'], ['targetId']]
