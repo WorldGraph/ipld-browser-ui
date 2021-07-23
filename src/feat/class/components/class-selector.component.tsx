@@ -37,7 +37,7 @@ export function ClassSelector(props: ClassSelectorProps) {
   const updateOptions = React.useCallback(
     async (searchString: string) => {
       // TODO - search entity class repo here and load results into matches before proceeding
-      const classes = SearchService.searchEntityClasses(searchString)
+      const classes = await SearchService.searchEntityClasses(searchString)
 
       const matches: ReactSelectItem[] = classes.map((entClass) => {
         return {

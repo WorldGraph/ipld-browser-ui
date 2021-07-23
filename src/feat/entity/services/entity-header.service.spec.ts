@@ -8,12 +8,10 @@ describe('should do thing', () => {
 
   before(async () => {
     // Init repo mgr before each test
-    await repoMgr.init({ localOnly: true })
   })
 
   after(() => {
     // Dispose repo mgr after each test
-    repoMgr.dispose()
   })
 
   it('should write and retrieve entity header', async () => {

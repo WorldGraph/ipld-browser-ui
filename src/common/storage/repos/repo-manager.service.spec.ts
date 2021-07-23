@@ -15,48 +15,45 @@ describe('should do thing', () => {
 
   before(async () => {
     // Init repo mgr before each test
-    await repoMgr.init({ localOnly: true })
   })
 
   after(() => {
     // Dispose repo mgr after each test
-    repoMgr.dispose()
   })
 
   it('should write and retrieve entity header', async () => {
-    const entity = repoMgr.entHeaders.create(new EntityHeaderResource('default', 'name'))
-    await entity.save()
+    const entity = await repoMgr.entHeaders.create(new EntityHeaderResource('default', 'name'))
     expect(entity._id).not.undefined
     const retrieve = await repoMgr.entHeaders.findById(entity._id)
     expect(retrieve).not.undefined
   })
 
   it('should write and retrieve user favorites', async () => {
-    const entity = repoMgr.userFavorites.create(blankUserFavorite)
+    const entity = await repoMgr.userFavorites.create(blankUserFavorite)
     expect(entity._id).not.undefined
   })
   it('should write and retrieve entity relations', async () => {
-    const entity = repoMgr.entRelations.create(blankEntityRelation)
+    const entity = await repoMgr.entRelations.create(blankEntityRelation)
     expect(entity._id).not.undefined
   })
   it('should write and retrieve entity classes', async () => {
-    const entity = repoMgr.classes.create(blankEntityClass)
+    const entity = await repoMgr.classes.create(blankEntityClass)
     expect(entity._id).not.undefined
   })
   it('should write and retrieve relations', async () => {
-    const entity = repoMgr.relations.create(blankRelation)
+    const entity = await repoMgr.relations.create(blankRelation)
     expect(entity._id).not.undefined
   })
   it('should write and retrieve documents', async () => {
-    const entity = repoMgr.entDocuments.create(blankEntityDocument)
+    const entity = await repoMgr.entDocuments.create(blankEntityDocument)
     expect(entity._id).not.undefined
   })
   it('should write and retrieve namespaces', async () => {
-    const entity = repoMgr.namespaces.create(blankNamespace)
+    const entity = await repoMgr.namespaces.create(blankNamespace)
     expect(entity._id).not.undefined
   })
   it('should write and retrieve users', async () => {
-    const entity = repoMgr.users.create(blankUser)
+    const entity = await repoMgr.users.create(blankUser)
     expect(entity._id).not.undefined
   })
 })

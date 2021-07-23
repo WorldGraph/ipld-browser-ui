@@ -1,34 +1,34 @@
-import { css } from 'emotion'
-import { Box, Button } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import React from 'react'
-import { StringIndexable } from '../../../indexes/models/StringIndexable'
-import { NotImplementedException } from '../../../../common/exceptions/not-implemented.exception'
+
 import { navigateWithCtrlSensitivity } from '../../../../common/util/navigate'
 import { EntityClassService } from '../../../class/services/entity-class.service'
+import { StringIndexable } from '../../../indexes/models/StringIndexable'
+import { EntityHeader } from '../../model/entity-header.model'
 
 export interface RecentActivityItemProps {
-  item: StringIndexable
+  item: EntityHeader
 }
 
 export function EntityLinkItem(props: RecentActivityItemProps) {
   const [title, setTitle] = React.useState('')
-  const getTitle = React.useCallback(async (item: StringIndexable) => {
-    const entityClass = await EntityClassService.getEntityClass(item.classId)
+  const getTitle = React.useCallback(async (entity: EntityHeader) => {
+    const entityClass = await EntityClassService.getEntityClass(entity.classId)
 
     let className = ''
     if (entityClass?.name != null && entityClass?.name !== '')
       className = ' (' + entityClass.name + ')'
 
-    if (item.isDeprecated !== true) {
-      setTitle(item.value + className)
+    if (entity.isDeprecated !== true) {
+      setTitle(entity.name + className)
     } else {
-      setTitle(item.value + className + ' (deprecated)')
+      setTitle(entity.name + className + ' (deprecated)')
     }
   }, [])
 
   React.useEffect(() => {
     void getTitle(props.item)
-  }, [props.item.id])
+  }, [props.item._id])
 
   return (
     <Button
@@ -38,7 +38,7 @@ export function EntityLinkItem(props: RecentActivityItemProps) {
       style={{ display: 'block', fontSize: '24px' }}
       color="purple"
       onClick={(e) => {
-        navigateWithCtrlSensitivity(`/item/${props.item.id}`, e)
+        navigateWithCtrlSensitivity(`/item/${props.item._id}`, e)
       }}
     >
       {title}

@@ -5,6 +5,7 @@ import { GenericModal } from '../../../common/components'
 import { navigateWithCtrlSensitivity } from '../../../common/util/navigate'
 import { StringIndexable } from '../../indexes/models/StringIndexable'
 import { SearchService } from '../../search/services/search.service'
+import { EntityHeader } from '../model/entity-header.model'
 
 export interface EntitySearchModalProps {
   onClose: () => void
@@ -12,17 +13,23 @@ export interface EntitySearchModalProps {
 
 export function EntitySearchModal(props: EntitySearchModalProps) {
   const [searchText, setSearchText] = React.useState('')
-  const [indexedItems, setIndexedItems] = React.useState<StringIndexable[]>([])
+  //   const [indexedItems, setEntities] = React.useState<StringIndexable[]>([])
+  const [entities, setEntities] = React.useState<EntityHeader[]>([])
 
   // ixsearch example
-  React.useEffect(() => {
+
+  const updateEntHeaders = React.useCallback(async () => {
     if (searchText == '') {
-      setIndexedItems([])
+      setEntities([])
       return
     }
 
-    const items = SearchService.searchEntityHeaders(searchText || '').slice(0, 4)
-    setIndexedItems(items)
+    const items = await SearchService.searchEntityHeaders(searchText || '')
+    setEntities(items)
+  }, [])
+
+  React.useEffect(() => {
+    void updateEntHeaders()
   }, [searchText])
 
   return (
@@ -36,16 +43,16 @@ export function EntitySearchModal(props: EntitySearchModalProps) {
       width="300px"
     >
       <Input autoFocus onChange={(event) => setSearchText(event.target.value)} />
-      {indexedItems.map((item) => {
+      {entities.map((entity) => {
         return (
           <Button
-            key={item.id}
+            key={entity._id}
             onClick={(e) => {
-              navigateWithCtrlSensitivity(`/item/${item.id}`, e)
+              navigateWithCtrlSensitivity(`/item/${entity._id}`, e)
               props.onClose()
             }}
           >
-            {item.value}
+            {entity.name}
           </Button>
         )
       })}

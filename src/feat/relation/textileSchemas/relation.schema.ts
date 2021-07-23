@@ -1,7 +1,6 @@
-import { JSONSchema } from '@textile/threaddb'
-import { CollectionConfig } from '@textile/threaddb/dist/cjs/remote/grpc'
+import { JSONSchema7 } from 'json-schema'
 
-export const RelationSchema: JSONSchema = {
+export const RelationSchema: JSONSchema7 = {
   title: 'Relation',
   type: 'object',
   required: ['_id', 'namespaceId', 'name'],
@@ -19,8 +18,4 @@ export const RelationSchema: JSONSchema = {
       description: 'name',
     },
   },
-}
-export const RelationCollection: CollectionConfig = {
-  name: 'Relation',
-  schema: RelationSchema,
 }

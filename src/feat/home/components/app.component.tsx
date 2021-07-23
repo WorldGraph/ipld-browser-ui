@@ -22,13 +22,7 @@ export function App(props: { path: string }) {
   const incrementWaiters = useNotificationStore(notifMutators.incrementWaiters)
   const decrementWaiters = useNotificationStore(notifMutators.decrementWaiters)
 
-  const initSearchIndex = React.useCallback(async () => {
-    await SearchService.initAllCaches()
-  }, [])
-
   React.useEffect(() => {
-    void initSearchIndex()
-
     incrementWaiters()
     setTimeout(() => {
       decrementWaiters()

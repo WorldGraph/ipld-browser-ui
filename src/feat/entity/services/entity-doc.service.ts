@@ -32,10 +32,18 @@ export class EntityDocService {
     try {
       const existing = await EntityDocService.getDocument(entId)
       if (existing == null) {
-        const instance = repoMgr.entDocuments.create({ _id: entId, documentJson: documentJson })
-        await instance.save()
+        await repoMgr.entDocuments.create({
+          _id: entId,
+          _rev: '1',
+          documentJson: documentJson,
+        })
+        // await instance.save()
       } else {
-        await repoMgr.entDocuments.save({ _id: entId, documentJson: documentJson })
+        await repoMgr.entDocuments.update({
+          _id: entId,
+          _rev: '',
+          documentJson: documentJson,
+        })
       }
     } catch (err) {
       console.error(`Error saving document draft`, err)

@@ -1,6 +1,6 @@
-import { JSONSchema } from '@textile/threaddb'
+import { JSONSchema7 } from 'json-schema'
 
-export const KvPairSchema: JSONSchema = {
+export const KvPairSchema: JSONSchema7 = {
   title: 'Test KV Pairs',
   type: 'object',
   required: ['_id', 'key', 'value'],

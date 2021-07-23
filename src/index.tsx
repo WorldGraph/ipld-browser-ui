@@ -8,7 +8,7 @@ import { App } from './feat/home/components/app.component'
 import { LandingPage } from './feat/home/components/landing-page.component'
 import { ErrorBoundary } from './feat/telemetry/components/error-boundary.component'
 import { ConfigService } from './common/config/config.service'
-import { initRepoService, repoMgr } from './common/storage/repos/repo-manager.service'
+import { repoMgr } from './common/storage/repos/repo-manager.service'
 
 ConfigService.setTextileHubKey('bn6zcf5mzp4mgdcgrulueviflry')
 
@@ -31,8 +31,8 @@ async function renderView() {
 
 void renderView()
 
-// Init repo
-void initRepoService()
+// Init Repo
+void repoMgr.init()
 
 // Init websocket
 // registerSocket();

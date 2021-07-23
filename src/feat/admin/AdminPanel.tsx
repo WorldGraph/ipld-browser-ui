@@ -1,10 +1,6 @@
 import { Box, Button, Heading } from '@chakra-ui/react'
 import { css } from 'emotion'
 import React from 'react'
-import { NotImplementedException } from '../../common/exceptions/not-implemented.exception'
-import { doTextileLogin } from '../authn/textile/TextileSession'
-
-import { IndexPrefixName } from '../indexes/models/IndexPrefixName'
 import { NotificationService } from '../notifications/services/NotificationService'
 import { notifSelectors, useNotificationStore } from '../notifications/stores/NotificationStore'
 import { ErrorBoundary } from '../telemetry/components/error-boundary.component'

@@ -68,7 +68,7 @@ export function InboundRelationDisplay(props: InboundRelationDisplayProps) {
         </Heading>
       </Box>
       <Box id="inbound-rel-accordion">
-        <Accordion>
+        <Accordion allowMultiple>
           {erGroups.map((group, outerIx) => {
             return (
               <AccordionItem key={outerIx}>

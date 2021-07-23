@@ -34,12 +34,12 @@ export function EntitySelector(props: EntitySelectorProps) {
 
   const updateOptions = React.useCallback(async (searchString: string) => {
     // TODO - search entity class repo here and load results into matches before proceeding
-    const entities = SearchService.searchEntityHeaders(searchString)
+    const entities = await SearchService.searchEntityHeaders(searchString)
 
     const matches: ReactSelectItem[] = entities.map((entity) => {
       return {
-        value: entity.id,
-        label: entity.value,
+        value: entity._id,
+        label: entity.name,
       }
     })
 
