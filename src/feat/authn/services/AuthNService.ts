@@ -1,12 +1,13 @@
-import { EthereumAuthProvider, ThreeIdConnect } from '@3id/connect'
-import { DID } from 'dids'
+import { EthereumAuthProvider } from '@3id/connect'
 
-import { CeramicAccess } from '../../../common/config/ceramic-access'
+import { CeramicService } from '../../../common/config/ceramic-env'
+import { CeramicWebClient } from '../../../common/config/ceramic-web-client'
 import { NotImplementedException } from '../../../common/exceptions/not-implemented.exception'
 import { reachNavigate } from '../../../common/util/navigate'
 
 // import { ThreeIdConnect, EthereumAuthProvider } from '@3id/connect'
-const ceramicAccess = new CeramicAccess('local')
+const ceramicService = new CeramicService()
+const webClient = new CeramicWebClient('local')
 
 const authState = { loggedIn: false }
 
@@ -21,24 +22,12 @@ export class AuthenticationService {
 
   static async login() {
     const w = window as any
-
     if (!w.ethereum) {
-      throw new Error(`Ethereum not available in browser!`)
+      throw new Error(`Ethereum not available in this browser!`)
     }
-
     const addresses = await w.ethereum.enable()
-
-    const threeIdConnect = new ThreeIdConnect()
-    const authProvider = new EthereumAuthProvider(w.ethereum, addresses[0])
-    await threeIdConnect.connect(authProvider)
-    const provider = threeIdConnect.getDidProvider()
-
-    await ceramic.setDID(new DID({ provider }))
-    ceramic?.did?.setProvider(provider)
-    await ceramic?.did?.authenticate()
-
-    await idx.get('basicProfile')
-    authState.loggedIn = true
+    const ethProvider = new EthereumAuthProvider(w.ethereum, addresses[0])
+    await ceramicService.authenticate(webClient, ethProvider)
   }
 
   static SaveRouteState = () => {

@@ -1,6 +1,5 @@
 import { Avatar, Button } from '@chakra-ui/react'
 import React from 'react'
-import { GrUser } from 'react-icons/gr'
 
 import { userStoreSelectors, useUserStore } from '../../../../user/stores/UserStore'
 import { UserDropMenu } from './user-avatar/user-drop-menu.component'
