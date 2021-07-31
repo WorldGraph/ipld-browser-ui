@@ -2,7 +2,6 @@ import { Box, Button, ChakraProvider, Heading } from '@chakra-ui/react'
 import * as Reach from '@reach/router'
 import { css } from 'emotion'
 import React, { useRef } from 'react'
-import { repoMgr } from '../../../common/storage/repos/repo-manager.service'
 import { LoadingSpinner } from '../../home/components/app/loading-spinner.component'
 import { UserProfileEditModal } from '../../home/components/app/left-nav/user-profile/user-profit-edit-modal.component'
 import {
@@ -14,7 +13,6 @@ import { UserModel } from '../../user/models/user.model'
 import { UserService } from '../../user/services/UserService'
 import { userStoreMutators, useUserStore } from '../../user/stores/UserStore'
 
-import { AuthNService } from '../services/AuthNService'
 import { GrLogin } from 'react-icons/gr'
 
 export interface LoggedOutPageProps {

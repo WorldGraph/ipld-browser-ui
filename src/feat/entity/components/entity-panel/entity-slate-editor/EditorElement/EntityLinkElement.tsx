@@ -1,7 +1,6 @@
 import React from 'react'
 import * as SlateReact from 'slate-react'
 import * as model from '../model'
-import * as Reach from '@reach/router'
 import { navigateWithCtrlSensitivity } from '../../../../../../common/util/navigate'
 
 export function EntityLinkElement(props: model.MentionElementProps) {

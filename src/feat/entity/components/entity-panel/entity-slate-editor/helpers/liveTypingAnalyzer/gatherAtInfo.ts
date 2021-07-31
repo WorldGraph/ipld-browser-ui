@@ -1,6 +1,5 @@
 import { Point } from 'slate'
 import * as model from '../../model'
-import { getCurrentNodeText } from './getCurrentNodeText'
 import * as Slate from 'slate'
 
 export function gatherAtInfo(editor: any, cursorPoint: Point, curData: model.CursorPositionData) {

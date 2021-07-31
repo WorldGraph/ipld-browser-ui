@@ -1,6 +1,5 @@
 import { Button } from '@chakra-ui/react'
 import React from 'react'
-import { cryptoDemo } from '../../../common/util/crypto'
 import { ErrorBoundary } from '../../telemetry/components/error-boundary.component'
 
 export interface KnowledgeSummaryPanelProps {
@@ -10,13 +9,8 @@ export interface KnowledgeSummaryPanelProps {
 export function KnowledgeSummaryPanel(props: KnowledgeSummaryPanelProps) {
   return (
     <ErrorBoundary regionName="Summary Panel">
-      <Button
-        style={{ width: '200px' }}
-        onClick={() => {
-          void cryptoDemo()
-        }}
-      >
-        Try crypto
+      <Button style={{ width: '200px' }} onClick={() => {}}>
+        Do thing
       </Button>
     </ErrorBoundary>
   )

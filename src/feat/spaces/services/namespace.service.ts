@@ -1,6 +1,4 @@
-import { NotImplementedException } from '../../../common/exceptions/not-implemented.exception'
 import { repoMgr } from '../../../common/storage/repos/repo-manager.service'
-import { EntityHeaderResource } from '../../entity/model/entity-header.model'
 import { Namespace, NamespaceResource } from '../model/namespace.model'
 
 export class NamespaceService {

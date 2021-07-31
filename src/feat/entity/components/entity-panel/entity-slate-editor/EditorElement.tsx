@@ -1,7 +1,5 @@
 import React from 'react'
-import * as SlateReact from 'slate-react'
 import * as model from './model'
-import * as Reach from '@reach/router'
 import * as subComponents from './EditorElement/subComponents'
 export function EditorElement(props: { attributes: any; children: any; element: any }) {
   //   console.log(`rendering element with children `, param.children?.props?.node);

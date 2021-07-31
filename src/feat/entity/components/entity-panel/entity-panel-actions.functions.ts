@@ -1,11 +1,9 @@
 import { Element as SlateNode } from 'slate'
 
 import { NotImplementedException } from '../../../../common/exceptions/not-implemented.exception'
-import { repoMgr } from '../../../../common/storage/repos/repo-manager.service'
 import { blankEntityClass, EntityClass } from '../../../class/models/entity-class.model'
 import { EntityClassService } from '../../../class/services/entity-class.service'
 import { EntityRelationService } from '../../../entity_relation/services/entity-relation.service'
-import { StringIndexable } from '../../../indexes/models/StringIndexable'
 import { UserFavorite } from '../../../preferences/models/user-favorite.model'
 import { UserFavoritesService } from '../../../preferences/services/user-favorites.service'
 import { RelationService } from '../../../relation/services/relation.service'

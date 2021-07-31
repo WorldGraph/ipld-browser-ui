@@ -7,7 +7,7 @@ export class EntityHeaderService {
    */
   static createEntity = async (name: string, namespaceId = 'default'): Promise<EntityHeader> => {
     try {
-      const instance = repoMgr.entHeaders.create(new EntityHeaderResource(namespaceId, name))
+      const instance = await repoMgr.entHeaders.create(new EntityHeaderResource(namespaceId, name))
       //       await instance.save()
       return instance
     } catch (err) {

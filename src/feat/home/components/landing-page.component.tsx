@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Box } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 
 export interface LandingPageProps {
   path?: string

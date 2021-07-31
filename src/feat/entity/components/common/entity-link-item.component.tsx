@@ -3,7 +3,6 @@ import React from 'react'
 
 import { navigateWithCtrlSensitivity } from '../../../../common/util/navigate'
 import { EntityClassService } from '../../../class/services/entity-class.service'
-import { StringIndexable } from '../../../indexes/models/StringIndexable'
 import { EntityHeader } from '../../model/entity-header.model'
 
 export interface RecentActivityItemProps {

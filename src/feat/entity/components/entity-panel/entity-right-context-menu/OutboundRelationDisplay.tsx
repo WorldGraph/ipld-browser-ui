@@ -19,7 +19,7 @@ import {
 import { EntityRelationService } from '../../../../entity_relation/services/entity-relation.service'
 import { ConfirmModal } from '../../../../../common/components'
 import { navigateWithCtrlSensitivity } from '../../../../../common/util/navigate'
-import { GrAddCircle, GrEdit, GrTrash } from 'react-icons/gr'
+import { GrAddCircle, GrEdit } from 'react-icons/gr'
 
 export interface OutboundRelationDisplayProps {
   entityId: string

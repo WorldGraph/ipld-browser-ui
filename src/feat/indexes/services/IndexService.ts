@@ -1,8 +1,6 @@
 import { NotImplementedException } from '../../../common/exceptions/not-implemented.exception'
 import { EntityHeader } from '../../entity/model/entity-header.model'
 import { Relation } from '../../relation/models/relation.model'
-import { IndexEntries } from '../models/IndexEntries'
-import { StringIndexable } from '../models/StringIndexable'
 
 export class IndexService {
   static UpsertEntNameIndexEntries = async (headers: EntityHeader[]) => {

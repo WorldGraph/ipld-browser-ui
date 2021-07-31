@@ -3,7 +3,6 @@ import React from 'react'
 
 import { GenericModal } from '../../../common/components'
 import { navigateWithCtrlSensitivity } from '../../../common/util/navigate'
-import { StringIndexable } from '../../indexes/models/StringIndexable'
 import { SearchService } from '../../search/services/search.service'
 import { EntityHeader } from '../model/entity-header.model'
 

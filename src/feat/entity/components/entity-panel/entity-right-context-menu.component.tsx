@@ -1,8 +1,6 @@
 import { Heading } from '@chakra-ui/react'
 import { css } from 'emotion'
 import React from 'react'
-import { EntityRelationOneSide } from '../../../entity_relation/model/entity-relation-one-side.component'
-import { EntityRelationService } from '../../../entity_relation/services/entity-relation.service'
 
 import { InboundRelationDisplay } from './entity-right-context-menu/InboundRelationDisplay'
 import { OutboundRelationDisplay } from './entity-right-context-menu/OutboundRelationDisplay'

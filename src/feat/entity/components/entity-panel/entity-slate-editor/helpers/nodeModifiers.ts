@@ -6,7 +6,6 @@ import { isUrl } from '../../../../../../common/util/url'
 import { IndexedItem } from '../../../../../search/IxSearchModel/IndexedItem'
 import { curDataContainer } from '../../entity-slate-editor.component'
 import * as model from '../model'
-import { NodeType } from '../model/NodeType'
 
 export function insertSubjEntityLink(editor: any, indexedItem: IndexedItem) {
   const { selection } = editor

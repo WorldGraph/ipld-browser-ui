@@ -14,10 +14,11 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier', 'unused-imports'],
   rules: {
     'prettier/prettier': 'error',
     '@typescript-eslint/camelcase': 'off',
+    'unused-imports/no-unused-imports-ts': 'error',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',

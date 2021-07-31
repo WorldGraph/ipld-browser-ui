@@ -14,7 +14,6 @@ export function RecentActivityPanel() {
 
   const getActivities = React.useCallback(async () => {
     const allItems = await EntityHeaderService.getAllEntityHeaders()
-    console.log(`all entities`, allItems)
     await IndexService.UpsertEntNameIndexEntries(allItems)
     const activities = EntityActivityService.getEntityActivities(allItems)
 

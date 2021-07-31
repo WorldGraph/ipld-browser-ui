@@ -5,7 +5,6 @@ import { MoreActionsButton } from './entity-edit-buttons/more-actions-button.com
 import { UserFavoritesService } from '../../../../preferences/services/user-favorites.service'
 import { SingleTextInputModal } from '../../../../../common/components'
 import { EntityDocService } from '../../../services/entity-doc.service'
-import { light3 } from '../../../../../common/theme/standardColors'
 import { GrAdd, GrDownload, GrEdit, GrStar, GrUpdate } from 'react-icons/gr'
 
 export interface EntityEditButtonsProps {

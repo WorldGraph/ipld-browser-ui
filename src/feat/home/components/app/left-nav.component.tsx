@@ -15,9 +15,7 @@ import {
 
 import { navigateWithCtrlSensitivity } from '../../../../common/util/navigate'
 import { EntitySearchModal } from '../../../entity/components/entity-search-modal.component'
-import { UserAvatar } from './left-nav/user-avatar.component'
 
-// import { css } from 'emotion'
 export const styleNavlink = css`
   height: 4rem;
   padding: 12px;

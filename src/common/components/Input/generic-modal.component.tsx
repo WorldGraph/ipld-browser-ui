@@ -6,7 +6,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Text,
   ModalBody,
   ModalFooter,
   HStack,

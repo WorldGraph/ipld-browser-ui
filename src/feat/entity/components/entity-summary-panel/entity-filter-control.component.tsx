@@ -6,7 +6,6 @@ import { GenericDropMenu } from '../../../../common/components'
 
 import { ReactSelectItem } from '../../../../common/models/react-select-item.model'
 import { IndexedItemFilter } from '../../../search/IxSearchModel/IndexedItemFilter'
-import { GenericEntityClassSelector } from '../generic-entity-class-selector.component'
 
 export interface EntityFilterControlProps {
   className: string

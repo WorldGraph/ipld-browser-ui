@@ -51,6 +51,11 @@ export class EntityDocService {
     }
   }
 
+  static async getAllEntityDocs() {
+    await repoMgr.awaitInitialized()
+    return await repoMgr.entDocuments.getAll()
+  }
+
   static flushLocalDraft = async (entId: string) => {
     const draft = EntityDocService.getLocalDraft(entId)
     if (draft == null) return
