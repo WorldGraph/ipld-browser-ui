@@ -63,7 +63,7 @@ export const envAtom = atom(
       localStorage.setItem(SELECTED_DID_KEY, env.auth.id)
     }
     set(envStateAtom, env)
-  }
+  },
 )
 
 export type EditProfileState = { status: 'pending' | 'editing' | 'failed' | 'done'; error?: Error }

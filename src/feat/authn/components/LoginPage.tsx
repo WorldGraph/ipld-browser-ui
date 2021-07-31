@@ -38,6 +38,7 @@ export function LoginPage(props: LoggedOutPageProps) {
   const doLogin = React.useCallback(async () => {
     incrementWaiters()
     //     await AuthenticationService.login()
+    console.log(`calling login hook`)
     await login()
     decrementWaiters()
     //     await repoMgr.initCollections()

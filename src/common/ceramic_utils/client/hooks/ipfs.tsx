@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import type { ChangeEvent } from 'react'
 import toast from 'react-hot-toast'
+import React from 'react'
 
 import type { Dimensions, ImageSources } from '../../sdk'
 import { uploadImage } from '../../sdk/web'
@@ -16,7 +17,7 @@ export type ImageUploadOptions = {
 
 export function useImageUpload(
   onUpload: (sources: ImageSources) => void,
-  options: ImageUploadOptions = {}
+  options: ImageUploadOptions = {},
 ) {
   const maxSize = options.maxSize ?? UPLOAD_MAX_SIZE
   const [state, setState] = useState<UploadState>('idle')
@@ -56,10 +57,10 @@ export function useImageUpload(
         (err) => {
           console.warn('Failed to upload image to IPFS', err)
           setState('failed')
-        }
+        },
       )
     },
-    [maxSize, options.dimensions, onUpload]
+    [maxSize, options.dimensions, onUpload],
   )
 
   const input = (

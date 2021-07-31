@@ -13,6 +13,7 @@ export function useLogin(): (switchAccount?: boolean) => Promise<SelfID | null> 
 
   return useCallback(
     async (switchAccount?: boolean) => {
+      console.log(`IN USE CALLBACK IN USE LOGIN`)
       if (
         env.auth.state === 'confirmed' &&
         authState.status === 'connected' &&
@@ -39,7 +40,7 @@ export function useLogin(): (switchAccount?: boolean) => Promise<SelfID | null> 
         ? await tryAuth(eth.provider.state.provider as any, eth.provider.state.account)
         : null
     },
-    [authState, connect, env, resetEnv, tryAuth]
+    [authState, connect, env, resetEnv, tryAuth],
   )
 }
 
