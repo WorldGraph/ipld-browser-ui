@@ -2,11 +2,8 @@ import { EthereumAuthProvider } from '@3id/connect'
 import type { EthereumProvider } from '@3id/connect'
 import type { AlsoKnownAsAccount, BasicProfile } from '@ceramicstudio/idx-constants'
 import type { AccountIDParams } from 'caip'
-import { CeramicWebClient } from '../../../common/config/ceramic-web-client'
-import { SelfID } from '../../../common/config/ceramic-self-id'
-import { PublicID } from '../../../common/config/ceramic-public-id'
 
-// import { PublicID, SelfID, WebClient } from '../sdk/web'
+import { PublicID, SelfID, WebClient } from '../sdk/web'
 
 export type DIDData = {
   profile: BasicProfile | null
@@ -20,7 +17,7 @@ export type KnownDIDData = KnownDID & DIDData
 export type KnownDIDsData = Record<string, KnownDIDData>
 
 export async function authenticate(
-  client: CeramicWebClient,
+  client: WebClient,
   provider: EthereumProvider,
   address: string,
 ): Promise<SelfID> {
@@ -36,7 +33,7 @@ export async function loadDIDData(id: PublicID): Promise<DIDData> {
 }
 
 export async function loadKnownDIDsData(
-  client: CeramicWebClient,
+  client: WebClient,
   knownDIDs: KnownDIDs,
 ): Promise<KnownDIDsData> {
   const dids = Object.keys(knownDIDs)

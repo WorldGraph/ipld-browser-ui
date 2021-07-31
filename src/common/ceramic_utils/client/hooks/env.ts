@@ -3,19 +3,14 @@ import type { AlsoKnownAsAccount, BasicProfile } from '@ceramicstudio/idx-consta
 import { AccountID } from 'caip'
 import { useAtom } from 'jotai'
 import { useCallback } from 'react'
-import { KnownDIDsData } from '../../../../common/config/ceramic-env'
+import toast from 'react-hot-toast'
 
-import { SelfID } from '../../../../common/config/ceramic-self-id'
+import type { SelfID } from '../../sdk/web'
+
 import { authenticate, editProfile, loadKnownDIDsData } from '../env'
-import {
-  editProfileAtom,
-  EditProfileState,
-  envAtom,
-  EnvState,
-  getInitialEnv,
-  knownDIDsAtom,
-  knownDIDsDataAtom,
-} from '../state'
+import type { KnownDIDsData } from '../env'
+import { editProfileAtom, envAtom, getInitialEnv, knownDIDsAtom, knownDIDsDataAtom } from '../state'
+import type { EnvState, EditProfileState } from '../state'
 
 export function useKnownDIDs() {
   return useAtom(knownDIDsAtom)[0]
@@ -45,7 +40,7 @@ export function useDIDsData(): [KnownDIDsData | null, () => Promise<void>] {
 export function useEnv(): [
   EnvState,
   (provider: EthereumProvider, address: string) => Promise<SelfID>,
-  () => void,
+  () => void
 ] {
   const [env, setEnv] = useAtom(envAtom)
   const setKnownDIDs = useAtom(knownDIDsAtom)[1]
@@ -69,7 +64,7 @@ export function useEnv(): [
         throw err
       }
     },
-    [env, setEnv, setKnownDIDs, setKnownDIDsData],
+    [env, setEnv, setKnownDIDs, setKnownDIDsData]
   )
 
   const resetEnv = useCallback(() => {
@@ -83,7 +78,7 @@ export function useEnv(): [
 export function useEditProfile(): [
   EditProfileState,
   (profile: BasicProfile) => Promise<void>,
-  () => void,
+  () => void
 ] {
   const env = useEnvState()
   const [editState, setEditState] = useAtom(editProfileAtom)
@@ -102,7 +97,7 @@ export function useEditProfile(): [
       setKnownDIDsData(updatedDIDsData)
       setEditState({ status: 'done' })
     },
-    [env.self, knownDIDsData, setEditState, setKnownDIDsData],
+    [env.self, knownDIDsData, setEditState, setKnownDIDsData]
   )
 
   const edit = useCallback(
@@ -113,18 +108,17 @@ export function useEditProfile(): [
 
       try {
         setEditState({ status: 'editing' })
-        await applyEdit(profile)
-        // await toast.promise(applyEdit(profile), {
-        //   loading: 'Saving profile...',
-        //   success: 'Profile successfully saved!',
-        //   error: 'Failed to save profile',
-        // })
+        await toast.promise(applyEdit(profile), {
+          loading: 'Saving profile...',
+          success: 'Profile successfully saved!',
+          error: 'Failed to save profile',
+        })
         setEditState({ status: 'done' })
       } catch (error) {
         setEditState({ status: 'failed', error: error as Error })
       }
     },
-    [applyEdit, editState.status, setEditState],
+    [applyEdit, editState.status, setEditState]
   )
 
   const reset = useCallback(() => {
@@ -136,7 +130,7 @@ export function useEditProfile(): [
 
 export function useSocialAccounts(): [
   Array<AlsoKnownAsAccount>,
-  (socialAccounts: Array<AlsoKnownAsAccount>) => void,
+  (socialAccounts: Array<AlsoKnownAsAccount>) => void
 ] {
   const { auth } = useEnvState()
   const [knownDIDsData, setKnownDIDsData] = useAtom(knownDIDsDataAtom)
@@ -158,7 +152,7 @@ export function useSocialAccounts(): [
         }
       }
     },
-    [auth, knownDIDsData, setKnownDIDsData],
+    [auth, knownDIDsData, setKnownDIDsData]
   )
 
   return [accounts, setAccounts]

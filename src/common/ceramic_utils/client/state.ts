@@ -1,7 +1,8 @@
 import { atom } from 'jotai'
-import { SelfID } from '../../../common/config/ceramic-self-id'
-import { CeramicWebClient } from '../../../common/config/ceramic-web-client'
-import { getCeramicConfig } from '../../../common/config/ceramic.types'
+
+import { APP_NETWORK } from '../constants'
+import { WebClient } from '../sdk/web'
+import type { SelfID } from '../sdk/web'
 
 import type { KnownDIDs, KnownDIDsData } from './env'
 
@@ -32,13 +33,12 @@ export type AuthState =
 
 export type EnvState = {
   auth: AuthState
-  client: CeramicWebClient
+  client: WebClient
   self: SelfID | null
 }
 
 export function getInitialEnv(checkLocal = true): EnvState {
-  // TODO - make this not hard code local
-  const client = new CeramicWebClient('local')
+  const client = new WebClient(APP_NETWORK)
   if (!checkLocal) {
     return { auth: { state: 'unknown' }, client, self: null }
   }
@@ -63,7 +63,7 @@ export const envAtom = atom(
       localStorage.setItem(SELECTED_DID_KEY, env.auth.id)
     }
     set(envStateAtom, env)
-  },
+  }
 )
 
 export type EditProfileState = { status: 'pending' | 'editing' | 'failed' | 'done'; error?: Error }

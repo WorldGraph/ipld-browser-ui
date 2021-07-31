@@ -14,7 +14,7 @@ import { UserService } from '../../user/services/UserService'
 import { userStoreMutators, useUserStore } from '../../user/stores/UserStore'
 
 import { GrLogin } from 'react-icons/gr'
-import { AuthenticationService } from '../services/AuthNService'
+import { useLogin } from '../../../common/ceramic_utils/client/hooks'
 
 export interface LoggedOutPageProps {
   path?: string
@@ -29,13 +29,16 @@ export function LoginPage(props: LoggedOutPageProps) {
   const resetWaiters = useNotificationStore(notifMutators.resetWaiters)
   const numServerWaiters = useNotificationStore(notifSelectors.numWaiters)
 
+  const login = useLogin()
+
   React.useEffect(() => {
     if (localStorage.getItem('identity') != null) void doLogin()
   }, [])
 
   const doLogin = React.useCallback(async () => {
     incrementWaiters()
-    await AuthenticationService.login()
+    //     await AuthenticationService.login()
+    await login()
     decrementWaiters()
     //     await repoMgr.initCollections()
     //     const existingUser = await UserService.getUserByPublicKey(userPublicKey)

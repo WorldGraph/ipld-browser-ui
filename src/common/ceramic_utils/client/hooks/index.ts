@@ -8,3 +8,4 @@ export {
   useKnownDIDsData,
   useSocialAccounts,
 } from './env'
+export { useImageUpload } from './ipfs'
