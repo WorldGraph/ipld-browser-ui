@@ -27,7 +27,9 @@ export class AuthenticationService {
     }
     const addresses = await w.ethereum.enable()
     const ethProvider = new EthereumAuthProvider(w.ethereum, addresses[0])
-    await ceramicService.authenticate(webClient, ethProvider)
+    const identity = await ceramicService.authenticate(webClient, ethProvider)
+    const profile = await identity.getProfile()
+    console.log(`the profile is `, profile)
   }
 
   static SaveRouteState = () => {
