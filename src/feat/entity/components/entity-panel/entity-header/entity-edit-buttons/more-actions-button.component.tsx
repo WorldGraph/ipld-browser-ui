@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Box } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import { entityStoreSelectors, useEntityStore } from '../../../../stores/entity.store'
 import { userStoreSelectors, useUserStore } from '../../../../../user/stores/UserStore'
 import {

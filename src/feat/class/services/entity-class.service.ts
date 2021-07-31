@@ -1,6 +1,5 @@
-import { createWriteStream } from 'fs'
 import { repoMgr } from '../../../common/storage/repos/repo-manager.service'
-import { blankEntityClass, EntityClass, EntityClassResource } from '../models/entity-class.model'
+import { EntityClass, EntityClassResource } from '../models/entity-class.model'
 
 export class EntityClassService {
   static createEntityClass = async (name: string, namespaceId: string) => {
@@ -12,7 +11,6 @@ export class EntityClassService {
       const entClass = await repoMgr.classes.findById(id)
       return entClass
     } catch (err) {
-      console.warn(`Could not find entity class with id ${id}. returning null.`)
       return null
     }
 

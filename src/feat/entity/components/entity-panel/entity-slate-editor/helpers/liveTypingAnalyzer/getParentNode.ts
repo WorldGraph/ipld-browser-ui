@@ -1,5 +1,4 @@
-import React from 'react'
-import { Node, Point } from 'slate'
+import { Node } from 'slate'
 import * as Slate from 'slate'
 
 import { getCurrentNode } from './getCurrentNode'

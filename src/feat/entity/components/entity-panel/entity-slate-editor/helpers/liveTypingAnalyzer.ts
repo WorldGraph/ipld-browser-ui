@@ -104,7 +104,6 @@ export function analyzeLiveTypingOnChange(
 
     // TODO - revisit this.  causing issues.
     // if (curData.isFirstWordInSentence && curData.wordBeforeCursor !== "" && !curData.isParagraphBegin) {
-    //   console.log(`4`);
     //   setLtBoxTarget(wordBeforeCursorRange);
     //   setSearchString(curData.wordBeforeCursor);
     //   setLtSelectionIndex(0);

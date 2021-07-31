@@ -9,7 +9,6 @@ import {
   notifSelectors,
   useNotificationStore,
 } from '../../notifications/stores/NotificationStore'
-import { SearchService } from '../../search/services/search.service'
 import { userStoreSelectors, useUserStore } from '../../user/stores/UserStore'
 import { AppDisplayContainer } from './app/app-container.component'
 import { LoadingSpinner } from './app/loading-spinner.component'

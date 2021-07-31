@@ -1,10 +1,6 @@
 import create from 'zustand'
 import { EntityClass } from '../../class/models/entity-class.model'
-import { StringIndexable } from '../../indexes/models/StringIndexable'
 
-// In memory / instantaneous state
-
-// Standard state
 export interface EntityStoreSchema extends Record<string, unknown> {
   ENTITY_CLASS: EntityClass | null
   ENTITY_ID: string | null

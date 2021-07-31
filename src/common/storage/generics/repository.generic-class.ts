@@ -1,10 +1,10 @@
-import { CloseButton } from '@chakra-ui/react'
 import Ajv from 'ajv'
 import { JSONSchema7 } from 'json-schema'
 import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
 import PouchDBSearch from 'pouchdb-quick-search'
-import { NotImplementedException } from '../../exceptions/not-implemented.exception'
+import { ConfigService } from '../../config/config.service'
+
 PouchDB.plugin(PouchDBFind)
 PouchDB.plugin(PouchDBSearch)
 
@@ -17,19 +17,42 @@ export class Repository<T extends ValidPouchType> {
   private validator: any
   private db: PouchDB.Database
   constructor(public schema: JSONSchema7, public dbName: string) {
+    const config = ConfigService.getConfig()
+
     const ajv = new Ajv()
     this.validator = ajv.compile(schema)
-    this.db = new PouchDB(dbName)
+
+    if (config.useMemoryAdapter) {
+      this.db = new PouchDB(dbName, { adapter: 'memory' })
+    } else {
+      this.db = new PouchDB(dbName)
+    }
   }
 
-  /**
-   *
-   */
+  public async upsertMany(items: T[]) {
+    if (!(items?.length > 0)) return
+
+    for (const item of items) {
+      delete item._rev
+      await this.upsert(item)
+    }
+
+    console.log(`upserted ${items.length} into database ${this.dbName}`)
+  }
+
+  public async upsert(item: T): Promise<T> {
+    const existing = await this.findById(item._id)
+    if (existing) {
+      return await this.update({ ...existing, ...item })
+    } else {
+      return await this.create(item)
+    }
+  }
+
   public async update(item: T): Promise<T> {
     try {
       //       item._rev = new Date().getTime().toString()
       const res = await this.db.put(item, { schemaValidator: this.validator } as any)
-      console.log(`new revision is ${res.rev}`)
       if (!res.ok) {
         throw new Error(`could not upsert item ${item._id}! tried to set rev to ${item._rev}`)
       }
@@ -42,13 +65,10 @@ export class Repository<T extends ValidPouchType> {
   }
 
   public async create(item: T): Promise<T> {
-    console.log(`creating item`, item)
-    //     item._rev = new Date().getTime().toString()
     if (item._rev) {
       delete item._rev
     }
 
-    console.log(`creating`, item)
     const res = await this.db.put(item, {
       schemaValidator: this.validator,
     } as any)
@@ -62,7 +82,6 @@ export class Repository<T extends ValidPouchType> {
     try {
       return await this.db.get(id)
     } catch (err) {
-      console.error(`Could not find id ${id}, in database ${this.dbName}! Returning null`)
       return null
     }
   }

@@ -5,14 +5,10 @@ import {
   PopoverBody,
   PopoverCloseButton,
   PopoverContent,
-  PopoverFooter,
-  PopoverHeader,
   PopoverTrigger,
-  useDisclosure,
 } from '@chakra-ui/react'
 import React from 'react'
 
-import { StringIndexable } from '../../../indexes/models/StringIndexable'
 import { IndexedItemFilter } from '../../../search/IxSearchModel/IndexedItemFilter'
 import { SearchService } from '../../../search/services/search.service'
 import { EntityHeader } from '../../model/entity-header.model'

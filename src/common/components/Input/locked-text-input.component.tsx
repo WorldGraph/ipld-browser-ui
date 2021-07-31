@@ -16,7 +16,7 @@ export function LockedTextInput(props: LockedTextInputProps) {
     <Box
       onClick={!props.isEditing ? undefined : () => {}}
       id={props.id}
-      hoverIndicator={{ color: 'lightgreen' }}
+      hoverindicator={{ color: 'lightgreen' }}
       className={props.containerClassName}
     >
       <Input

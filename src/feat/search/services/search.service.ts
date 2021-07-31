@@ -1,16 +1,7 @@
 import { repoMgr } from '../../../common/storage/repos/repo-manager.service'
 import { EntityClass } from '../../class/models/entity-class.model'
-import { EntityClassService } from '../../class/services/entity-class.service'
 import { EntityHeader } from '../../entity/model/entity-header.model'
-import { EntityHeaderService } from '../../entity/services/entity-header.service'
-import { StringIndexable } from '../../indexes/models/StringIndexable'
 import { Relation } from '../../relation/models/relation.model'
-import { RelationService } from '../../relation/services/relation.service'
-import { toNumber } from 'lodash'
-
-// const entityHeaderCache: StringIndexable[] = []
-// const entityClassCache: EntityClass[] = []
-// const relationCache: Relation[] = []
 
 export class SearchService {
   //   static searchEntityHeaders = async (searchString: string): Promise<StringIndexable[]> => {

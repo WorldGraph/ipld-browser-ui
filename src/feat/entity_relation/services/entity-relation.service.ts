@@ -1,4 +1,3 @@
-import { NotImplementedException } from '../../../common/exceptions/not-implemented.exception'
 import { repoMgr } from '../../../common/storage/repos/repo-manager.service'
 import { EntityHeaderService } from '../../entity/services/entity-header.service'
 import { RelationService } from '../../relation/services/relation.service'
@@ -39,8 +38,6 @@ export class EntityRelationService {
 
     const mapped = Promise.all(
       relations.map(async (rel) => {
-        console.log(`target id is ${rel.targetId}`)
-
         const target = await EntityHeaderService.getEntityHeader(rel.targetId)
         const relation = await RelationService.getRelation(rel.relationId)
 
@@ -69,8 +66,6 @@ export class EntityRelationService {
     targetId: string,
     relationId: string,
   ): Promise<EntityRelation> => {
-    console.log(`creating entity relation with relation id `, relationId)
-    console.log(`target id `, targetId)
     try {
       const instance = repoMgr.entRelations.create(
         new EntityRelationResource(relationId, sourceId, targetId),
@@ -81,5 +76,10 @@ export class EntityRelationService {
       console.error(`error writing new entity relation`, err)
       throw err
     }
+  }
+
+  static async getAllEntityRelations() {
+    await repoMgr.awaitInitialized()
+    return await repoMgr.entRelations.getAll()
   }
 }

@@ -41,7 +41,6 @@ export function UserDropMenu(props: UserDropMenuProps) {
   const persistUser = React.useCallback(async (user: UserModel) => {
     throw new NotImplementedException('Method')
     // await repoMgr.users.updateOne(user)
-    // console.log(`User updated!`)
   }, [])
 
   return (

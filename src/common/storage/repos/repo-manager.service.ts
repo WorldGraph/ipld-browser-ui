@@ -9,20 +9,17 @@ import {
   EntityRelationSchema,
 } from '../../../feat/entity/textileSchemas/entity-relation.schema'
 import { EntityRelation } from '../../../feat/entity_relation/model/entity-relation.model'
-import { UserFavorite } from '../../../feat/preferences/models/user-favorite.model'
 import {
   UserFavoriteIndexedFields,
   UserFavoriteSchema,
 } from '../../../feat/preferences/jsonSchemas/user-favorite.schema'
+import { UserFavorite } from '../../../feat/preferences/models/user-favorite.model'
 import { Relation } from '../../../feat/relation/models/relation.model'
 import { RelationSchema } from '../../../feat/relation/textileSchemas/relation.schema'
-import { SearchService } from '../../../feat/search/services/search.service'
 import { Namespace } from '../../../feat/spaces/model/namespace.model'
 import { NamespaceSchema } from '../../../feat/spaces/textileSchemas/NamespaceSchema'
 import { UserModel } from '../../../feat/user/models/user.model'
 import { UserSchema } from '../../../feat/user/textileSchemas/user.schema'
-import { ConfigService } from '../../config/config.service'
-import { NotImplementedException } from '../../exceptions/not-implemented.exception'
 import { sleep } from '../../util/sleep'
 import { CollectionNames } from '../enums/TextileCollection'
 import { Repository } from '../generics/repository.generic-class'

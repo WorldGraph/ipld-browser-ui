@@ -32,12 +32,7 @@ export async function getNewEntityGuid(): Promise<string> {
 export async function getEntityHeader(entId: string): Promise<EntityHeader> {
   const res = await repoMgr.entHeaders.findById(entId)
   if (res == null) throw new Error(`Could not find an entity header for entity ID ${entId}!`)
-  console.log(`got header `, res)
   return res
-  // const req: entityModel.GetEntityHeadersRequest = {
-  //   EntityIds: [entityId],
-  // }
-  // return await fetchUtil.postToServerNow(endpoints.getHeader, req)
 }
 
 export async function setEntityDeprecated(

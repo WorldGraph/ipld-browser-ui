@@ -21,13 +21,6 @@
     },
     {
       "type": "npm",
-      "script": "textile:check",
-      "problemMatcher": [],
-      "label": "npm: textile:check",
-      "detail": "npx ncu '/^@textile/.*$/'"
-    },
-    {
-      "type": "npm",
       "script": "checkNpmUpdates",
       "problemMatcher": [],
       "label": "npm: checkNpmUpdates",

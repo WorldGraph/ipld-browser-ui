@@ -1,11 +1,3 @@
-import { Relation } from '../../relation/models/relation.model'
-
-// export interface EntityRelationOneSide {
-//   entRelId: string
-//   otherEntity: EntityHeader
-//   relation: Relation
-// }
-
 export interface EntityRelationOneSide {
   entRelId: string
   targetName: string

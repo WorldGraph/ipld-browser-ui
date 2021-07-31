@@ -1,4 +1,3 @@
-import { NotImplementedException } from '../../../common/exceptions/not-implemented.exception'
 import { repoMgr } from '../../../common/storage/repos/repo-manager.service'
 import { EntityHeaderService } from '../../entity/services/entity-header.service'
 import { UserFavorite, UserFavoriteResource } from '../models/user-favorite.model'
@@ -16,7 +15,7 @@ export class UserFavoritesService {
     }
   }
 
-  static getAll = async (): Promise<UserFavorite[]> => {
+  static getAllFavorites = async (): Promise<UserFavorite[]> => {
     try {
       await repoMgr.awaitInitialized()
       return await repoMgr.userFavorites.getAll()
@@ -47,7 +46,7 @@ export class UserFavoritesService {
 
   static getAllReadable = async (): Promise<UserFavoriteReadable[]> => {
     try {
-      const allFavs = await UserFavoritesService.getAll()
+      const allFavs = await UserFavoritesService.getAllFavorites()
       const readable: UserFavoriteReadable[] = []
       for (const fav of allFavs) {
         if (!fav.targetId) {
