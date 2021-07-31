@@ -11,6 +11,7 @@ import * as Reach from '@reach/router'
 import React from 'react'
 import { GrLogout, GrUserSettings } from 'react-icons/gr'
 import { NotImplementedException } from '../../../../../../common/exceptions/not-implemented.exception'
+import { AuthenticationService } from '../../../../../authn/services/AuthNService'
 import { blankUser, UserModel } from '../../../../../user/models/user.model'
 import {
   userStoreMutators,
@@ -63,6 +64,7 @@ export function UserDropMenu(props: UserDropMenuProps) {
               <Button
                 leftIcon={<GrLogout />}
                 onClick={() => {
+                  void AuthenticationService.logout()
                   throw new NotImplementedException('Method')
                   void logoutOnServer()
                 }}

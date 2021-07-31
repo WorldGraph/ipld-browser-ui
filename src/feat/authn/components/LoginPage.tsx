@@ -14,6 +14,7 @@ import { UserService } from '../../user/services/UserService'
 import { userStoreMutators, useUserStore } from '../../user/stores/UserStore'
 
 import { GrLogin } from 'react-icons/gr'
+import { AuthenticationService } from '../services/AuthNService'
 
 export interface LoggedOutPageProps {
   path?: string
@@ -34,6 +35,8 @@ export function LoginPage(props: LoggedOutPageProps) {
 
   const doLogin = React.useCallback(async () => {
     incrementWaiters()
+    await AuthenticationService.login()
+    decrementWaiters()
     //     await repoMgr.initCollections()
     //     const existingUser = await UserService.getUserByPublicKey(userPublicKey)
 

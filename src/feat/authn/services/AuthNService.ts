@@ -1,12 +1,25 @@
-import { reachNavigate } from '../../../common/util/navigate'
-import { ThreeIdConnect, EthereumAuthProvider } from '@3id/connect'
-import CeramicClient from '@ceramicnetwork/http-client'
-import { ConfigService } from '../../../common/config/config.service'
+import { EthereumAuthProvider, ThreeIdConnect } from '@3id/connect'
+import { DID } from 'dids'
 
-export const ceramic = new CeramicClient(ConfigService.getConfig().ceramicHost)
+import { CeramicAccess } from '../../../common/config/ceramic-access'
+import { NotImplementedException } from '../../../common/exceptions/not-implemented.exception'
+import { reachNavigate } from '../../../common/util/navigate'
+
+// import { ThreeIdConnect, EthereumAuthProvider } from '@3id/connect'
+const ceramicAccess = new CeramicAccess('local')
+
+const authState = { loggedIn: false }
 
 export class AuthenticationService {
-  static async authenticate() {
+  static get isLoggedIn() {
+    return authState.loggedIn
+  }
+
+  static async logout() {
+    throw new NotImplementedException('not implemented')
+  }
+
+  static async login() {
     const w = window as any
 
     if (!w.ethereum) {
@@ -19,8 +32,13 @@ export class AuthenticationService {
     const authProvider = new EthereumAuthProvider(w.ethereum, addresses[0])
     await threeIdConnect.connect(authProvider)
     const provider = threeIdConnect.getDidProvider()
-    ceramic.did.setProvider(provider)
-    await ceramic.did.authenticate()
+
+    await ceramic.setDID(new DID({ provider }))
+    ceramic?.did?.setProvider(provider)
+    await ceramic?.did?.authenticate()
+
+    await idx.get('basicProfile')
+    authState.loggedIn = true
   }
 
   static SaveRouteState = () => {

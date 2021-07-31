@@ -12,6 +12,8 @@ import {
 import { userStoreSelectors, useUserStore } from '../../user/stores/UserStore'
 import { AppDisplayContainer } from './app/app-container.component'
 import { LoadingSpinner } from './app/loading-spinner.component'
+import { AuthenticationService } from '../../authn/services/AuthNService'
+import { reachNavigate } from '../../../common/util/navigate'
 
 // theme https://www.canva.com/learn/website-color-schemes/ number 23
 // color picker https://www.w3schools.com/colors/colors_picker.asp
@@ -26,6 +28,12 @@ export function App(props: { path: string }) {
     setTimeout(() => {
       decrementWaiters()
     }, 500)
+  }, [])
+
+  React.useEffect(() => {
+    if (!AuthenticationService.isLoggedIn) {
+      void reachNavigate('/login')
+    }
   }, [])
 
   React.useEffect(() => {

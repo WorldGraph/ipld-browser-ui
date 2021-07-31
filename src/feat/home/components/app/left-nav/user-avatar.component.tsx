@@ -29,9 +29,10 @@ export function UserAvatar(props: AvatarProps) {
 
   const avatarComponent = React.useMemo(() => {
     return (
-      <Avatar size="medium" background="accent-2">
-        <GrUser color="accent-1" />
-      </Avatar>
+      <Avatar name="Your Name" />
+      //       <Avatar size="medium" background="accent-2">
+      //         <GrUser color="accent-1" />
+      //       </Avatar>
     )
   }, [userDropRef])
 

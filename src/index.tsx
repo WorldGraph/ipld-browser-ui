@@ -8,6 +8,8 @@ import { App } from './feat/home/components/app.component'
 import { LandingPage } from './feat/home/components/landing-page.component'
 import { ErrorBoundary } from './feat/telemetry/components/error-boundary.component'
 import { repoMgr } from './common/storage/repos/repo-manager.service'
+import { LoggedOutPage } from './feat/authn/components/LoggedOutPage'
+import { LoginPage } from './feat/authn/components/LoginPage'
 
 const RoutedApp = () => {
   return (
@@ -15,8 +17,8 @@ const RoutedApp = () => {
       <Router>
         <App path="/*" />
         <LandingPage path="/welcome" />
-        {/* <LoggedOutPage path="/comeagain" /> */}
-        {/* <LoginPage path="/login" /> */}
+        <LoggedOutPage path="/comeagain" />
+        <LoginPage path="/login" />
       </Router>
     </ErrorBoundary>
   )

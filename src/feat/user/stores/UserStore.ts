@@ -1,4 +1,5 @@
 import create from 'zustand'
+import { AuthenticationService } from '../../authn/services/AuthNService'
 import { blankUser, UserModel } from '../models/user.model'
 
 // New zustand implementation
@@ -25,7 +26,8 @@ export const userStoreSelectors = {
     return state.USER_INFO
   },
   isLoggedIn: (state: UserStoreSchema) => {
-    return state.USER_INFO.publicKey != ''
+    return AuthenticationService.isLoggedIn
+    //     return state.USER_INFO.publicKey != ''
   },
 }
 
