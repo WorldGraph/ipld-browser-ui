@@ -40,7 +40,7 @@ export function useDIDsData(): [KnownDIDsData | null, () => Promise<void>] {
 export function useEnv(): [
   EnvState,
   (provider: EthereumProvider, address: string) => Promise<SelfID>,
-  () => void
+  () => void,
 ] {
   const [env, setEnv] = useAtom(envAtom)
   const setKnownDIDs = useAtom(knownDIDsAtom)[1]
@@ -48,23 +48,30 @@ export function useEnv(): [
 
   const tryAuthenticate = useCallback(
     async (provider: EthereumProvider, address: string): Promise<SelfID> => {
+      console.log(`1.2`)
       void setEnv({ auth: { state: 'loading', id: env.auth.id } })
 
       try {
+        console.log(`1.3`)
         const self = await authenticate(env.client, provider, address)
+        console.log(`1.4`)
         const knownDIDs = {
           [self.id]: { accounts: [AccountID.parse(env.client.threeId.accountId as string)] },
         }
+        console.log(`1.5`)
         void setKnownDIDs(knownDIDs)
         void setEnv({ auth: { state: 'confirmed', id: self.id, address }, self })
-        void loadKnownDIDsData(env.client, knownDIDs).then(setKnownDIDsData)
+        const didsData = await loadKnownDIDsData(env.client, knownDIDs)
+        console.log(`dids data is `, didsData)
+        setKnownDIDsData(didsData)
+        console.log(`1.6`)
         return self
       } catch (err) {
         void setEnv({ auth: { state: 'error', id: env.auth.id, error: err as Error } })
         throw err
       }
     },
-    [env, setEnv, setKnownDIDs, setKnownDIDsData]
+    [env, setEnv, setKnownDIDs, setKnownDIDsData],
   )
 
   const resetEnv = useCallback(() => {
@@ -78,7 +85,7 @@ export function useEnv(): [
 export function useEditProfile(): [
   EditProfileState,
   (profile: BasicProfile) => Promise<void>,
-  () => void
+  () => void,
 ] {
   const env = useEnvState()
   const [editState, setEditState] = useAtom(editProfileAtom)
@@ -97,7 +104,7 @@ export function useEditProfile(): [
       setKnownDIDsData(updatedDIDsData)
       setEditState({ status: 'done' })
     },
-    [env.self, knownDIDsData, setEditState, setKnownDIDsData]
+    [env.self, knownDIDsData, setEditState, setKnownDIDsData],
   )
 
   const edit = useCallback(
@@ -118,7 +125,7 @@ export function useEditProfile(): [
         setEditState({ status: 'failed', error: error as Error })
       }
     },
-    [applyEdit, editState.status, setEditState]
+    [applyEdit, editState.status, setEditState],
   )
 
   const reset = useCallback(() => {
@@ -130,7 +137,7 @@ export function useEditProfile(): [
 
 export function useSocialAccounts(): [
   Array<AlsoKnownAsAccount>,
-  (socialAccounts: Array<AlsoKnownAsAccount>) => void
+  (socialAccounts: Array<AlsoKnownAsAccount>) => void,
 ] {
   const { auth } = useEnvState()
   const [knownDIDsData, setKnownDIDsData] = useAtom(knownDIDsDataAtom)
@@ -152,7 +159,7 @@ export function useSocialAccounts(): [
         }
       }
     },
-    [auth, knownDIDsData, setKnownDIDsData]
+    [auth, knownDIDsData, setKnownDIDsData],
   )
 
   return [accounts, setAccounts]

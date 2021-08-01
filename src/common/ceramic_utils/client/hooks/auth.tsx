@@ -20,18 +20,26 @@ export function useLogin(): (switchAccount?: boolean) => Promise<SelfID | null> 
         !switchAccount &&
         env.self !== null
       ) {
+        console.log(`1`)
         return env.self
       }
+      console.log(`1-1`)
 
       let eth: AuthAccount<'ethereum'> | null = null
       try {
         if (switchAccount) {
+          console.log(`1-2`)
           resetEnv()
+          console.log(`1-3`)
           eth = await connect({ mode: 'force' })
+          console.log(`2`)
         } else {
+          console.log(`1-4`)
           eth = await connect({ mode: 'use' })
+          console.log(`3`)
         }
       } catch (err) {
+        console.log(`4`)
         console.warn('Failed to login:', err)
         toast.error((err as Error).message ?? 'Failed to connect')
       }

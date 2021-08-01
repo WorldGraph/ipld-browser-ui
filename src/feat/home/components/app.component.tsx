@@ -3,7 +3,6 @@ import './app/spinners.css'
 
 import { ChakraProvider } from '@chakra-ui/react'
 import React from 'react'
-
 import {
   notifMutators,
   notifSelectors,
