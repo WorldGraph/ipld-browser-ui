@@ -1,10 +1,11 @@
 import { Button, FormLabel, Input } from '@chakra-ui/react'
 import { Field, Form, Formik } from 'formik'
+import { useAtom } from 'jotai'
 import React from 'react'
 import { GenericModal } from '../../../../../../common/components'
 import { NotImplementedException } from '../../../../../../common/exceptions/not-implemented.exception'
-import { blankUser, UserModel } from '../../../../../user/models/user.model'
-import { userStoreSelectors, useUserStore } from '../../../../../user/stores/UserStore'
+import { blankUserModel, UserModel } from '../../../../../user/models/user.model'
+import { userProfileAtom } from '../../../../../user/stores/user-jotai.state'
 
 export interface UserProfileEditModalProps {
   cancelCallback: () => void
@@ -12,13 +13,14 @@ export interface UserProfileEditModalProps {
 }
 
 export function UserProfileEditModal(props: UserProfileEditModalProps) {
-  const [formValue, setFormValue] = React.useState<UserModel>(blankUser)
-  const user = useUserStore(userStoreSelectors.user)
+  const [formValue, setFormValue] = React.useState<UserModel>(blankUserModel)
+
+  const userProfile = useAtom(userProfileAtom)[0]
 
   // Must rehydrate user if it already exists.
   React.useEffect(() => {
-    console.log(`user is`, user)
-    setFormValue(user)
+    console.log(`user is`, userProfile)
+    setFormValue(userProfile)
   }, [])
 
   return (
@@ -34,7 +36,7 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
       showCancelButton
     >
       <Formik
-        initialValues={blankUser}
+        initialValues={blankUserModel}
         onSubmit={(values) => {
           console.log(`got values`, values)
         }}

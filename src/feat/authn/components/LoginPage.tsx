@@ -8,19 +8,21 @@ import {
   notifMutators,
   notifSelectors,
   useNotificationStore,
-} from '../../notifications/stores/NotificationStore'
+} from '../../notifications/stores/notification.store'
 import { UserModel } from '../../user/models/user.model'
 import { UserService } from '../../user/services/UserService'
-import { userStoreMutators, useUserStore } from '../../user/stores/UserStore'
 
 import { GrLogin } from 'react-icons/gr'
+import { useLogin } from '../../../common/ceramic_utils/client/hooks'
+import { userProfileAtom } from '../../user/stores/user-jotai.state'
+import { useAtom } from 'jotai'
 
 export interface LoggedOutPageProps {
   path?: string
 }
 
 export function LoginPage(props: LoggedOutPageProps) {
-  const setUser = useUserStore(userStoreMutators.setUser)
+  const setUser = useAtom(userProfileAtom)[1]
   const [profileModalOpen, setProfileModalOpen] = React.useState(false)
   const currentUserPk = useRef('')
   const incrementWaiters = useNotificationStore(notifMutators.incrementWaiters)
@@ -28,12 +30,18 @@ export function LoginPage(props: LoggedOutPageProps) {
   const resetWaiters = useNotificationStore(notifMutators.resetWaiters)
   const numServerWaiters = useNotificationStore(notifSelectors.numWaiters)
 
+  const login = useLogin()
+
   React.useEffect(() => {
     if (localStorage.getItem('identity') != null) void doLogin()
   }, [])
 
   const doLogin = React.useCallback(async () => {
     incrementWaiters()
+    //     await AuthenticationService.login()
+    console.log(`calling login hook`)
+    await login()
+    decrementWaiters()
     //     await repoMgr.initCollections()
     //     const existingUser = await UserService.getUserByPublicKey(userPublicKey)
 

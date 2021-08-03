@@ -31,6 +31,7 @@ module.exports = {
     '@typescript-eslint/require-await': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/no-unnecessary-type-assertion': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
     '@typescript-eslint/prefer-regexp-exec': 'off',
     '@typescript-eslint/no-misused-promises': 'warn',

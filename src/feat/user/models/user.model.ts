@@ -11,7 +11,7 @@ export interface UserModel {
   defaultNamespaceId: string
 }
 
-export const blankUser: UserModel = {
+export const blankUserModel: UserModel = {
   _id: '',
   _rev: '',
   publicKey: '',

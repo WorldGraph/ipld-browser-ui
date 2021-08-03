@@ -6,7 +6,8 @@ import React from 'react'
 import { navigateWithCtrlSensitivity } from '../../../../../common/util/navigate'
 import { EntityRelationOneSide } from '../../../../entity_relation/model/entity-relation-one-side.component'
 import { EntityRelationService } from '../../../../entity_relation/services/entity-relation.service'
-import { entityStoreSelectors, useEntityStore } from '../../../stores/entity.store'
+import { useAtom } from 'jotai'
+import { entityNameAtom } from '../../../stores/entity-jotai.state'
 
 export interface InboundRelationDisplayProps {
   entityId: string
@@ -16,7 +17,7 @@ export function InboundRelationDisplay(props: InboundRelationDisplayProps) {
   const [inboundRel, setInboundRelations] = React.useState<EntityRelationOneSide[]>([])
   const [activeAccordionIx, setActiveAccordionIx] = React.useState<number[]>([])
 
-  const entityName = useEntityStore(entityStoreSelectors.entityName)
+  const [entityName] = useAtom(entityNameAtom)
 
   const hydrateInboundRel = React.useCallback(async (eid: string) => {
     const inboundRel = await EntityRelationService.getInboundRelationsReadable(eid)

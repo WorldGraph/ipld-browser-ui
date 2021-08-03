@@ -1,16 +1,17 @@
 import { Box, Heading } from '@chakra-ui/react'
+import { useAtom } from 'jotai'
 import React, { useEffect } from 'react'
 import { UserActivityModel } from '../../../activity/models/user-activity.model'
 import { EntityActivityService } from '../../../activity/services/EntityActivityService'
 import { IndexService } from '../../../indexes/services/IndexService'
-import { userStoreSelectors, useUserStore } from '../../../user/stores/UserStore'
+import { userProfileAtom } from '../../../user/stores/user-jotai.state'
 import { EntityHeaderService } from '../../services/entity-header.service'
 import { widget33 } from '../styles'
 import { RecentActivityItem } from './recent-activity-item.component'
 
 export function RecentActivityPanel() {
   const [recentActivity, setRecentActivity] = React.useState<UserActivityModel[]>([])
-  const user = useUserStore(userStoreSelectors.user)
+  const userProfile = useAtom(userProfileAtom)[0]
 
   const getActivities = React.useCallback(async () => {
     const allItems = await EntityHeaderService.getAllEntityHeaders()
@@ -21,10 +22,10 @@ export function RecentActivityPanel() {
   }, [])
 
   useEffect(() => {
-    if (user._id != '') {
+    if (userProfile._id != '') {
       void getActivities()
     }
-  }, [user._id])
+  }, [userProfile._id])
 
   return (
     <Box className={widget33} bgColor="gray.50">

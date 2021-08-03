@@ -1,8 +1,9 @@
 import { Box } from '@chakra-ui/react'
 import { css } from 'emotion'
+import { useAtom } from 'jotai'
 import React from 'react'
+import { entityIdAtom, entityIsDeprecatedAtom } from '../../stores/entity-jotai.state'
 
-import { entityStoreSelectors, useEntityStore } from '../../stores/entity.store'
 import { EntityEditButtons } from './entity-header/entity-edit-buttons'
 import { TitleWithClassSelector } from './entity-header/title-with-class-selector.component'
 
@@ -19,7 +20,9 @@ export interface EntityHeaderProps {
 }
 
 export function EntityHeaderComponent(props: EntityHeaderProps) {
-  const entityStore = useEntityStore(entityStoreSelectors.all)
+  const entityIsDeprecated = useAtom(entityIsDeprecatedAtom)[0]
+
+  const entityId = useAtom(entityIdAtom)[0]
 
   return (
     <Box
@@ -41,7 +44,7 @@ export function EntityHeaderComponent(props: EntityHeaderProps) {
         setTitle={(newName: string) => {
           props.setEntityName(newName)
         }}
-        isDeprecated={entityStore.ENTITY_IS_DEPRECATED}
+        isDeprecated={entityIsDeprecated}
       />
       <Box
         className={css`
@@ -52,7 +55,7 @@ export function EntityHeaderComponent(props: EntityHeaderProps) {
         `}
       >
         <EntityEditButtons
-          entId={entityStore.ENTITY_ID || ''}
+          entId={entityId}
           rehydrateEntityFromServer={props.rehydrateEntityFromServer}
           setIsFavorited={props.setIsFavorited}
           isFavorited={props.isFavorited}

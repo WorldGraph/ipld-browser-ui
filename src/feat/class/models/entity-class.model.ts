@@ -11,7 +11,7 @@ export const blankEntityClass: EntityClass = {
   _id: '',
   _rev: '',
   namespaceId: '',
-  name: '',
+  name: 'No type assigned',
 }
 
 export class EntityClassResource implements EntityClass {

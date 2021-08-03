@@ -1,13 +1,14 @@
 import { Box, Button, Text } from '@chakra-ui/react'
 import { css, cx } from 'emotion'
+import { useAtom } from 'jotai'
 import React from 'react'
 import { GrEdit } from 'react-icons/gr'
 
 import { GenericModal, LockedTextInput } from '../../../../../common/components'
 import { ClassSelector } from '../../../../class/components/class-selector.component'
-import { userStoreSelectors, useUserStore } from '../../../../user/stores/UserStore'
+import { userProfileAtom } from '../../../../user/stores/user-jotai.state'
 import { EntityHeaderService } from '../../../services/entity-header.service'
-import { entityStoreSelectors, useEntityStore } from '../../../stores/entity.store'
+import { entityClassAtom, entityIdAtom } from '../../../stores/entity-jotai.state'
 
 export interface TitleWithClassSelectorProps {
   isEditing: boolean
@@ -18,12 +19,14 @@ export interface TitleWithClassSelectorProps {
 }
 
 export function TitleWithClassSelector(props: TitleWithClassSelectorProps) {
-  const entityStore = useEntityStore(entityStoreSelectors.all)
+  const entityId = useAtom(entityIdAtom)[0]
 
   const [isEditingClass, setIsEditingClass] = React.useState(false)
   const [selectedClassId, setSelectedClassId] = React.useState('')
   const [selectedClassName, setSelectedClassName] = React.useState('')
-  const user = useUserStore(userStoreSelectors.user)
+  const userProfile = useAtom(userProfileAtom)[0]
+
+  const [entityClass, setEntityClass] = useAtom(entityClassAtom)
 
   const title = React.useMemo(() => {
     if (!props.isDeprecated) return props.title
@@ -33,15 +36,16 @@ export function TitleWithClassSelector(props: TitleWithClassSelectorProps) {
 
   const updateEntityClass = React.useCallback(
     async (entityId: string, classId: string) => {
+      console.log(`updating entity id ${entityId} to class id ${classId}`)
       await EntityHeaderService.updateEntityClass(entityId, classId)
       setIsEditingClass(false)
-      entityStore.setClass({
-        ...entityStore.ENTITY_CLASS,
+      setEntityClass({
+        ...entityClass,
         name: selectedClassName,
         id: classId,
       } as any)
     },
-    [entityStore.ENTITY_CLASS, selectedClassName, user?.defaultNamespaceId],
+    [entityClass, selectedClassName, userProfile?.defaultNamespaceId],
   )
 
   return (
@@ -54,9 +58,9 @@ export function TitleWithClassSelector(props: TitleWithClassSelectorProps) {
             setIsEditingClass(false)
           }}
           okCallback={() => {
-            if (entityStore.ENTITY_ID == null) return
+            if (entityId == null) return
 
-            void updateEntityClass(entityStore.ENTITY_ID, selectedClassId)
+            void updateEntityClass(entityId, selectedClassId)
           }}
           height="300px"
           width="400px"
@@ -70,7 +74,7 @@ export function TitleWithClassSelector(props: TitleWithClassSelectorProps) {
             setSelectedClassName={(val: string) => {
               setSelectedClassName(val)
             }}
-            defaultNamespaceId={user.defaultNamespaceId}
+            defaultNamespaceId={userProfile.defaultNamespaceId}
             autofocus={true}
           />
         </GenericModal>
@@ -98,7 +102,7 @@ export function TitleWithClassSelector(props: TitleWithClassSelectorProps) {
             margin-right: 7px;
           `}
         >
-          {entityStore.ENTITY_CLASS?.name || 'No type assigned'}
+          {entityClass.name || 'No type assigned'}
         </Text>
         <Button
           size="small"

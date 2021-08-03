@@ -6,10 +6,12 @@
  */
 export interface Config {
   useMemoryAdapter: boolean
+  ceramicHost: string
 }
 
 const config: Config = {
   useMemoryAdapter: false,
+  ceramicHost: 'http://localhost:7007',
 }
 
 export class ConfigService {

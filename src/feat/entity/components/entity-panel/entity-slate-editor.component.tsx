@@ -12,10 +12,11 @@ import { LiveTypingPortal } from './entity-slate-editor/live-typing-portal.compo
 import { toggleMark } from './entity-slate-editor/Toolbar/helpers'
 import { IndexedItemType } from '../../../search/IxSearchModel/IndexedItemType'
 import { IndexedItem } from '../../../search/IxSearchModel/IndexedItem'
-import { entityStoreSelectors, useEntityStore } from '../../stores/entity.store'
 import { latestChangeType } from '../../singletons'
 import { SearchService } from '../../../search/services/search.service'
 import { CursorPositionData } from './entity-slate-editor/model/CursorPositionData'
+import { useAtom } from 'jotai'
+import { entityIdAtom, entityNameAtom } from '../../stores/entity-jotai.state'
 
 const HotkeyMap = new Map<string, string>()
 HotkeyMap.set('mod+b', 'bold')
@@ -57,11 +58,13 @@ export function EntitySlateEditor(props: EntitySlateEditorProps) {
     [],
   )
 
+  const entityId = useAtom(entityIdAtom)[0]
+
   const [ltBoxTarget, setLtBoxTarget] = React.useState<any>()
   const [ltSelectionIndex, setLtSelectionIndex] = React.useState(0)
   const [inlineSearchString, setSearchString] = React.useState<string | null>(null)
-  const entityId = useEntityStore(entityStoreSelectors.entityId)
-  const entityName = useEntityStore(entityStoreSelectors.entityName)
+  //   const entityName = useEntityStore(entityStoreSelectors.entityName)
+  const [entityName] = useAtom(entityNameAtom)
 
   const [indexedItems, setIndexedItems] = React.useState<IndexedItem[]>([])
   const { apply } = editor

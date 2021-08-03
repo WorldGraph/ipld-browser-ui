@@ -106,7 +106,6 @@ export class Repository<T extends ValidPouchType> {
 
   public async getAll(): Promise<T[]> {
     const res = (await this.db.allDocs({ include_docs: true, attachments: true })) as any
-    console.log(`response from alldocs for database ${this.dbName}`, res)
     const refined = res.rows.map((row: any) => row.doc)
 
     return refined as T[]

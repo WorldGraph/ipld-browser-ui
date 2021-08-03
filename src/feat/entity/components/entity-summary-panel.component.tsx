@@ -6,13 +6,14 @@ import React from 'react'
 import { SingleTextInputModal } from '../../../common/components'
 import { IndexedItemFilter } from '../../search/IxSearchModel/IndexedItemFilter'
 import { spaceSelectors, useSpacesStore } from '../../spaces/stores/spaces.store'
-import { userStoreSelectors, useUserStore } from '../../user/stores/UserStore'
 import { EntityHeaderService } from '../services/entity-header.service'
 import { EntityFilterControl } from './entity-summary-panel/entity-filter-control.component'
 import { EntitySearchResultDrop } from './entity-summary-panel/entity-search-results-drop.component'
 import { ItemsSummaryPanel } from './entity-summary-panel/items-summary-panel.component'
 import { RecentActivityPanel } from './entity-summary-panel/recent-activity-panel.component'
 import { UserFavoritesPanel } from './entity-summary-panel/user-favorites-panel.component'
+import { userProfileAtom } from '../../user/stores/user-jotai.state'
+import { useAtom } from 'jotai'
 
 export interface EntitySummaryPanelProps {
   path: string
@@ -25,7 +26,8 @@ export function EntitySummaryPanel(props: EntitySummaryPanelProps) {
     nameSearchTerm: '',
     classIds: [],
   })
-  const user = useUserStore(userStoreSelectors.user)
+
+  const user = useAtom(userProfileAtom)[0]
 
   const [newEntNameInputOpen, setNewEntNameInputOpen] = React.useState(false)
   const currentSpace = useSpacesStore(spaceSelectors.currentSpace)

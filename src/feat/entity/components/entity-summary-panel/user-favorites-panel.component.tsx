@@ -2,13 +2,14 @@ import { Box, Heading } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { UserFavoritesItem } from './user-favorites-item.component'
 import { widget33 } from '../styles'
-import { userStoreSelectors, useUserStore } from '../../../user/stores/UserStore'
 import { UserFavoriteReadable } from '../../../preferences/models/UserFavoriteReadable'
 import { UserFavoritesService } from '../../../preferences/services/user-favorites.service'
+import { userProfileAtom } from '../../../user/stores/user-jotai.state'
+import { useAtom } from 'jotai'
 
 export function UserFavoritesPanel() {
-  const user = useUserStore(userStoreSelectors.user)
   const [userFavorites, setUserFavorites] = React.useState<UserFavoriteReadable[]>([])
+  const user = useAtom(userProfileAtom)[0]
 
   useEffect(() => {
     void hydrateFavorites()

@@ -5,21 +5,14 @@ import { Accordion, AccordionItem, AccordionButton, AccordionPanel } from '@chak
 import React from 'react'
 
 import { OutboundRelationCreateModal } from '../outbound-relation-create-modal.component'
-import {
-  userStoreMutators,
-  userStoreSelectors,
-  useUserStore,
-} from '../../../../user/stores/UserStore'
 import { EntityRelationOneSide } from '../../../../entity_relation/model/entity-relation-one-side.component'
-import {
-  entityStoreMutators,
-  entityStoreSelectors,
-  useEntityStore,
-} from '../../../stores/entity.store'
 import { EntityRelationService } from '../../../../entity_relation/services/entity-relation.service'
 import { ConfirmModal } from '../../../../../common/components'
 import { navigateWithCtrlSensitivity } from '../../../../../common/util/navigate'
 import { GrAddCircle, GrEdit } from 'react-icons/gr'
+import { useAtom } from 'jotai'
+import { entityNameAtom } from '../../../stores/entity-jotai.state'
+import { userProfileAtom } from '../../../../user/stores/user-jotai.state'
 
 export interface OutboundRelationDisplayProps {
   entityId: string
@@ -35,10 +28,11 @@ export function OutboundRelationDisplay(props: OutboundRelationDisplayProps) {
   const [outboundRelations, setOutboundRelations] = React.useState<EntityRelationOneSide[]>([])
   const [activeAccordionIx, setActiveAccordionIx] = React.useState<number[]>([])
   const [outboundRelationCreateOpen, setOutboundRelationCreateOpen] = React.useState(false)
-  const user = useUserStore(userStoreSelectors.user)
-  const setUser = useUserStore(userStoreMutators.setUser)
-  const entityName = useEntityStore(entityStoreSelectors.entityName)
-  const setEntityName = useEntityStore(entityStoreMutators.setName)
+  const [userProfile] = useAtom(userProfileAtom)
+
+  //   const entityName = useEntityStore(entityStoreSelectors.entityName)
+  //   const setEntityName = useEntityStore(entityStoreMutators.setName)
+  const [entityName, setEntityName] = useAtom(entityNameAtom)
 
   const hydrateOutboundRel = React.useCallback(async (entityId: string) => {
     // const outboundRel = await serverApi.getOutboundForEntity(entityId)
@@ -88,7 +82,7 @@ export function OutboundRelationDisplay(props: OutboundRelationDisplayProps) {
     <>
       {outboundRelationCreateOpen && (
         <OutboundRelationCreateModal
-          defaultNamespaceId={user.defaultNamespaceId}
+          defaultNamespaceId={userProfile.defaultNamespaceId}
           sourceEntityName={entityName}
           sourceEntityId={props.entityId || ''}
           okCallback={() => {

@@ -5,16 +5,17 @@ import * as Slate from 'slate'
 import * as helpers from './helpers'
 import { LiveTypingPortalProps } from './LiveTypingPortal/LiveTypingPortalProps'
 import * as subComponents from './LiveTypingPortal/subComponents'
-import { userStoreSelectors, useUserStore } from '../../../../user/stores/UserStore'
 import {
   notifSelectors,
   useNotificationStore,
-} from '../../../../notifications/stores/NotificationStore'
+} from '../../../../notifications/stores/notification.store'
 import { NotificationService } from '../../../../notifications/services/NotificationService'
 import { spaceSelectors, useSpacesStore } from '../../../../spaces/stores/spaces.store'
 import { EntityHeaderService } from '../../../services/entity-header.service'
 import { IndexedItem } from '../../../../search/IxSearchModel/IndexedItem'
 import { IndexedItemType } from '../../../../search/IxSearchModel/IndexedItemType'
+import { userProfileAtom } from '../../../../user/stores/user-jotai.state'
+import { useAtom } from 'jotai'
 
 const selectedColor = '#B4D5FF'
 
@@ -36,7 +37,7 @@ export function LiveTypingPortal(props: LiveTypingPortalProps) {
 
   const currentSpace = useSpacesStore(spaceSelectors.currentSpace)
 
-  const user = useUserStore(userStoreSelectors.user)
+  const user = useAtom(userProfileAtom)[0]
 
   const createNewSubjectEntity = React.useCallback(
     async (

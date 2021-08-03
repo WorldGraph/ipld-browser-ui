@@ -3,21 +3,24 @@ import './app/spinners.css'
 
 import { ChakraProvider } from '@chakra-ui/react'
 import React from 'react'
-
 import {
   notifMutators,
   notifSelectors,
   useNotificationStore,
-} from '../../notifications/stores/NotificationStore'
-import { userStoreSelectors, useUserStore } from '../../user/stores/UserStore'
+} from '../../notifications/stores/notification.store'
 import { AppDisplayContainer } from './app/app-container.component'
 import { LoadingSpinner } from './app/loading-spinner.component'
+import { AuthenticationService } from '../../authn/services/AuthNService'
+import { reachNavigate } from '../../../common/util/navigate'
+import { userProfileAtom } from '../../user/stores/user-jotai.state'
+import { useAtom } from 'jotai'
 
 // theme https://www.canva.com/learn/website-color-schemes/ number 23
 // color picker https://www.w3schools.com/colors/colors_picker.asp
 export function App(props: { path: string }) {
   const numServerWaiters = useNotificationStore(notifSelectors.numWaiters)
-  const user = useUserStore(userStoreSelectors.user)
+
+  const user = useAtom(userProfileAtom)[0]
   const incrementWaiters = useNotificationStore(notifMutators.incrementWaiters)
   const decrementWaiters = useNotificationStore(notifMutators.decrementWaiters)
 
@@ -26,6 +29,12 @@ export function App(props: { path: string }) {
     setTimeout(() => {
       decrementWaiters()
     }, 500)
+  }, [])
+
+  React.useEffect(() => {
+    if (!AuthenticationService.isLoggedIn) {
+      void reachNavigate('/login')
+    }
   }, [])
 
   React.useEffect(() => {

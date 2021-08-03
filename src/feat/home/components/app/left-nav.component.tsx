@@ -15,6 +15,7 @@ import {
 
 import { navigateWithCtrlSensitivity } from '../../../../common/util/navigate'
 import { EntitySearchModal } from '../../../entity/components/entity-search-modal.component'
+import { UserAvatar } from './left-nav/user-avatar.component'
 
 export const styleNavlink = css`
   height: 4rem;
@@ -139,7 +140,7 @@ export function LeftNav(props: NavStripProps) {
           </Button>
         </Box>
         <Spacer />
-        {/* <UserAvatar className={styleNavlink} isCollapsed={isCollapsed} /> */}
+        <UserAvatar className={styleNavlink} isCollapsed={isCollapsed} />
         {toggleExpandButton}
       </Flex>
       {showSearchModal && <EntitySearchModal onClose={() => setShowSearchModal(false)} />}

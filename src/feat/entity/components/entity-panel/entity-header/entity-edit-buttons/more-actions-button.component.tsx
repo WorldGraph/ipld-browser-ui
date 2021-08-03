@@ -1,7 +1,8 @@
-import React from 'react'
 import { Button } from '@chakra-ui/react'
-import { entityStoreSelectors, useEntityStore } from '../../../../stores/entity.store'
-import { userStoreSelectors, useUserStore } from '../../../../../user/stores/UserStore'
+import { useAtom } from 'jotai'
+import React from 'react'
+import { GrMore, GrTrash } from 'react-icons/gr'
+
 import {
   ConfirmModal,
   DropMenuItemProps,
@@ -9,8 +10,9 @@ import {
   GenericDropMenu,
   setDropToggleMemoryTimer,
 } from '../../../../../../common/components'
+import { userProfileAtom } from '../../../../../user/stores/user-jotai.state'
 import { setEntityDeprecated } from '../../../../dal/entityDal'
-import { GrMore, GrTrash } from 'react-icons/gr'
+import { entityIdAtom } from '../../../../stores/entity-jotai.state'
 
 export interface MoreActionsButtonProps {
   className: string
@@ -20,8 +22,10 @@ export function MoreActionsButton(props: MoreActionsButtonProps) {
   const dropRef = React.useRef()
   const [dropVisible, setDropVisible] = React.useState(false)
   const [deprecateModalOpen, setDeprecateModalOpen] = React.useState(false)
-  const entityId = useEntityStore(entityStoreSelectors.entityId)
-  const user = useUserStore(userStoreSelectors.user)
+  //   const entityId = useEntityStore(entityStoreSelectors.entityId)
+  const userProfile = useAtom(userProfileAtom)[0]
+
+  const entityId = useAtom(entityIdAtom)[0]
 
   const dropItems = React.useMemo<DropMenuItemProps[]>(() => {
     return [
@@ -37,10 +41,10 @@ export function MoreActionsButton(props: MoreActionsButtonProps) {
 
   const deprecateEntity = React.useCallback(
     async (pEntityId: string) => {
-      await setEntityDeprecated(pEntityId, true, user.defaultNamespaceId)
+      await setEntityDeprecated(pEntityId, true, userProfile.defaultNamespaceId)
       setDeprecateModalOpen(false)
     },
-    [user.defaultNamespaceId],
+    [userProfile.defaultNamespaceId],
   )
 
   return (

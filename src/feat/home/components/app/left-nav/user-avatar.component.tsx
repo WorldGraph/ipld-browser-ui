@@ -1,8 +1,8 @@
 import { Avatar, Button } from '@chakra-ui/react'
+import { useAtom } from 'jotai'
 import React from 'react'
-import { GrUser } from 'react-icons/gr'
+import { userProfileAtom } from '../../../../user/stores/user-jotai.state'
 
-import { userStoreSelectors, useUserStore } from '../../../../user/stores/UserStore'
 import { UserDropMenu } from './user-avatar/user-drop-menu.component'
 
 export interface AvatarProps {
@@ -17,7 +17,8 @@ const dropToggleMemory = {
 export function UserAvatar(props: AvatarProps) {
   const userDropRef = React.useRef()
   const [menuVisible, setMenuVisible] = React.useState(false)
-  const user = useUserStore(userStoreSelectors.user)
+
+  const userProfile = useAtom(userProfileAtom)[0]
 
   //   const avatarComponent = React.useMemo(() => {
   //     return (
@@ -29,9 +30,10 @@ export function UserAvatar(props: AvatarProps) {
 
   const avatarComponent = React.useMemo(() => {
     return (
-      <Avatar size="medium" background="accent-2">
-        <GrUser color="accent-1" />
-      </Avatar>
+      <Avatar name="Your Name" />
+      //       <Avatar size="medium" background="accent-2">
+      //         <GrUser color="accent-1" />
+      //       </Avatar>
     )
   }, [userDropRef])
 
@@ -67,7 +69,7 @@ export function UserAvatar(props: AvatarProps) {
           }
         }}
       >
-        {props.isCollapsed ? undefined : `${user.firstName} ${user.lastName}`}
+        {props.isCollapsed ? undefined : `${userProfile.firstName} ${userProfile.lastName}`}
       </Button>
     </UserDropMenu>
   )

@@ -1,4 +1,4 @@
-import { NotificationStoreSchema } from '../stores/NotificationStore'
+import { NotificationStoreSchema } from '../stores/notification.store'
 
 /**
  * USAGE:

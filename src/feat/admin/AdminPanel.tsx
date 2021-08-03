@@ -4,11 +4,12 @@ import React from 'react'
 import { FileUpload } from '../../common/components/Input/file-upload.component'
 import { ImportExportService } from '../import_export/services/import-export.service'
 import { NotificationService } from '../notifications/services/NotificationService'
-import { notifSelectors, useNotificationStore } from '../notifications/stores/NotificationStore'
+import { notifSelectors, useNotificationStore } from '../notifications/stores/notification.store'
 import { ErrorBoundary } from '../telemetry/components/error-boundary.component'
-import { userStoreSelectors, useUserStore } from '../user/stores/UserStore'
 import { FiFile, FiUpload } from 'react-icons/fi'
 import { useForm } from 'react-hook-form'
+import { useAtom } from 'jotai'
+import { userProfileAtom } from '../user/stores/user-jotai.state'
 
 export interface AdminPanelProps {
   path?: string
@@ -29,7 +30,7 @@ export function AdminPanel(props: AdminPanelProps) {
   const defaultFilename = '[No file selected]'
   const [fileName, setFileName] = React.useState(defaultFilename)
 
-  const user = useUserStore(userStoreSelectors.user)
+  const user = useAtom(userProfileAtom)[0]
 
   const {
     register,

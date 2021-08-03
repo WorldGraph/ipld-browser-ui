@@ -41,6 +41,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': devMode ? '"development"' : '"production"',
+      'process.env.CERAMIC_API': devMode ? '"http://localhost:7007"' : '"http://localhost:7007"',
+      'process.env.NEXT_PUBLIC_APP_NETWORK': devMode ? '"local-clay"' : '"local-clay"',
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',

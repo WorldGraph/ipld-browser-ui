@@ -1,18 +1,25 @@
 import { Box } from '@chakra-ui/react'
 import * as Reach from '@reach/router'
 import { css } from 'emotion'
+import { useAtom } from 'jotai'
 import React, { useEffect, useState } from 'react'
 import { Element as SlateNode } from 'slate'
 
-import { notifMutators, useNotificationStore } from '../../notifications/stores/NotificationStore'
+import { notifMutators, useNotificationStore } from '../../notifications/stores/notification.store'
 import { UserFavorite } from '../../preferences/models/user-favorite.model'
 import { ErrorBoundary } from '../../telemetry/components/error-boundary.component'
-import { userStoreSelectors, useUserStore } from '../../user/stores/UserStore'
+import { userProfileAtom } from '../../user/stores/user-jotai.state'
 import { EntityHeader } from '../model/entity-header.model'
 import { EntityDocService } from '../services/entity-doc.service'
 import { EntityHeaderService } from '../services/entity-header.service'
+import {
+  entityClassAtom,
+  entityIdAtom,
+  entityIsDeprecatedAtom,
+  entityNameAtom,
+  entityNamespaceIdAtom,
+} from '../stores/entity-jotai.state'
 import { entityMemoryState } from '../stores/entity-memory-state.model'
-import { entityStoreMutators, entityStoreSelectors, useEntityStore } from '../stores/entity.store'
 import { EntityHeaderComponent } from './entity-panel/entity-header.component'
 import * as serverActions from './entity-panel/entity-panel-actions.functions'
 import { EntityRightContextItems } from './entity-panel/entity-right-context-menu.component'
@@ -31,46 +38,44 @@ export function EntityPanel(props: {
   style?: React.CSSProperties
   entityId?: string
 }) {
-  const entityStore = useEntityStore(entityStoreSelectors.all)
+  const [entityId, setEntityId] = useAtom(entityIdAtom)
+  const [entityName, setEntityName] = useAtom(entityNameAtom)
+  const setEntityDeprecated = useAtom(entityIsDeprecatedAtom)[1]
+  const [entityNamespaceId, setEntityNamespaceId] = useAtom(entityNamespaceIdAtom)
+  const user = useAtom(userProfileAtom)[0]
 
-  //   const [entityClasses, setEntityClasses] = EntityStore.useEntityClasses();
-  const entityName = useEntityStore(entityStoreSelectors.entityName)
-  const setEntityName = useEntityStore(entityStoreMutators.setName)
-  // const [entityModificationProps, setEntityModificationProps] = React.useState<BaseDbTable>({})
   const [isEditing, setIsEditing] = React.useState(false)
   const [isFavorited, setIsFavorited] = React.useState(false)
   const [slateEditorContent, setSlateEditorContent] = useState<SlateNode[]>(initialEditorValue)
-  const user = useUserStore(userStoreSelectors.user)
   const [entityIsUpdating, setEntityIsUpdating] = React.useState(false)
   const nameUpdateTimeoutRef = React.useRef<number>()
-  const docUpdateTimeoutRef = React.useRef<number>()
   const [obRelCreateModalOpen, setObRelCreateModalOpen] = React.useState(false)
 
   const incrementWaiters = useNotificationStore(notifMutators.incrementWaiters)
   const decrementWaiters = useNotificationStore(notifMutators.decrementWaiters)
+
+  const setEntityClass = useAtom(entityClassAtom)[1]
 
   React.useEffect(() => {
     incrementWaiters()
     setTimeout(() => {
       decrementWaiters()
     }, 500)
-  }, [entityStore.ENTITY_ID])
-
-  entityStore.ENTITY_ID
+  }, [entityId])
 
   const rehydrateEntity = React.useCallback(async (entityId: string) => {
     await serverActions.rehydrateEntity(
       entityId,
       (entity: EntityHeader) => {
         setEntityName(entity.name)
-        entityStore.setNamespaceId(entity.namespaceId)
-        entityStore.setIsDeprecated(entity.isDeprecated)
+        setEntityNamespaceId(entity.namespaceId)
+        setEntityDeprecated(entity.isDeprecated)
       },
       setSlateEditorContent,
       () => {},
       incrementWaiters,
       decrementWaiters,
-      entityStore.setClass,
+      setEntityClass,
     )
   }, [])
 
@@ -93,7 +98,7 @@ export function EntityPanel(props: {
 
   useEffect(() => {
     if (props.entityId != null) {
-      entityStore.setId(props.entityId)
+      setEntityId(props.entityId)
       void initFavorited(props.entityId)
       void rehydrateClassesAndEntity(props.entityId)
     }
@@ -101,7 +106,7 @@ export function EntityPanel(props: {
 
   const doEntityNameUpdate = React.useCallback(
     async (newName: string) => {
-      if (entityStore.ENTITY_ID == null) return
+      if (entityId == null) return
 
       window.clearTimeout(nameUpdateTimeoutRef.current)
       setEntityIsUpdating(true)
@@ -110,10 +115,10 @@ export function EntityPanel(props: {
         if (
           entityMemoryState.nameUpdatePending &&
           !entityMemoryState.nameIsUpdating &&
-          entityStore.ENTITY_ID != null
+          entityId != null
         ) {
           entityMemoryState.nameIsUpdating = true
-          void EntityHeaderService.updateEntityName(entityStore.ENTITY_ID, newName).then((x) => {
+          void EntityHeaderService.updateEntityName(entityId, newName).then((x) => {
             entityMemoryState.nameUpdatePending = false
             entityMemoryState.nameIsUpdating = false
             setEntityIsUpdating(false)
@@ -122,8 +127,8 @@ export function EntityPanel(props: {
       }, 500)
     },
     [
-      entityStore.ENTITY_ID,
-      entityStore.ENTITY_NAMESPACE_ID,
+      entityId,
+      entityNamespaceId,
       entityMemoryState.nameIsUpdating,
       entityMemoryState.nameUpdatePending,
     ],
@@ -132,7 +137,7 @@ export function EntityPanel(props: {
   const createNewEntity = React.useCallback(
     async (name: string, callback: (newEntityId: string) => void) => {
       const newEntity = await EntityHeaderService.createEntity(name, user.defaultNamespaceId)
-      entityStore.setId(newEntity._id)
+      setEntityId(newEntity._id)
       callback(newEntity._id)
       setEntityName(name)
       void Reach.navigate(`/item/${newEntity._id}`)
@@ -146,7 +151,7 @@ export function EntityPanel(props: {
         <OutboundRelationCreateModal
           defaultNamespaceId={user.defaultNamespaceId}
           sourceEntityName={entityName}
-          sourceEntityId={entityStore.ENTITY_ID || ''}
+          sourceEntityId={entityId}
           okCallback={() => {
             setObRelCreateModalOpen(false)
           }}
@@ -217,7 +222,7 @@ export function EntityPanel(props: {
             `}
           >
             <EntityRightContextItems
-              entityId={entityStore.ENTITY_ID || ''}
+              entityId={entityId}
               entityModificationProps={{}}
               setOutboundRelationCreateOpen={setObRelCreateModalOpen}
             />
