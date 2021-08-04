@@ -1,10 +1,15 @@
 import { Button } from '@chakra-ui/react'
 import React from 'react'
 import { NamespaceService } from '../services/namespace.service'
-import { spaceMutators, spaceSelectors, useSpacesStore } from '../stores/spaces.store'
 import { SpaceSelectModal } from './space-select-modal.component'
 import { css } from 'emotion'
 import { GrCube } from 'react-icons/gr'
+import {
+  AvailableSpaceIdsAtom,
+  CurrentSpaceAtom,
+  CurrentSpaceIdAtom,
+} from '../stores/spaces-jotai.state'
+import { useAtom } from 'jotai'
 
 const styleNavlink = css`
   height: 4rem;
@@ -15,16 +20,17 @@ const styleNavIcon = css`
   margin-right: 10px;
 `
 export function SpacesAvatar(props: { isCollapsed: boolean }) {
-  const setCurrentSpaceId = useSpacesStore(spaceMutators.setCurrentSpaceId)
-  const setAvailableSpaces = useSpacesStore(spaceMutators.setAvailableSpaces)
-  const currentSpace = useSpacesStore(spaceSelectors.currentSpace)
+  const setCurrentSpaceId = useAtom(CurrentSpaceIdAtom)[1]
+  const setAvailableSpaceIds = useAtom(AvailableSpaceIdsAtom)[1]
+  const currentSpace = useAtom(CurrentSpaceAtom)[0]
 
   const [spaceSelectOpen, setSpaceSelectOpen] = React.useState(false)
 
   const getAvailableSpaces = React.useCallback(async () => {
     const res = await NamespaceService.getAvailableForUser()
     setCurrentSpaceId(res[0]?._id || '')
-    setAvailableSpaces(res)
+    const spaceIds = res.map((x) => x._id)
+    setAvailableSpaceIds(spaceIds)
   }, [])
 
   React.useEffect(() => {

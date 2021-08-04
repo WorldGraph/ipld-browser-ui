@@ -1,12 +1,18 @@
 import { Button, Text } from '@chakra-ui/react'
 import { css } from 'emotion'
+import { useAtom } from 'jotai'
 import React from 'react'
 import { GrAdd } from 'react-icons/gr'
 
 import { GenericModal } from '../../../common/components'
 import { Namespace } from '../model/namespace.model'
 import { NamespaceService } from '../services/namespace.service'
-import { spaceSelectors, useSpacesStore } from '../stores/spaces.store'
+import {
+  AvailableSpacesAtom,
+  CurrentSpaceAtom,
+  SelectedSpaceIdsAtom,
+  SelectedSpacesAtom,
+} from '../stores/spaces-jotai.state'
 import { SpaceEditModal } from './space-edit-modal.component'
 
 export interface SpaceSelectModalProps {
@@ -14,12 +20,11 @@ export interface SpaceSelectModalProps {
 }
 
 export function SpaceSelectModal(props: SpaceSelectModalProps) {
-  const selectedSpaces = useSpacesStore((state) => state.selectedSpaceIds)
-  const setSelectedSpaces = useSpacesStore((state) => state.setSelectedSpaceIds) as (
-    newSpaces: string[],
-  ) => void
-  const currentSpace = useSpacesStore(spaceSelectors.currentSpace)
-  const availableSpaces = useSpacesStore(spaceSelectors.availableSpaces)
+  const selectedSpaces = useAtom(SelectedSpacesAtom)[0]
+  const setSelectedSpaceIds = useAtom(SelectedSpaceIdsAtom)[0]
+  const currentSpace = useAtom(CurrentSpaceAtom)[0]
+  const availableSpaces = useAtom(AvailableSpacesAtom)[0]
+
   const [nsEditOpen, setNsEditOpen] = React.useState(false)
 
   return (

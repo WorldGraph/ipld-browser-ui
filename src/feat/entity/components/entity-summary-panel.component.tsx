@@ -5,7 +5,6 @@ import { css } from 'emotion'
 import React from 'react'
 import { SingleTextInputModal } from '../../../common/components'
 import { IndexedItemFilter } from '../../search/IxSearchModel/IndexedItemFilter'
-import { spaceSelectors, useSpacesStore } from '../../spaces/stores/spaces.store'
 import { EntityHeaderService } from '../services/entity-header.service'
 import { EntityFilterControl } from './entity-summary-panel/entity-filter-control.component'
 import { EntitySearchResultDrop } from './entity-summary-panel/entity-search-results-drop.component'
@@ -14,6 +13,7 @@ import { RecentActivityPanel } from './entity-summary-panel/recent-activity-pane
 import { UserFavoritesPanel } from './entity-summary-panel/user-favorites-panel.component'
 import { userProfileAtom } from '../../user/stores/user-jotai.state'
 import { useAtom } from 'jotai'
+import { CurrentSpaceAtom } from '../../spaces/stores/spaces-jotai.state'
 
 export interface EntitySummaryPanelProps {
   path: string
@@ -30,7 +30,7 @@ export function EntitySummaryPanel(props: EntitySummaryPanelProps) {
   const user = useAtom(userProfileAtom)[0]
 
   const [newEntNameInputOpen, setNewEntNameInputOpen] = React.useState(false)
-  const currentSpace = useSpacesStore(spaceSelectors.currentSpace)
+  const currentSpace = useAtom(CurrentSpaceAtom)[0]
 
   const createNewEntity = React.useCallback(
     async (name: string) => {

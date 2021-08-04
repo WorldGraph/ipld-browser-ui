@@ -9,8 +9,7 @@ import {
 } from '../../../../notifications/stores/notification-jotai.state'
 import { IndexedItem } from '../../../../search/IxSearchModel/IndexedItem'
 import { IndexedItemType } from '../../../../search/IxSearchModel/IndexedItemType'
-import { spaceSelectors, useSpacesStore } from '../../../../spaces/stores/spaces.store'
-import { userProfileAtom } from '../../../../user/stores/user-jotai.state'
+import { CurrentSpaceAtom } from '../../../../spaces/stores/spaces-jotai.state'
 import { EntityHeaderService } from '../../../services/entity-header.service'
 import * as helpers from './helpers'
 import { LiveTypingPortalProps } from './LiveTypingPortal/LiveTypingPortalProps'
@@ -27,14 +26,9 @@ const selectedItemStyle = css`
 `
 
 export function LiveTypingPortal(props: LiveTypingPortalProps) {
-  //   const notifActions = NotificationStore.useNotifActions();
-
   const incrementWaiters = useAtom(IncrementWaitersAtom)[1]
   const decrementWaiters = useAtom(DecrementWaitersAtom)[1]
-
-  const currentSpace = useSpacesStore(spaceSelectors.currentSpace)
-
-  const user = useAtom(userProfileAtom)[0]
+  const currentSpace = useAtom(CurrentSpaceAtom)[0]
 
   const createNewSubjectEntity = React.useCallback(
     async (
