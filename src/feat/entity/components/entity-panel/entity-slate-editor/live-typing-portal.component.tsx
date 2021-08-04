@@ -1,21 +1,20 @@
 import { css } from 'emotion'
+import { useAtom } from 'jotai'
 import React from 'react'
 import * as Slate from 'slate'
 
+import {
+  DecrementWaitersAtom,
+  IncrementWaitersAtom,
+} from '../../../../notifications/stores/notification-jotai.state'
+import { IndexedItem } from '../../../../search/IxSearchModel/IndexedItem'
+import { IndexedItemType } from '../../../../search/IxSearchModel/IndexedItemType'
+import { spaceSelectors, useSpacesStore } from '../../../../spaces/stores/spaces.store'
+import { userProfileAtom } from '../../../../user/stores/user-jotai.state'
+import { EntityHeaderService } from '../../../services/entity-header.service'
 import * as helpers from './helpers'
 import { LiveTypingPortalProps } from './LiveTypingPortal/LiveTypingPortalProps'
 import * as subComponents from './LiveTypingPortal/subComponents'
-import {
-  notifSelectors,
-  useNotificationStore,
-} from '../../../../notifications/stores/notification.store'
-import { NotificationService } from '../../../../notifications/services/NotificationService'
-import { spaceSelectors, useSpacesStore } from '../../../../spaces/stores/spaces.store'
-import { EntityHeaderService } from '../../../services/entity-header.service'
-import { IndexedItem } from '../../../../search/IxSearchModel/IndexedItem'
-import { IndexedItemType } from '../../../../search/IxSearchModel/IndexedItemType'
-import { userProfileAtom } from '../../../../user/stores/user-jotai.state'
-import { useAtom } from 'jotai'
 
 const selectedColor = '#B4D5FF'
 
@@ -30,10 +29,8 @@ const selectedItemStyle = css`
 export function LiveTypingPortal(props: LiveTypingPortalProps) {
   //   const notifActions = NotificationStore.useNotifActions();
 
-  const notifStore = useNotificationStore(notifSelectors.all)
-  const notifService = React.useMemo(() => {
-    return new NotificationService(notifStore)
-  }, [notifStore])
+  const incrementWaiters = useAtom(IncrementWaitersAtom)[1]
+  const decrementWaiters = useAtom(DecrementWaitersAtom)[1]
 
   const currentSpace = useSpacesStore(spaceSelectors.currentSpace)
 
@@ -46,7 +43,7 @@ export function LiveTypingPortal(props: LiveTypingPortalProps) {
       editor: Slate.Editor,
       targetSelection: Slate.Location,
     ) => {
-      notifStore.incrementWaiters()
+      incrementWaiters()
       const newEntity = await EntityHeaderService.createEntity(name, namespaceId)
 
       const item: IndexedItem = {
@@ -60,7 +57,7 @@ export function LiveTypingPortal(props: LiveTypingPortalProps) {
       helpers.insertSubjEntityLink(props.editor, item)
 
       props.setLtBoxTarget(null)
-      notifStore.decrementWaiters()
+      decrementWaiters()
     },
     [],
   )

@@ -4,8 +4,11 @@ import { css } from 'emotion'
 import { useAtom } from 'jotai'
 import React, { useEffect, useState } from 'react'
 import { Element as SlateNode } from 'slate'
+import {
+  DecrementWaitersAtom,
+  IncrementWaitersAtom,
+} from '../../notifications/stores/notification-jotai.state'
 
-import { notifMutators, useNotificationStore } from '../../notifications/stores/notification.store'
 import { UserFavorite } from '../../preferences/models/user-favorite.model'
 import { ErrorBoundary } from '../../telemetry/components/error-boundary.component'
 import { userProfileAtom } from '../../user/stores/user-jotai.state'
@@ -51,10 +54,10 @@ export function EntityPanel(props: {
   const nameUpdateTimeoutRef = React.useRef<number>()
   const [obRelCreateModalOpen, setObRelCreateModalOpen] = React.useState(false)
 
-  const incrementWaiters = useNotificationStore(notifMutators.incrementWaiters)
-  const decrementWaiters = useNotificationStore(notifMutators.decrementWaiters)
-
   const setEntityClass = useAtom(entityClassAtom)[1]
+
+  const decrementWaiters = useAtom(DecrementWaitersAtom)[1]
+  const incrementWaiters = useAtom(IncrementWaitersAtom)[1]
 
   React.useEffect(() => {
     incrementWaiters()

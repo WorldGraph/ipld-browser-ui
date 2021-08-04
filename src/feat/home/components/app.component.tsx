@@ -3,26 +3,26 @@ import './app/spinners.css'
 
 import { ChakraProvider } from '@chakra-ui/react'
 import React from 'react'
-import {
-  notifMutators,
-  notifSelectors,
-  useNotificationStore,
-} from '../../notifications/stores/notification.store'
 import { AppDisplayContainer } from './app/app-container.component'
 import { LoadingSpinner } from './app/loading-spinner.component'
 import { AuthenticationService } from '../../authn/services/AuthNService'
 import { reachNavigate } from '../../../common/util/navigate'
 import { userProfileAtom } from '../../user/stores/user-jotai.state'
 import { useAtom } from 'jotai'
+import {
+  DecrementWaitersAtom,
+  IncrementWaitersAtom,
+  WaitersCountAtom,
+} from '../../notifications/stores/notification-jotai.state'
 
 // theme https://www.canva.com/learn/website-color-schemes/ number 23
 // color picker https://www.w3schools.com/colors/colors_picker.asp
 export function App(props: { path: string }) {
-  const numServerWaiters = useNotificationStore(notifSelectors.numWaiters)
-
   const user = useAtom(userProfileAtom)[0]
-  const incrementWaiters = useNotificationStore(notifMutators.incrementWaiters)
-  const decrementWaiters = useNotificationStore(notifMutators.decrementWaiters)
+
+  const incrementWaiters = useAtom(IncrementWaitersAtom)[1]
+  const decrementWaiters = useAtom(DecrementWaitersAtom)[1]
+  const numServerWaiters = useAtom(WaitersCountAtom)[0]
 
   React.useEffect(() => {
     incrementWaiters()

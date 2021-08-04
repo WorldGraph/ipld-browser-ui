@@ -3,8 +3,6 @@ import { css } from 'emotion'
 import React from 'react'
 import { FileUpload } from '../../common/components/Input/file-upload.component'
 import { ImportExportService } from '../import_export/services/import-export.service'
-import { NotificationService } from '../notifications/services/NotificationService'
-import { notifSelectors, useNotificationStore } from '../notifications/stores/notification.store'
 import { ErrorBoundary } from '../telemetry/components/error-boundary.component'
 import { FiFile, FiUpload } from 'react-icons/fi'
 import { useForm } from 'react-hook-form'
@@ -56,11 +54,6 @@ export function AdminPanel(props: AdminPanelProps) {
     }
     return true
   }
-
-  const notifStore = useNotificationStore(notifSelectors.all)
-  const notifService = React.useMemo(() => {
-    return new NotificationService(notifStore)
-  }, [notifStore])
 
   const importData = handleSubmit(async (data) => {
     console.log('On Submit: ', data)
