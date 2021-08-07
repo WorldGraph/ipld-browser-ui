@@ -25,6 +25,7 @@ export interface GenericModalProps {
   width: string
   children: React.ReactNode
   showCancelButton?: boolean
+  hideOkButton?: boolean
   okButtonText?: string
 }
 
@@ -68,7 +69,9 @@ export function GenericModal(props: GenericModalProps) {
                     Cancel
                   </Button>
                 )}
-                <Button onClick={() => props.okCallback()}>{props.okButtonText || 'Ok'}</Button>
+                {!props.hideOkButton && (
+                  <Button onClick={() => props.okCallback()}>{props.okButtonText || 'Ok'}</Button>
+                )}
               </HStack>
             </ModalFooter>
           </ModalBody>

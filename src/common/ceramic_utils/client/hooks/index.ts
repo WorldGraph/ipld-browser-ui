@@ -7,5 +7,5 @@ export {
   useKnownDIDs,
   useKnownDIDsData,
   useSocialAccounts,
-} from './env'
+} from './idx-env.hooks'
 export { useImageUpload } from './ipfs'

@@ -14,9 +14,9 @@ import { GrLogout, GrUserSettings } from 'react-icons/gr'
 import { NotImplementedException } from '../../../../../../common/exceptions/not-implemented.exception'
 import { AuthenticationService } from '../../../../../authn/services/AuthNService'
 import { UserModel } from '../../../../../user/models/user.model'
-import { userProfileAtom } from '../../../../../user/stores/user-jotai.state'
+import { userProfileAtom } from '../../../../../user/stores/user.state'
 
-import { UserProfileEditModal } from '../user-profile/user-profit-edit-modal.component'
+import { UserProfileEditModal } from '../user-profile/user-profile-edit-modal.component'
 
 export interface UserDropMenuProps {
   userDropRef: any
@@ -41,14 +41,7 @@ export function UserDropMenu(props: UserDropMenuProps) {
         <PopoverContent>
           <PopoverBody>
             {editingProfile && (
-              <UserProfileEditModal
-                okCallback={(user: UserModel) => {
-                  void persistUser(user)
-                  setUser(user)
-                  setEditingProfile(false)
-                }}
-                cancelCallback={() => setEditingProfile(false)}
-              />
+              <UserProfileEditModal closeCallback={() => setEditingProfile(false)} />
             )}
             <Box>
               <Button

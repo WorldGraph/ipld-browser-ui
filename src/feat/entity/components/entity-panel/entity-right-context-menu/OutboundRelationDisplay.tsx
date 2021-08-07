@@ -12,7 +12,7 @@ import { navigateWithCtrlSensitivity } from '../../../../../common/util/navigate
 import { GrAddCircle, GrEdit } from 'react-icons/gr'
 import { useAtom } from 'jotai'
 import { entityNameAtom } from '../../../stores/entity-jotai.state'
-import { userProfileAtom } from '../../../../user/stores/user-jotai.state'
+import { userProfileAtom } from '../../../../user/stores/user.state'
 
 export interface OutboundRelationDisplayProps {
   entityId: string

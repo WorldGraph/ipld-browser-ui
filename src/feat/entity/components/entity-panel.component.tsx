@@ -11,7 +11,7 @@ import {
 
 import { UserFavorite } from '../../preferences/models/user-favorite.model'
 import { ErrorBoundary } from '../../telemetry/components/error-boundary.component'
-import { userProfileAtom } from '../../user/stores/user-jotai.state'
+import { userProfileAtom } from '../../user/stores/user.state'
 import { EntityHeader } from '../model/entity-header.model'
 import { EntityDocService } from '../services/entity-doc.service'
 import { EntityHeaderService } from '../services/entity-header.service'

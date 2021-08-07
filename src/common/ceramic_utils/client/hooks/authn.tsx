@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 
 import type { SelfID } from '../../sdk/web'
 
-import { useIdxEnv } from './env'
+import { useIdxEnv } from './idx-env.hooks'
 
 export function useLogin(): (switchAccount?: boolean) => Promise<SelfID | null> {
   const [authState, connect] = useMultiAuth()

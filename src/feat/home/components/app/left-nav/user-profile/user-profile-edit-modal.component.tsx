@@ -1,15 +1,27 @@
 import { BasicProfile } from '@ceramicstudio/idx-constants'
-import { Button, FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Spacer,
+} from '@chakra-ui/react'
+import { navigate } from '@reach/router'
 import { Field, Form, Formik } from 'formik'
+import { useAtom } from 'jotai'
 import React, { useCallback } from 'react'
-import { useIdxEnv } from '../../../../../../common/ceramic_utils/client/hooks/env'
+import {
+  useIdxEnv,
+  useUserLoggedIn,
+} from '../../../../../../common/ceramic_utils/client/hooks/idx-env.hooks'
 import { GenericModal } from '../../../../../../common/components'
 import { NotImplementedException } from '../../../../../../common/exceptions/not-implemented.exception'
-import { UserModel } from '../../../../../user/models/user.model'
+import { UserBasicProfileAtom } from '../../../../../user/stores/user.state'
 
 export interface UserProfileEditModalProps {
-  cancelCallback: () => void
-  okCallback: (formValues: UserModel) => void
+  closeCallback: () => void
 }
 
 class FormValidator {
@@ -29,16 +41,17 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
   const [formValue, setFormValue] = React.useState<BasicProfile>({})
 
   const [idxEnv] = useIdxEnv()
+  const loggedIn = useUserLoggedIn()
 
   //   const userProfile = useAtom(userProfileAtom)[0]
   const tryGetIdxProfile = useCallback(async () => {
-    console.log(`trying to get idx profile`)
     const profile = await idxEnv.self?.getProfile()
-    console.log(`got profile `, profile)
     if (profile) {
       setFormValue(profile)
     }
   }, [])
+
+  const [basicProfile, setBasicProfile] = useAtom(UserBasicProfileAtom)
 
   // Must rehydrate user if it already exists.
   React.useEffect(() => {
@@ -47,11 +60,18 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
 
   const setProfile = useCallback(
     async (profile: BasicProfile) => {
-      console.log(`will try to set basic profile`, profile)
-      if (!idxEnv.self) {
-        throw new Error(`User not logged in! cannot set profile`)
+      if (!loggedIn) {
+        void navigate('/login')
       } else {
-        await idxEnv.self?.setProfile(profile)
+        try {
+          console.log(`trying to set profile`)
+          await idxEnv.self?.setProfile(profile)
+          setBasicProfile(profile)
+          console.log(`closing modal!`)
+          props.closeCallback()
+        } catch (error) {
+          console.error(`Error setting user profile!`, error)
+        }
       }
     },
     [idxEnv.self],
@@ -60,24 +80,25 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
   return (
     <GenericModal
       title="Edit Profile"
-      cancelCallback={props.cancelCallback}
+      cancelCallback={props.closeCallback}
       okCallback={() => {
         throw new NotImplementedException('Method')
         // props.okCallback(formValue)
       }}
       height="40rem"
       width="40rem"
-      showCancelButton
+      hideOkButton
     >
       {/* Formik docs: https://formik.org/docs/overview 
 	Usage with chakra ui https://chakra-ui.com/docs/form/form-control
       */}
       <Formik
-        initialValues={{ name: '', description: '' }}
+        initialValues={{
+          name: basicProfile.name ?? '',
+          description: basicProfile.description ?? '',
+        }}
         onSubmit={(values, actions) => {
-          //   console.log(`got values`, values)
           void setProfile(values)
-          // TODO - figure out timeout w.r.t. submission time
           setTimeout(() => {
             actions.setSubmitting(false)
           }, 10000)
@@ -96,20 +117,24 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
             </Field>
             <Field name="description">
               {({ field, form }: any) => (
-                <FormControl isInvalid={form.errors.description && form.touched.description}>
+                <FormControl
+                  marginTop="1rem"
+                  isInvalid={form.errors.description && form.touched.description}
+                >
                   <FormLabel htmlFor="description">Description</FormLabel>
                   <Input {...field} id="description" placeholder="description" />
                 </FormControl>
               )}
             </Field>
-            <Button
-              marginTop="10px"
-              display="block"
-              type="submit"
-              disabled={isSubmitting || !isValid}
-            >
-              Submit
-            </Button>
+            <Flex direction="row" marginTop="2rem">
+              <Spacer />
+              <Button marginRight="1rem" onClick={props.closeCallback}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting || !isValid}>
+                Submit
+              </Button>
+            </Flex>
           </Form>
         )}
 

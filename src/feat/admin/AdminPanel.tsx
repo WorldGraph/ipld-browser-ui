@@ -7,7 +7,7 @@ import { ErrorBoundary } from '../telemetry/components/error-boundary.component'
 import { FiFile, FiUpload } from 'react-icons/fi'
 import { useForm } from 'react-hook-form'
 import { useAtom } from 'jotai'
-import { userProfileAtom } from '../user/stores/user-jotai.state'
+import { userProfileAtom } from '../user/stores/user.state'
 
 export interface AdminPanelProps {
   path?: string

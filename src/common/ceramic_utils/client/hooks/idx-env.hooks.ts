@@ -18,6 +18,7 @@ import {
 } from '../idx-jotai.state'
 import type { EnvState, EditProfileState } from '../idx-jotai.state'
 import { navigate } from '@reach/router'
+import { UserBasicProfileAtom } from '../../../../feat/user/stores/user.state'
 
 export function useKnownDIDs() {
   return useAtom(knownDIDsAtom)[0]
@@ -44,6 +45,11 @@ export function useDIDsData(): [KnownDIDsData | null, () => Promise<void>] {
   return [knownDIDsData, load]
 }
 
+export function useUserLoggedIn() {
+  const [env] = useAtom(IdxEnvironmentAtom)
+  return env.self != null
+}
+
 export function useIdxEnv(): [
   EnvState,
   (provider: EthereumProvider, address: string) => Promise<SelfID>,
@@ -52,6 +58,7 @@ export function useIdxEnv(): [
   const [env, setEnv] = useAtom(IdxEnvironmentAtom)
   const setKnownDIDs = useAtom(knownDIDsAtom)[1]
   const setKnownDIDsData = useAtom(knownDIDsDataAtom)[1]
+  const setUserBasicProfile = useAtom(UserBasicProfileAtom)[1]
 
   const tryAuthenticate = useCallback(
     async (provider: EthereumProvider, address: string): Promise<SelfID> => {
@@ -70,6 +77,10 @@ export function useIdxEnv(): [
         setKnownDIDsData(didsData)
 
         // Jeff test: get and set profile?
+        const profile = await self.getProfile()
+        if (profile != null) {
+          setUserBasicProfile(profile)
+        }
 
         await navigate('/')
         return self

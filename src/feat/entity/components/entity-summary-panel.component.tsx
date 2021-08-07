@@ -11,7 +11,7 @@ import { EntitySearchResultDrop } from './entity-summary-panel/entity-search-res
 import { ItemsSummaryPanel } from './entity-summary-panel/items-summary-panel.component'
 import { RecentActivityPanel } from './entity-summary-panel/recent-activity-panel.component'
 import { UserFavoritesPanel } from './entity-summary-panel/user-favorites-panel.component'
-import { userProfileAtom } from '../../user/stores/user-jotai.state'
+import { userProfileAtom } from '../../user/stores/user.state'
 import { useAtom } from 'jotai'
 import { CurrentSpaceAtom } from '../../spaces/stores/spaces-jotai.state'
 

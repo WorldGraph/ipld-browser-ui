@@ -10,7 +10,7 @@ import {
   GenericDropMenu,
   setDropToggleMemoryTimer,
 } from '../../../../../../common/components'
-import { userProfileAtom } from '../../../../../user/stores/user-jotai.state'
+import { userProfileAtom } from '../../../../../user/stores/user.state'
 import { setEntityDeprecated } from '../../../../dal/entityDal'
 import { entityIdAtom } from '../../../../stores/entity-jotai.state'
 

@@ -6,7 +6,7 @@ import { GrEdit } from 'react-icons/gr'
 
 import { GenericModal, LockedTextInput } from '../../../../../common/components'
 import { ClassSelector } from '../../../../class/components/class-selector.component'
-import { userProfileAtom } from '../../../../user/stores/user-jotai.state'
+import { userProfileAtom } from '../../../../user/stores/user.state'
 import { EntityHeaderService } from '../../../services/entity-header.service'
 import { entityClassAtom, entityIdAtom } from '../../../stores/entity-jotai.state'
 

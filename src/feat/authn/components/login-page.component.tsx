@@ -3,13 +3,13 @@ import * as Reach from '@reach/router'
 import { css } from 'emotion'
 import React, { useRef } from 'react'
 import { LoadingSpinner } from '../../home/components/app/loading-spinner.component'
-import { UserProfileEditModal } from '../../home/components/app/left-nav/user-profile/user-profit-edit-modal.component'
+import { UserProfileEditModal } from '../../home/components/app/left-nav/user-profile/user-profile-edit-modal.component'
 import { UserModel } from '../../user/models/user.model'
 import { UserService } from '../../user/services/UserService'
 
 import { GrLogin } from 'react-icons/gr'
 import { useLogin } from '../../../common/ceramic_utils/client/hooks'
-import { userProfileAtom } from '../../user/stores/user-jotai.state'
+import { userProfileAtom } from '../../user/stores/user.state'
 import { useAtom } from 'jotai'
 import {
   DecrementWaitersAtom,
@@ -70,12 +70,7 @@ export function LoginPage(props: LoggedOutPageProps) {
       />
       {profileModalOpen && (
         <UserProfileEditModal
-          okCallback={(user: UserModel) => {
-            user.publicKey = currentUserPk.current
-            void saveUser(user)
-            setProfileModalOpen(false)
-          }}
-          cancelCallback={() => {
+          closeCallback={() => {
             setProfileModalOpen(false)
           }}
         />

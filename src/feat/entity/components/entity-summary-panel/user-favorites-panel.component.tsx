@@ -4,7 +4,7 @@ import { UserFavoritesItem } from './user-favorites-item.component'
 import { widget33 } from '../styles'
 import { UserFavoriteReadable } from '../../../preferences/models/UserFavoriteReadable'
 import { UserFavoritesService } from '../../../preferences/services/user-favorites.service'
-import { userProfileAtom } from '../../../user/stores/user-jotai.state'
+import { userProfileAtom } from '../../../user/stores/user.state'
 import { useAtom } from 'jotai'
 
 export function UserFavoritesPanel() {

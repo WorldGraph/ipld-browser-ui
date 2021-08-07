@@ -6,17 +6,15 @@ import React, { useCallback, useEffect } from 'react'
 import { AppDisplayContainer } from './app/app-container.component'
 import { LoadingSpinner } from './app/loading-spinner.component'
 import { reachNavigate } from '../../../common/util/navigate'
-import { userProfileAtom } from '../../user/stores/user-jotai.state'
+import { UserBasicProfileAtom, userProfileAtom } from '../../user/stores/user.state'
 import { useAtom } from 'jotai'
 import {
   DecrementWaitersAtom,
   IncrementWaitersAtom,
   WaitersCountAtom,
 } from '../../notifications/stores/notification-jotai.state'
-import {
-  IdxEnvironmentAtom,
-  UserIsAuthenticatedAtom,
-} from '../../../common/ceramic_utils/client/idx-jotai.state'
+import { IdxEnvironmentAtom } from '../../../common/ceramic_utils/client/idx-jotai.state'
+import { useUserLoggedIn } from '../../../common/ceramic_utils/client/hooks/idx-env.hooks'
 
 // theme https://www.canva.com/learn/website-color-schemes/ number 23
 // color picker https://www.w3schools.com/colors/colors_picker.asp
@@ -27,9 +25,11 @@ export function App(props: { path: string }) {
   const decrementWaiters = useAtom(DecrementWaitersAtom)[1]
   const numServerWaiters = useAtom(WaitersCountAtom)[0]
 
-  const isAuthenticated = useAtom(UserIsAuthenticatedAtom)[0]
+  //   const isAuthenticated = useAtom(UserIsAuthenticatedAtom)[0]
+  const isLoggedIn = useUserLoggedIn()
 
   const idxEnv = useAtom(IdxEnvironmentAtom)[0]
+  const userProfile = useAtom(UserBasicProfileAtom)[0]
 
   useEffect(() => {
     incrementWaiters()
@@ -40,7 +40,7 @@ export function App(props: { path: string }) {
 
   useEffect(() => {
     //     if (!AuthenticationService.isLoggedIn) {
-    if (!isAuthenticated) {
+    if (!isLoggedIn && !userProfile.name) {
       void reachNavigate('/login')
     }
   }, [])
@@ -57,8 +57,6 @@ export function App(props: { path: string }) {
       console.log(`profile is `, profile)
     }
   }, [])
-
-  const tryGetIdentity = useCallback(async () => {}, [])
 
   useEffect(() => {
     // On startup, refresh indexes
