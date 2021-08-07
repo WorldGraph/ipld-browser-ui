@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react'
 import { css } from 'emotion'
 import { useAtom } from 'jotai'
 import React from 'react'
-import { entityIdAtom, entityIsDeprecatedAtom } from '../../stores/entity-jotai.state'
+import { entityIdAtom, entityIsDeprecatedAtom } from '../../stores/entity.state'
 
 import { EntityEditButtons } from './entity-header/entity-edit-buttons'
 import { TitleWithClassSelector } from './entity-header/title-with-class-selector.component'

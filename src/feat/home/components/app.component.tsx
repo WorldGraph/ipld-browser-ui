@@ -12,8 +12,8 @@ import {
   DecrementWaitersAtom,
   IncrementWaitersAtom,
   WaitersCountAtom,
-} from '../../notifications/stores/notification-jotai.state'
-import { IdxEnvironmentAtom } from '../../../common/ceramic_utils/client/idx-jotai.state'
+} from '../../notifications/stores/notification.state'
+import { IdxEnvironmentAtom } from '../../../common/ceramic_utils/client/idx.state'
 import { useUserLoggedIn } from '../../../common/ceramic_utils/client/hooks/idx-env.hooks'
 
 // theme https://www.canva.com/learn/website-color-schemes/ number 23
@@ -46,8 +46,6 @@ export function App(props: { path: string }) {
   }, [])
 
   useEffect(() => {
-    console.log(`idx env self did ${idxEnv.self?._did}`)
-
     void tryGetProfile()
   }, [idxEnv.self?._did])
 

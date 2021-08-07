@@ -15,8 +15,8 @@ import {
   getInitialEnv,
   knownDIDsAtom,
   knownDIDsDataAtom,
-} from '../idx-jotai.state'
-import type { EnvState, EditProfileState } from '../idx-jotai.state'
+} from '../idx.state'
+import type { EnvState, EditProfileState } from '../idx.state'
 import { navigate } from '@reach/router'
 import { UserBasicProfileAtom } from '../../../../feat/user/stores/user.state'
 
@@ -73,7 +73,6 @@ export function useIdxEnv(): [
         void setKnownDIDs(knownDIDs)
         void setEnv({ auth: { state: 'confirmed', id: self.id, address }, self })
         const didsData = await loadKnownDIDsData(env.client, knownDIDs)
-        console.log(`logged in.  setting dids....`)
         setKnownDIDsData(didsData)
 
         // Jeff test: get and set profile?

@@ -15,7 +15,7 @@ import {
   DecrementWaitersAtom,
   IncrementWaitersAtom,
   WaitersCountAtom,
-} from '../../notifications/stores/notification-jotai.state'
+} from '../../notifications/stores/notification.state'
 
 export interface LoggedOutPageProps {
   path?: string

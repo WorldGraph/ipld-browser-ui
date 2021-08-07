@@ -16,7 +16,7 @@ import { latestChangeType } from '../../singletons'
 import { SearchService } from '../../../search/services/search.service'
 import { CursorPositionData } from './entity-slate-editor/model/CursorPositionData'
 import { useAtom } from 'jotai'
-import { entityIdAtom, entityNameAtom } from '../../stores/entity-jotai.state'
+import { entityIdAtom, entityNameAtom } from '../../stores/entity.state'
 
 const HotkeyMap = new Map<string, string>()
 HotkeyMap.set('mod+b', 'bold')

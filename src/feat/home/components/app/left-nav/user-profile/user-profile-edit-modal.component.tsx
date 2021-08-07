@@ -7,8 +7,10 @@ import {
   FormLabel,
   Input,
   Spacer,
+  useToast,
 } from '@chakra-ui/react'
 import { navigate } from '@reach/router'
+import { formatDuration } from 'date-fns'
 import { Field, Form, Formik } from 'formik'
 import { useAtom } from 'jotai'
 import React, { useCallback } from 'react'
@@ -53,6 +55,8 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
 
   const [basicProfile, setBasicProfile] = useAtom(UserBasicProfileAtom)
 
+  const toast = useToast()
+
   // Must rehydrate user if it already exists.
   React.useEffect(() => {
     void tryGetIdxProfile()
@@ -67,8 +71,12 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
           console.log(`trying to set profile`)
           await idxEnv.self?.setProfile(profile)
           setBasicProfile(profile)
-          console.log(`closing modal!`)
           props.closeCallback()
+          toast({
+            title: 'Profile update successful',
+            duration: 2000,
+            isClosable: true,
+          })
         } catch (error) {
           console.error(`Error setting user profile!`, error)
         }

@@ -13,7 +13,7 @@ import { RecentActivityPanel } from './entity-summary-panel/recent-activity-pane
 import { UserFavoritesPanel } from './entity-summary-panel/user-favorites-panel.component'
 import { userProfileAtom } from '../../user/stores/user.state'
 import { useAtom } from 'jotai'
-import { CurrentSpaceAtom } from '../../spaces/stores/spaces-jotai.state'
+import { CurrentSpaceAtom } from '../../spaces/stores/spaces.state'
 
 export interface EntitySummaryPanelProps {
   path: string

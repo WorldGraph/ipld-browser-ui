@@ -4,11 +4,7 @@ import { NamespaceService } from '../services/namespace.service'
 import { SpaceSelectModal } from './space-select-modal.component'
 import { css } from 'emotion'
 import { GrCube } from 'react-icons/gr'
-import {
-  AvailableSpaceIdsAtom,
-  CurrentSpaceAtom,
-  CurrentSpaceIdAtom,
-} from '../stores/spaces-jotai.state'
+import { AvailableSpaceIdsAtom, CurrentSpaceAtom, CurrentSpaceIdAtom } from '../stores/spaces.state'
 import { useAtom } from 'jotai'
 
 const styleNavlink = css`

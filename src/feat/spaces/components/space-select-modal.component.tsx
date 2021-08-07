@@ -12,7 +12,7 @@ import {
   CurrentSpaceAtom,
   SelectedSpaceIdsAtom,
   SelectedSpacesAtom,
-} from '../stores/spaces-jotai.state'
+} from '../stores/spaces.state'
 import { SpaceEditModal } from './space-edit-modal.component'
 
 export interface SpaceSelectModalProps {

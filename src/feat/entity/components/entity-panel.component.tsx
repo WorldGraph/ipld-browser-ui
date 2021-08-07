@@ -7,7 +7,7 @@ import { Element as SlateNode } from 'slate'
 import {
   DecrementWaitersAtom,
   IncrementWaitersAtom,
-} from '../../notifications/stores/notification-jotai.state'
+} from '../../notifications/stores/notification.state'
 
 import { UserFavorite } from '../../preferences/models/user-favorite.model'
 import { ErrorBoundary } from '../../telemetry/components/error-boundary.component'
@@ -21,7 +21,7 @@ import {
   entityIsDeprecatedAtom,
   entityNameAtom,
   entityNamespaceIdAtom,
-} from '../stores/entity-jotai.state'
+} from '../stores/entity.state'
 import { entityMemoryState } from '../stores/entity-memory-state.model'
 import { EntityHeaderComponent } from './entity-panel/entity-header.component'
 import * as serverActions from './entity-panel/entity-panel-actions.functions'

@@ -1,6 +1,7 @@
 import { atom } from 'jotai'
 
-export const NotifMessagesAtom = atom([] as string[])
+// TODO - figure out notification process
+// export const NotifMessagesAtom = atom([] as string[])
 
 export const WaitersCountAtom = atom(0)
 

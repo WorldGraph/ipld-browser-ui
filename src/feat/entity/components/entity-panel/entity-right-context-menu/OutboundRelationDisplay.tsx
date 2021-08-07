@@ -11,7 +11,7 @@ import { ConfirmModal } from '../../../../../common/components'
 import { navigateWithCtrlSensitivity } from '../../../../../common/util/navigate'
 import { GrAddCircle, GrEdit } from 'react-icons/gr'
 import { useAtom } from 'jotai'
-import { entityNameAtom } from '../../../stores/entity-jotai.state'
+import { entityNameAtom } from '../../../stores/entity.state'
 import { userProfileAtom } from '../../../../user/stores/user.state'
 
 export interface OutboundRelationDisplayProps {

@@ -7,7 +7,7 @@ import { navigateWithCtrlSensitivity } from '../../../../../common/util/navigate
 import { EntityRelationOneSide } from '../../../../entity_relation/model/entity-relation-one-side.component'
 import { EntityRelationService } from '../../../../entity_relation/services/entity-relation.service'
 import { useAtom } from 'jotai'
-import { entityNameAtom } from '../../../stores/entity-jotai.state'
+import { entityNameAtom } from '../../../stores/entity.state'
 
 export interface InboundRelationDisplayProps {
   entityId: string

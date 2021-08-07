@@ -6,10 +6,10 @@ import * as Slate from 'slate'
 import {
   DecrementWaitersAtom,
   IncrementWaitersAtom,
-} from '../../../../notifications/stores/notification-jotai.state'
+} from '../../../../notifications/stores/notification.state'
 import { IndexedItem } from '../../../../search/IxSearchModel/IndexedItem'
 import { IndexedItemType } from '../../../../search/IxSearchModel/IndexedItemType'
-import { CurrentSpaceAtom } from '../../../../spaces/stores/spaces-jotai.state'
+import { CurrentSpaceAtom } from '../../../../spaces/stores/spaces.state'
 import { EntityHeaderService } from '../../../services/entity-header.service'
 import * as helpers from './helpers'
 import { LiveTypingPortalProps } from './LiveTypingPortal/LiveTypingPortalProps'

@@ -12,7 +12,7 @@ import {
 } from '../../../../../../common/components'
 import { userProfileAtom } from '../../../../../user/stores/user.state'
 import { setEntityDeprecated } from '../../../../dal/entityDal'
-import { entityIdAtom } from '../../../../stores/entity-jotai.state'
+import { entityIdAtom } from '../../../../stores/entity.state'
 
 export interface MoreActionsButtonProps {
   className: string
