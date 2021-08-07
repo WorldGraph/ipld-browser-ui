@@ -13,7 +13,7 @@ import React from 'react'
 import { GrLogout, GrUserSettings } from 'react-icons/gr'
 import { NotImplementedException } from '../../../../../../common/exceptions/not-implemented.exception'
 import { AuthenticationService } from '../../../../../authn/services/AuthNService'
-import { blankUserModel, UserModel } from '../../../../../user/models/user.model'
+import { UserModel } from '../../../../../user/models/user.model'
 import { userProfileAtom } from '../../../../../user/stores/user-jotai.state'
 
 import { UserProfileEditModal } from '../user-profile/user-profit-edit-modal.component'
@@ -28,12 +28,6 @@ export interface UserDropMenuProps {
 export function UserDropMenu(props: UserDropMenuProps) {
   const [editingProfile, setEditingProfile] = React.useState(false)
   const setUser = useAtom(userProfileAtom)[1]
-
-  const logoutOnServer = React.useCallback(async () => {
-    localStorage.removeItem('identity')
-    setUser(blankUserModel)
-    void Reach.navigate('/comeagain')
-  }, [])
 
   const persistUser = React.useCallback(async (user: UserModel) => {
     throw new NotImplementedException('Method')
@@ -61,8 +55,7 @@ export function UserDropMenu(props: UserDropMenuProps) {
                 leftIcon={<GrLogout />}
                 onClick={() => {
                   void AuthenticationService.logout()
-                  throw new NotImplementedException('Method')
-                  void logoutOnServer()
+                  void Reach.navigate('/comeagain')
                 }}
               >
                 Logout
@@ -70,7 +63,6 @@ export function UserDropMenu(props: UserDropMenuProps) {
               <Button
                 leftIcon={<GrUserSettings />}
                 onClick={() => {
-                  throw new NotImplementedException('Method')
                   setEditingProfile(true)
                 }}
               >

@@ -20,7 +20,7 @@ import {
 export class SelfID implements Identifyable {
   static async authenticate(
     network: AppNetwork,
-    authProvider: EthereumAuthProvider
+    authProvider: EthereumAuthProvider,
   ): Promise<SelfID> {
     const client = new WebClient(network)
     const did = await client.authenticate(authProvider, true)
@@ -34,7 +34,7 @@ export class SelfID implements Identifyable {
   constructor(client: WebClient, did: DID) {
     if (!did.authenticated) {
       throw new Error(
-        'Input DID must be authenticated, use SelfID.authenticate() instead of new SelfID()'
+        'Input DID must be authenticated, use SelfID.authenticate() instead of new SelfID()',
       )
     }
     if (client._config.verificationsServer == null) {
@@ -90,7 +90,7 @@ export class SelfID implements Identifyable {
 
   async addGitHubAttestation(
     username: string,
-    challengeCode: string
+    challengeCode: string,
   ): Promise<Array<AlsoKnownAsAccount>> {
     const [attestation, accounts] = await Promise.all([
       this.confirmGitHubChallenge(challengeCode),
@@ -128,7 +128,7 @@ export class SelfID implements Identifyable {
 
   async addTwitterAttestation(
     username: string,
-    challengeCode: string
+    challengeCode: string,
   ): Promise<Array<AlsoKnownAsAccount>> {
     const [attestation, accounts] = await Promise.all([
       this.confirmTwitterChallenge(challengeCode),
@@ -157,7 +157,7 @@ export class SelfID implements Identifyable {
 
   async removeSocialAccount(
     host: string | undefined,
-    id: string
+    id: string,
   ): Promise<Array<AlsoKnownAsAccount>> {
     switch (host) {
       case GITHUB_HOST:

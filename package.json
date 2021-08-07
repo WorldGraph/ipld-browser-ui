@@ -50,6 +50,7 @@
     "to-json-schema": "^0.2.5",
     "ulid": "^2.3.0",
     "util": "^0.12.4",
+    "yup": "^0.32.9",
     "zustand": "^3.5.7"
   },
   "devDependencies": {

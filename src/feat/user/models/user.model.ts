@@ -1,3 +1,4 @@
+import { BasicProfile } from '@ceramicstudio/idx-constants'
 import { ulid } from 'ulid'
 
 export interface UserModel {

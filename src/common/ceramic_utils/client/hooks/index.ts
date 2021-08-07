@@ -1,8 +1,8 @@
-export { useLogin, useLogout } from './auth'
+export { useLogin, useLogout } from './authn'
 export {
   useEditProfile,
   useDIDsData,
-  useEnv,
+  useIdxEnv as useEnv,
   useEnvState,
   useKnownDIDs,
   useKnownDIDsData,

@@ -22,6 +22,12 @@ export const knownDIDsAtom = atom(getKnownDIDs(), (_get, set, dids: KnownDIDs) =
   set(knownDIDsAtom, dids)
 })
 
+// export const UserIsAuthenticatedAtom = atom(false)
+export const UserIsAuthenticatedAtom = atom((get) => {
+  const key = getSelectedDidKey()
+  return key != null
+})
+
 export const knownDIDsDataAtom = atom<KnownDIDsData | null>(null)
 
 export type AuthState =
@@ -37,13 +43,17 @@ export type EnvState = {
   self: SelfID | null
 }
 
+function getSelectedDidKey() {
+  return localStorage.getItem(SELECTED_DID_KEY) || null
+}
+
 export function getInitialEnv(checkLocal = true): EnvState {
   const client = new WebClient(APP_NETWORK)
   if (!checkLocal) {
     return { auth: { state: 'unknown' }, client, self: null }
   }
 
-  const id = localStorage.getItem(SELECTED_DID_KEY) || null
+  const id = getSelectedDidKey()
   return {
     auth: id ? { state: 'local', id } : { state: 'unknown' },
     client,
@@ -53,7 +63,7 @@ export function getInitialEnv(checkLocal = true): EnvState {
 
 const envStateAtom = atom(getInitialEnv())
 
-export const envAtom = atom(
+export const IdxEnvironmentAtom = atom(
   (get) => get(envStateAtom),
   (get, set, update: Partial<EnvState>) => {
     const env = { ...get(envStateAtom), ...update } as EnvState

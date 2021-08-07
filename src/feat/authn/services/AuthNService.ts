@@ -1,5 +1,3 @@
-import { EthereumAuthProvider } from '@3id/connect'
-
 import { NotImplementedException } from '../../../common/exceptions/not-implemented.exception'
 import { reachNavigate } from '../../../common/util/navigate'
 

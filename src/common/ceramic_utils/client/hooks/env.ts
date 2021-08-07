@@ -9,8 +9,14 @@ import type { SelfID } from '../../sdk/web'
 
 import { authenticate, editProfile, loadKnownDIDsData } from '../env'
 import type { KnownDIDsData } from '../env'
-import { editProfileAtom, envAtom, getInitialEnv, knownDIDsAtom, knownDIDsDataAtom } from '../state'
-import type { EnvState, EditProfileState } from '../state'
+import {
+  editProfileAtom,
+  IdxEnvironmentAtom,
+  getInitialEnv,
+  knownDIDsAtom,
+  knownDIDsDataAtom,
+} from '../idx-jotai.state'
+import type { EnvState, EditProfileState } from '../idx-jotai.state'
 import { navigate } from '@reach/router'
 
 export function useKnownDIDs() {
@@ -22,7 +28,7 @@ export function useKnownDIDsData() {
 }
 
 export function useEnvState() {
-  return useAtom(envAtom)[0]
+  return useAtom(IdxEnvironmentAtom)[0]
 }
 
 export function useDIDsData(): [KnownDIDsData | null, () => Promise<void>] {
@@ -38,35 +44,34 @@ export function useDIDsData(): [KnownDIDsData | null, () => Promise<void>] {
   return [knownDIDsData, load]
 }
 
-export function useEnv(): [
+export function useIdxEnv(): [
   EnvState,
   (provider: EthereumProvider, address: string) => Promise<SelfID>,
   () => void,
 ] {
-  const [env, setEnv] = useAtom(envAtom)
+  const [env, setEnv] = useAtom(IdxEnvironmentAtom)
   const setKnownDIDs = useAtom(knownDIDsAtom)[1]
   const setKnownDIDsData = useAtom(knownDIDsDataAtom)[1]
 
   const tryAuthenticate = useCallback(
     async (provider: EthereumProvider, address: string): Promise<SelfID> => {
-      console.log(`1.2`)
+      console.log(`TRYING AUTH`)
       void setEnv({ auth: { state: 'loading', id: env.auth.id } })
 
       try {
-        console.log(`1.3`)
         const self = await authenticate(env.client, provider, address)
-        console.log(`1.4`)
         const knownDIDs = {
           [self.id]: { accounts: [AccountID.parse(env.client.threeId.accountId as string)] },
         }
-        console.log(`1.5`)
         void setKnownDIDs(knownDIDs)
         void setEnv({ auth: { state: 'confirmed', id: self.id, address }, self })
         const didsData = await loadKnownDIDsData(env.client, knownDIDs)
-        console.log(`dids data is `, didsData)
+        console.log(`logged in.  setting dids....`)
         setKnownDIDsData(didsData)
+
+        // Jeff test: get and set profile?
+
         await navigate('/')
-        console.log(`1.6`)
         return self
       } catch (err) {
         void setEnv({ auth: { state: 'error', id: env.auth.id, error: err as Error } })

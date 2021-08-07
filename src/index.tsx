@@ -11,7 +11,7 @@ import { LandingPage } from './feat/home/components/landing-page.component'
 import { ErrorBoundary } from './feat/telemetry/components/error-boundary.component'
 import { repoMgr } from './common/storage/repos/repo-manager.service'
 import { LoggedOutPage } from './feat/authn/components/LoggedOutPage'
-import { LoginPage } from './feat/authn/components/LoginPage'
+import { LoginPage } from './feat/authn/components/login-page.component'
 import { multiauthConnectors } from './common/ceramic_utils/multiauth-connect'
 import { multiauthTheme } from './common/ceramic_utils/multiauth-theme'
 

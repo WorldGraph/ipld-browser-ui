@@ -2,10 +2,9 @@ import './app/app.styles.css'
 import './app/spinners.css'
 
 import { ChakraProvider } from '@chakra-ui/react'
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { AppDisplayContainer } from './app/app-container.component'
 import { LoadingSpinner } from './app/loading-spinner.component'
-import { AuthenticationService } from '../../authn/services/AuthNService'
 import { reachNavigate } from '../../../common/util/navigate'
 import { userProfileAtom } from '../../user/stores/user-jotai.state'
 import { useAtom } from 'jotai'
@@ -14,6 +13,10 @@ import {
   IncrementWaitersAtom,
   WaitersCountAtom,
 } from '../../notifications/stores/notification-jotai.state'
+import {
+  IdxEnvironmentAtom,
+  UserIsAuthenticatedAtom,
+} from '../../../common/ceramic_utils/client/idx-jotai.state'
 
 // theme https://www.canva.com/learn/website-color-schemes/ number 23
 // color picker https://www.w3schools.com/colors/colors_picker.asp
@@ -24,20 +27,40 @@ export function App(props: { path: string }) {
   const decrementWaiters = useAtom(DecrementWaitersAtom)[1]
   const numServerWaiters = useAtom(WaitersCountAtom)[0]
 
-  React.useEffect(() => {
+  const isAuthenticated = useAtom(UserIsAuthenticatedAtom)[0]
+
+  const idxEnv = useAtom(IdxEnvironmentAtom)[0]
+
+  useEffect(() => {
     incrementWaiters()
     setTimeout(() => {
       decrementWaiters()
     }, 500)
   }, [])
 
-  React.useEffect(() => {
-    if (!AuthenticationService.isLoggedIn) {
+  useEffect(() => {
+    //     if (!AuthenticationService.isLoggedIn) {
+    if (!isAuthenticated) {
       void reachNavigate('/login')
     }
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
+    console.log(`idx env self did ${idxEnv.self?._did}`)
+
+    void tryGetProfile()
+  }, [idxEnv.self?._did])
+
+  const tryGetProfile = useCallback(async () => {
+    if (idxEnv.self?._did) {
+      const profile = await idxEnv.self?.getProfile()
+      console.log(`profile is `, profile)
+    }
+  }, [])
+
+  const tryGetIdentity = useCallback(async () => {}, [])
+
+  useEffect(() => {
     // On startup, refresh indexes
     if (user.defaultNamespaceId !== null && user.defaultNamespaceId !== '') {
       // void IndexStore.GetLatestEntNameIndexes([user.defaultNamespaceId])
