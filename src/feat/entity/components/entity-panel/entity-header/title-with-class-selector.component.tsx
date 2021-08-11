@@ -62,8 +62,7 @@ export function TitleWithClassSelector(props: TitleWithClassSelectorProps) {
 
             void updateEntityClass(entityId, selectedClassId)
           }}
-          height="300px"
-          width="400px"
+          size="xl"
           showCancelButton
         >
           <ClassSelector

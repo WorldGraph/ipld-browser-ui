@@ -18,8 +18,7 @@ export function SpaceEditModal(props: NamespaceEditModalProps) {
       okCallback={() => {
         props.okCallback(formValue)
       }}
-      height="40rem"
-      width="40rem"
+      size="3xl"
       showCancelButton
     >
       <Box>Build out this modal</Box>

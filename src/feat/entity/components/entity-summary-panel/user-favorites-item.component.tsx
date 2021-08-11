@@ -12,16 +12,15 @@ export function UserFavoritesItem(props: UserFavoritesItemProps) {
     <Box marginTop="10px">
       <Button
         variant="link"
-        fontSize="1.5rem"
+        fontSize="1.2rem"
         marginBottom="5px"
         color="purple"
         onClick={(e) => {
           navigateWithCtrlSensitivity(`/item/${props.item.targetId}`, e)
         }}
       >
-        {props.item.name}
+        {`${props.item.name} (${props.item.className})`}
       </Button>
-      <Text style={{ marginRight: '20px' }}>{props.item.name}</Text>
     </Box>
   )
 }

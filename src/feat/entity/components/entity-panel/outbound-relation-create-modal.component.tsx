@@ -46,8 +46,7 @@ export function OutboundRelationCreateModal(props: OutboundRelationCreateModalPr
       okCallback={() => {
         void createEntityRelation(props.sourceEntityId, relationId, targetEntityId)
       }}
-      height="400px"
-      width="400px"
+      size="xl"
       showCancelButton={true}
       okButtonText="Ok"
     >

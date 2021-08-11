@@ -8,6 +8,8 @@ export interface EntityHeader {
   classId: string
   isDeprecated: boolean
   replacedBy: string
+  // Owning DID
+  owningUser: string
 }
 
 export const blankEntityHeader: EntityHeader = {
@@ -18,6 +20,7 @@ export const blankEntityHeader: EntityHeader = {
   classId: '',
   isDeprecated: false,
   replacedBy: '',
+  owningUser: '',
 }
 
 export class EntityHeaderResource implements EntityHeader {
@@ -30,6 +33,7 @@ export class EntityHeaderResource implements EntityHeader {
     public classId = '',
     public isDeprecated = false,
     public replacedBy = '',
+    public owningUser = '',
   ) {
     this._id = ulid()
     this._rev = '1'

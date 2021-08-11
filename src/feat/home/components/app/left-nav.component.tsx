@@ -1,10 +1,9 @@
 import { Box, Button, Flex, Spacer } from '@chakra-ui/react'
 import { css } from 'emotion'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { BiWorld } from 'react-icons/bi'
 import {
   GrContract,
-  GrCube,
   GrExpand,
   GrHelp,
   GrHome,
@@ -15,6 +14,7 @@ import {
 
 import { navigateWithCtrlSensitivity } from '../../../../common/util/navigate'
 import { EntitySearchModal } from '../../../entity/components/entity-search-modal.component'
+import { SpacesAvatar } from '../../../spaces/components/spaces-avatar.component'
 import { UserAvatar } from './left-nav/user-avatar.component'
 
 export const styleNavlink = css`
@@ -75,7 +75,9 @@ export function LeftNav(props: NavStripProps) {
           >
             {isCollapsed ? undefined : 'Worldgraph'}
           </Button>
-          {/* <SpacesAvatar isCollapsed={isCollapsed} /> */}
+          <Suspense fallback={<></>}>
+            <SpacesAvatar isCollapsed={isCollapsed} />
+          </Suspense>
           <Button
             marginTop="3rem"
             variant="ghost"
@@ -108,7 +110,7 @@ export function LeftNav(props: NavStripProps) {
           >
             {isCollapsed ? undefined : 'Items'}
           </Button>
-          <Button
+          {/* <Button
             id="space-select-btn"
             variant="ghost"
             size="large"
@@ -116,8 +118,8 @@ export function LeftNav(props: NavStripProps) {
             onClick={() => {}}
             leftIcon={<GrCube className={styleNavIcon} size="24px" />}
           >
-            {isCollapsed ? undefined : 'Spaces'}
-          </Button>
+            {isCollapsed ? undefined : 'Collections'}
+          </Button> */}
           <Button
             id="admin-btn"
             variant="ghost"

@@ -21,8 +21,7 @@ export interface GenericModalProps {
   title: string
   cancelCallback: () => void
   okCallback: () => void
-  height: string
-  width: string
+  size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | 'full'
   children: React.ReactNode
   showCancelButton?: boolean
   hideOkButton?: boolean
@@ -46,13 +45,14 @@ export function GenericModal(props: GenericModalProps) {
     <Modal
       isOpen={true}
       id={props.id}
+      size={props.size}
       onEsc={() => {
         props.cancelCallback()
       }}
       onClose={() => props.cancelCallback()}
     >
       <ModalOverlay>
-        <ModalContent w={props.width} h={props.height}>
+        <ModalContent>
           <ModalHeader>{props.title}</ModalHeader>
           <ModalBody>
             <Box

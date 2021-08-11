@@ -5,22 +5,26 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Icon,
   Input,
   Spacer,
+  Text,
   useToast,
 } from '@chakra-ui/react'
+import { FaInfoCircle } from 'react-icons/fa'
 import { navigate } from '@reach/router'
-import { formatDuration } from 'date-fns'
 import { Field, Form, Formik } from 'formik'
 import { useAtom } from 'jotai'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   useIdxEnv,
   useUserLoggedIn,
 } from '../../../../../../common/ceramic_utils/client/hooks/idx-env.hooks'
+import { getLoggedInDID } from '../../../../../../common/ceramic_utils/client/idx.state'
 import { GenericModal } from '../../../../../../common/components'
 import { NotImplementedException } from '../../../../../../common/exceptions/not-implemented.exception'
 import { UserBasicProfileAtom } from '../../../../../user/stores/user.state'
+import { CopyableStringModal } from '../../../../../../common/components/Input/copyable-string-modal.component'
 
 export interface UserProfileEditModalProps {
   closeCallback: () => void
@@ -40,12 +44,11 @@ class FormValidator {
 
 export function UserProfileEditModal(props: UserProfileEditModalProps) {
   //   const [formValue, setFormValue] = React.useState<UserModel>(blankUserModel)
-  const [formValue, setFormValue] = React.useState<BasicProfile>({})
+  const setFormValue = React.useState<BasicProfile>({})[1]
 
   const [idxEnv] = useIdxEnv()
   const loggedIn = useUserLoggedIn()
 
-  //   const userProfile = useAtom(userProfileAtom)[0]
   const tryGetIdxProfile = useCallback(async () => {
     const profile = await idxEnv.self?.getProfile()
     if (profile) {
@@ -54,11 +57,12 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
   }, [])
 
   const [basicProfile, setBasicProfile] = useAtom(UserBasicProfileAtom)
+  const [idModalOpen, setIdModalOpen] = useState(false)
 
   const toast = useToast()
 
-  // Must rehydrate user if it already exists.
   React.useEffect(() => {
+    // Must rehydrate user if it already exists.
     void tryGetIdxProfile()
   }, [])
 
@@ -93,10 +97,18 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
         throw new NotImplementedException('Method')
         // props.okCallback(formValue)
       }}
-      height="40rem"
-      width="40rem"
+      size="2xl"
       hideOkButton
     >
+      {idModalOpen && (
+        <CopyableStringModal
+          title="Your user ID"
+          copyableText={getLoggedInDID() ?? 'ID NOT FOUND'}
+          okCallback={() => {
+            setIdModalOpen(false)
+          }}
+        />
+      )}
       {/* Formik docs: https://formik.org/docs/overview 
 	Usage with chakra ui https://chakra-ui.com/docs/form/form-control
       */}
@@ -112,7 +124,7 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
           }, 10000)
         }}
       >
-        {({ isSubmitting, isValid }) => (
+        {({ isSubmitting, isValid, touched }) => (
           <Form>
             <Field name="name" validate={FormValidator.validateName}>
               {({ field, form }: any) => (
@@ -134,37 +146,30 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
                 </FormControl>
               )}
             </Field>
+            <Button
+              variant="ghost"
+              fontWeight="semibold"
+              onClick={() => setIdModalOpen(true)}
+              paddingLeft="2px"
+              paddingRight="2px"
+              marginTop="10px"
+            >
+              Show / Copy User ID
+            </Button>
             <Flex direction="row" marginTop="2rem">
               <Spacer />
               <Button marginRight="1rem" onClick={props.closeCallback}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={isSubmitting || !isValid}>
-                Submit
+              <Button
+                type="submit"
+                disabled={isSubmitting || !isValid || !(touched.description || touched.name)}
+              >
+                Save Changes
               </Button>
             </Flex>
           </Form>
         )}
-
-        {/* <Form>
-          <Field name="userName">
-            <FormLabel>User Name</FormLabel>
-            <Input placeholder="User Name" />
-          </Field>
-          <Field name="email">
-            <FormLabel>Email</FormLabel>
-            <Input placeholder="me@me.com" />
-          </Field>
-          <Field name="firstName">
-            <FormLabel>First Name</FormLabel>
-            <Input placeholder="" />
-          </Field>
-          <Field name="lastName">
-            <FormLabel>Last Name</FormLabel>
-            <Input placeholder="" />
-          </Field>
-          <Button type="submit">Submit</Button>
-        </Form> */}
       </Formik>
     </GenericModal>
   )

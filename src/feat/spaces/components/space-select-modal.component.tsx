@@ -43,8 +43,7 @@ export function SpaceSelectModal(props: SpaceSelectModalProps) {
       <GenericModal
         okCallback={props.closeModal}
         cancelCallback={props.closeModal}
-        height="30rem"
-        width="40rem"
+        size="2xl"
         title="Space Selection"
       >
         <Text>Current Space: {currentSpace?.name}</Text>

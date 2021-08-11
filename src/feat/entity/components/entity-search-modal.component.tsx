@@ -38,8 +38,7 @@ export function EntitySearchModal(props: EntitySearchModalProps) {
       cancelCallback={() => props.onClose()}
       okCallback={() => props.onClose()}
       title="Search Items"
-      height="400px"
-      width="300px"
+      size="xl"
     >
       <Input autoFocus onChange={(event) => setSearchText(event.target.value)} />
       {entities.map((entity) => {

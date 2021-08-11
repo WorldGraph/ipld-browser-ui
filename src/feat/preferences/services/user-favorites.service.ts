@@ -1,4 +1,5 @@
 import { repoMgr } from '../../../common/storage/repos/repo-manager.service'
+import { EntityClassService } from '../../class/services/entity-class.service'
 import { EntityHeaderService } from '../../entity/services/entity-header.service'
 import { UserFavorite, UserFavoriteResource } from '../models/user-favorite.model'
 import { UserFavoriteReadable } from '../models/UserFavoriteReadable'
@@ -53,9 +54,11 @@ export class UserFavoritesService {
           console.warn(`Got favorite from db with no target ID!  Cannot retrieve favorite...`, fav)
         } else {
           const entity = await EntityHeaderService.getEntityHeader(fav.targetId)
+          const entClass = await EntityClassService.getEntityClass(entity.classId)
           readable.push({
             ...fav,
             name: entity.name,
+            className: entClass?.name || '[no class found]',
           })
         }
       }

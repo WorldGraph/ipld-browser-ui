@@ -24,7 +24,7 @@ export const knownDIDsAtom = atom(getKnownDIDs(), (_get, set, dids: KnownDIDs) =
 
 // export const UserIsAuthenticatedAtom = atom(false)
 export const UserIsAuthenticatedAtom = atom((get) => {
-  const key = getSelectedDidKey()
+  const key = getLoggedInDID()
   return key != null
 })
 
@@ -43,7 +43,7 @@ export type EnvState = {
   self: SelfID | null
 }
 
-function getSelectedDidKey() {
+export function getLoggedInDID() {
   return localStorage.getItem(SELECTED_DID_KEY) || null
 }
 
@@ -53,7 +53,7 @@ export function getInitialEnv(checkLocal = true): EnvState {
     return { auth: { state: 'unknown' }, client, self: null }
   }
 
-  const id = getSelectedDidKey()
+  const id = getLoggedInDID()
   return {
     auth: id ? { state: 'local', id } : { state: 'unknown' },
     client,

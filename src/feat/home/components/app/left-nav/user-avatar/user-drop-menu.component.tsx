@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   Popover,
   PopoverBody,
   PopoverContent,
@@ -38,13 +39,14 @@ export function UserDropMenu(props: UserDropMenuProps) {
     <Popover id="user-menu-drop" initialFocusRef={props.userDropRef.current} placement="right">
       <PopoverTrigger>{props.children}</PopoverTrigger>
       <Portal>
-        <PopoverContent>
+        <PopoverContent maxWidth="15rem">
           <PopoverBody>
             {editingProfile && (
               <UserProfileEditModal closeCallback={() => setEditingProfile(false)} />
             )}
-            <Box>
+            <Flex direction="column">
               <Button
+                marginBottom="10px"
                 leftIcon={<GrLogout />}
                 onClick={() => {
                   void AuthenticationService.logout()
@@ -59,9 +61,9 @@ export function UserDropMenu(props: UserDropMenuProps) {
                   setEditingProfile(true)
                 }}
               >
-                Edit Profile
+                View / Edit Profile
               </Button>
-            </Box>
+            </Flex>
           </PopoverBody>
         </PopoverContent>
       </Portal>

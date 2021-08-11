@@ -21,7 +21,7 @@ import { NamespaceSchema } from '../../../feat/spaces/textileSchemas/NamespaceSc
 import { UserModel } from '../../../feat/user/models/user.model'
 import { UserSchema } from '../../../feat/user/textileSchemas/user.schema'
 import { sleep } from '../../util/sleep'
-import { CollectionNames } from '../enums/TextileCollection'
+import { CollectionNames } from '../enums/collection-names.enum'
 import { Repository } from '../generics/repository.generic-class'
 
 export interface RepoConfigOptions {
