@@ -58,11 +58,9 @@ export function useIdxEnv(): [
   const [env, setEnv] = useAtom(IdxEnvironmentAtom)
   const setKnownDIDs = useAtom(knownDIDsAtom)[1]
   const setKnownDIDsData = useAtom(knownDIDsDataAtom)[1]
-  const setUserBasicProfile = useAtom(UserBasicProfileAtom)[1]
 
   const tryAuthenticate = useCallback(
     async (provider: EthereumProvider, address: string): Promise<SelfID> => {
-      console.log(`TRYING AUTH`)
       void setEnv({ auth: { state: 'loading', id: env.auth.id } })
 
       try {
@@ -74,12 +72,6 @@ export function useIdxEnv(): [
         void setEnv({ auth: { state: 'confirmed', id: self.id, address }, self })
         const didsData = await loadKnownDIDsData(env.client, knownDIDs)
         setKnownDIDsData(didsData)
-
-        // Jeff test: get and set profile?
-        const profile = await self.getProfile()
-        if (profile != null) {
-          setUserBasicProfile(profile)
-        }
 
         await navigate('/')
         return self

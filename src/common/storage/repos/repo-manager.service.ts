@@ -22,21 +22,21 @@ import { UserModel } from '../../../feat/user/models/user.model'
 import { UserSchema } from '../../../feat/user/textileSchemas/user.schema'
 import { sleep } from '../../util/sleep'
 import { CollectionNames } from '../enums/collection-names.enum'
-import { Repository } from '../generics/repository.generic-class'
+import { PouchRepository } from '../generics/repository.generic-class'
 
 export interface RepoConfigOptions {
   localOnly?: boolean
 }
 
 export class RepoService {
-  private _users?: Repository<UserModel>
-  private _entHeaders?: Repository<EntityHeader>
-  private _entRelations?: Repository<EntityRelation>
-  private _classes?: Repository<EntityClass>
-  private _relations?: Repository<Relation>
-  private _entDocuments?: Repository<EntityDocument>
-  private _namespaces?: Repository<Namespace>
-  private _userFavorites?: Repository<UserFavorite>
+  private _users?: PouchRepository<UserModel>
+  private _entHeaders?: PouchRepository<EntityHeader>
+  private _entRelations?: PouchRepository<EntityRelation>
+  private _classes?: PouchRepository<EntityClass>
+  private _relations?: PouchRepository<Relation>
+  private _entDocuments?: PouchRepository<EntityDocument>
+  private _namespaces?: PouchRepository<Namespace>
+  private _userFavorites?: PouchRepository<UserFavorite>
   private _initialized = false
 
   constructor() {}
@@ -62,53 +62,53 @@ export class RepoService {
     throw new Error('Timed out waiting for repo manager to initialize')
   }
 
-  public get entHeaders(): Repository<EntityHeader> {
+  public get entHeaders(): PouchRepository<EntityHeader> {
     if (this._entHeaders == null) {
-      this._entHeaders = new Repository(EntityHeaderSchema, CollectionNames.EntityHeader)
+      this._entHeaders = new PouchRepository(EntityHeaderSchema, CollectionNames.EntityHeader)
     }
     return this._entHeaders
   }
 
-  public get userFavorites(): Repository<UserFavorite> {
+  public get userFavorites(): PouchRepository<UserFavorite> {
     if (this._userFavorites == null) {
-      this._userFavorites = new Repository(UserFavoriteSchema, CollectionNames.UserFavorite)
+      this._userFavorites = new PouchRepository(UserFavoriteSchema, CollectionNames.UserFavorite)
     }
     return this._userFavorites
   }
-  public get entRelations(): Repository<EntityRelation> {
+  public get entRelations(): PouchRepository<EntityRelation> {
     if (this._entRelations == null) {
-      this._entRelations = new Repository(EntityRelationSchema, CollectionNames.EntityRelation)
+      this._entRelations = new PouchRepository(EntityRelationSchema, CollectionNames.EntityRelation)
     }
     return this._entRelations
   }
-  public get classes(): Repository<EntityClass> {
+  public get classes(): PouchRepository<EntityClass> {
     if (this._classes == null) {
-      this._classes = new Repository(EntityClassSchema, CollectionNames.EntityRelation)
+      this._classes = new PouchRepository(EntityClassSchema, CollectionNames.EntityRelation)
     }
     return this._classes
   }
-  public get relations(): Repository<Relation> {
+  public get relations(): PouchRepository<Relation> {
     if (this._relations == null) {
-      this._relations = new Repository(RelationSchema, CollectionNames.Relation)
+      this._relations = new PouchRepository(RelationSchema, CollectionNames.Relation)
     }
     return this._relations
   }
-  public get entDocuments(): Repository<EntityDocument> {
+  public get entDocuments(): PouchRepository<EntityDocument> {
     if (this._entDocuments == null) {
-      this._entDocuments = new Repository(EntityDocumentSchema, CollectionNames.EntityDocument)
+      this._entDocuments = new PouchRepository(EntityDocumentSchema, CollectionNames.EntityDocument)
     }
     return this._entDocuments
   }
-  public get namespaces(): Repository<Namespace> {
+  public get namespaces(): PouchRepository<Namespace> {
     if (this._namespaces == null) {
-      this._namespaces = new Repository(NamespaceSchema, CollectionNames.Namespace)
+      this._namespaces = new PouchRepository(NamespaceSchema, CollectionNames.Namespace)
     }
     return this._namespaces
   }
 
-  public get users(): Repository<UserModel> {
+  public get users(): PouchRepository<UserModel> {
     if (this._users == null) {
-      this._users = new Repository(UserSchema, CollectionNames.User)
+      this._users = new PouchRepository(UserSchema, CollectionNames.User)
     }
     return this._users
   }

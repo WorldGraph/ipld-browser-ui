@@ -13,7 +13,7 @@ export interface ValidPouchType {
   _rev?: string
 }
 
-export class Repository<T extends ValidPouchType> {
+export class PouchRepository<T extends ValidPouchType> {
   private validator: any
   private db: PouchDB.Database
   constructor(public schema: JSONSchema7, public dbName: string) {
@@ -109,6 +109,11 @@ export class Repository<T extends ValidPouchType> {
     const refined = res.rows.map((row: any) => row.doc)
 
     return refined as T[]
+  }
+
+  public async findOneByName(name: string): Promise<T | null> {
+    const res = await this.find({ name: { $eq: name } })
+    return res[0] ?? null
   }
 
   public async find(filter: any): Promise<T[]> {

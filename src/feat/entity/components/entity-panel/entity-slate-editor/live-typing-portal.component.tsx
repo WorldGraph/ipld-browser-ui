@@ -11,7 +11,7 @@ import { IndexedItem } from '../../../../search/IxSearchModel/IndexedItem'
 import { IndexedItemType } from '../../../../search/IxSearchModel/IndexedItemType'
 import {
   CurrentSpaceAtom,
-  CurrentNamespaceIsAtom,
+  CurrentNamespaceIdAtom,
 } from '../../../../namespaces/stores/namespaces.state'
 import { EntityHeaderService } from '../../../services/entity-header.service'
 import * as helpers from './helpers'
@@ -32,7 +32,7 @@ export function LiveTypingPortal(props: LiveTypingPortalProps) {
   const incrementWaiters = useAtom(IncrementWaitersAtom)[1]
   const decrementWaiters = useAtom(DecrementWaitersAtom)[1]
   //   const currentSpace = useAtom(CurrentSpaceAtom)[0]
-  const currentNsId = useAtom(CurrentNamespaceIsAtom)[0]
+  const currentNsId = useAtom(CurrentNamespaceIdAtom)[0]
 
   const createNewSubjectEntity = React.useCallback(
     async (

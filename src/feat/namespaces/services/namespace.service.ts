@@ -1,14 +1,15 @@
-import { BasicProfile } from '@ceramicstudio/idx-constants'
 import { getLoggedInDID } from '../../../common/ceramic_utils/client/idx.state'
-import { SelfID } from '../../../common/ceramic_utils/sdk/web'
 import { repoMgr } from '../../../common/storage/repos/repo-manager.service'
 import { Namespace, NamespaceResource } from '../model/namespace.model'
 
 export class NamespaceService {
-  static getAvailableForUser = async (): Promise<Namespace[]> => {
-    // TODO - not implemented
-    return []
-    // throw new NotImplementedException('Method')
+  static getAll = async (): Promise<Namespace[]> => {
+    const currentDid = getLoggedInDID()
+    const namespaces = await repoMgr.namespaces.getAll()
+    for (const ns of namespaces) {
+      if (ns.name === currentDid) ns.name = 'My Private Space'
+    }
+    return namespaces
   }
 
   static async createNamespace(name: string, owningUser: string): Promise<Namespace> {
@@ -21,13 +22,17 @@ export class NamespaceService {
     return await repoMgr.namespaces.findById(namespaceId)
   }
 
+  static async getByName(namespaceId: string): Promise<Namespace | null> {
+    return await repoMgr.namespaces.findOneByName(namespaceId)
+  }
+
   static async getOrCreateUserDefaultNs(): Promise<Namespace> {
     const did = getLoggedInDID()
     if (!did) {
       throw new Error(`Could not get logged in DID!  User is not logged in.`)
     }
 
-    const found = await this.getById(did)
+    const found = await this.getByName(did)
     if (found) {
       return found
     } else {

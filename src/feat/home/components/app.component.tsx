@@ -17,7 +17,7 @@ import { IdxEnvironmentAtom } from '../../../common/ceramic_utils/client/idx.sta
 import { useUserLoggedIn } from '../../../common/ceramic_utils/client/hooks/idx-env.hooks'
 import { NamespaceService } from '../../namespaces/services/namespace.service'
 import {
-  CurrentNamespaceIsAtom,
+  CurrentNamespaceIdAtom,
   UserDefaultNamespaceIdAtom,
 } from '../../namespaces/stores/namespaces.state'
 
@@ -36,7 +36,7 @@ export function App(props: { path: string }) {
   const idxEnv = useAtom(IdxEnvironmentAtom)[0]
   const userProfile = useAtom(UserBasicProfileAtom)[0]
   const setUserDefaultNsId = useAtom(UserDefaultNamespaceIdAtom)[1]
-  const [currentNsId, setCurrentNsId] = useAtom(CurrentNamespaceIsAtom)
+  const [currentNsId, setCurrentNsId] = useAtom(CurrentNamespaceIdAtom)
 
   useEffect(() => {
     incrementWaiters()
@@ -46,7 +46,6 @@ export function App(props: { path: string }) {
   }, [])
 
   useEffect(() => {
-    console.log(`loading app...logged in? `, isLoggedIn)
     if (!isLoggedIn && !userProfile.name) {
       void reachNavigate('/login')
     }
@@ -55,13 +54,11 @@ export function App(props: { path: string }) {
   useEffect(() => {
     if (isLoggedIn) {
       void initUserDefaultNs()
-    } else {
     }
   }, [isLoggedIn])
 
   const initUserDefaultNs = useCallback(async () => {
     const ns = await NamespaceService.getOrCreateUserDefaultNs()
-    console.log(`SETTING USER DEFAULT NS ID `, ns._id)
     setUserDefaultNsId(ns._id)
     if (!currentNsId) {
       setCurrentNsId(ns._id)

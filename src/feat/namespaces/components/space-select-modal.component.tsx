@@ -10,6 +10,7 @@ import { NamespaceService } from '../services/namespace.service'
 import {
   AvailableSpacesAtom,
   CurrentSpaceAtom,
+  CurrentSpaceDisplayNameAtom,
   SelectedSpaceIdsAtom,
   SelectedSpacesAtom,
 } from '../stores/namespaces.state'
@@ -24,6 +25,7 @@ export function SpaceSelectModal(props: SpaceSelectModalProps) {
   const setSelectedSpaceIds = useAtom(SelectedSpaceIdsAtom)[0]
   const currentSpace = useAtom(CurrentSpaceAtom)[0]
   const availableSpaces = useAtom(AvailableSpacesAtom)[0]
+  const currentSpaceDisplayName = useAtom(CurrentSpaceDisplayNameAtom)[0]
 
   const [nsEditOpen, setNsEditOpen] = React.useState(false)
 
@@ -46,12 +48,10 @@ export function SpaceSelectModal(props: SpaceSelectModalProps) {
         size="2xl"
         title="Space Selection"
       >
-        <Text>Current Space: {currentSpace?.name}</Text>
+        <Text>Current Space: {currentSpaceDisplayName}</Text>
         <Text>Available spaces ({availableSpaces.length}):</Text>
-        {availableSpaces.map((x) => (
-          <Text key={x._id}>
-            {x.name} (id: {x._id})
-          </Text>
+        {availableSpaces.map((space) => (
+          <Text key={space._id}>{space.name}</Text>
         ))}
         <Button
           leftIcon={<GrAdd size="24px" />}
