@@ -14,7 +14,7 @@ import {
 
 import { navigateWithCtrlSensitivity } from '../../../../common/util/navigate'
 import { EntitySearchModal } from '../../../entity/components/entity-search-modal.component'
-import { SpacesAvatar } from '../../../spaces/components/spaces-avatar.component'
+import { SpacesAvatar } from '../../../namespaces/components/spaces-avatar.component'
 import { UserAvatar } from './left-nav/user-avatar.component'
 
 export const styleNavlink = css`

@@ -13,7 +13,7 @@ import { RecentActivityPanel } from './entity-summary-panel/recent-activity-pane
 import { UserFavoritesPanel } from './entity-summary-panel/user-favorites-panel.component'
 import { userProfileAtom } from '../../user/stores/user.state'
 import { useAtom } from 'jotai'
-import { CurrentSpaceAtom } from '../../spaces/stores/spaces.state'
+import { CurrentSpaceAtom } from '../../namespaces/stores/namespaces.state'
 
 export interface EntitySummaryPanelProps {
   path: string
@@ -72,7 +72,7 @@ export function EntitySummaryPanel(props: EntitySummaryPanelProps) {
             flex: 0 0 250px;
           `}
         >
-          <Heading margin="none">Items Home</Heading>
+          <Heading margin="none">Home</Heading>
         </Box>
         <Box
           id="add-new-btn-wrapper"
@@ -89,13 +89,13 @@ export function EntitySummaryPanel(props: EntitySummaryPanelProps) {
               max-width: 10rem;
               margin-right: 100px;
             `}
-            title="Add new"
+            title="Add new item"
             size="lg"
-            aria-label="Add new"
+            aria-label="Add new item"
             onClick={() => setNewEntNameInputOpen(true)}
             leftIcon={<AddIcon />}
           >
-            Add new
+            Add new item
           </Button>
         </Box>
       </Box>

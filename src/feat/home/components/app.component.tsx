@@ -15,6 +15,11 @@ import {
 } from '../../notifications/stores/notification.state'
 import { IdxEnvironmentAtom } from '../../../common/ceramic_utils/client/idx.state'
 import { useUserLoggedIn } from '../../../common/ceramic_utils/client/hooks/idx-env.hooks'
+import { NamespaceService } from '../../namespaces/services/namespace.service'
+import {
+  CurrentNamespaceIsAtom,
+  UserDefaultNamespaceIdAtom,
+} from '../../namespaces/stores/namespaces.state'
 
 // theme https://www.canva.com/learn/website-color-schemes/ number 23
 // color picker https://www.w3schools.com/colors/colors_picker.asp
@@ -30,6 +35,8 @@ export function App(props: { path: string }) {
 
   const idxEnv = useAtom(IdxEnvironmentAtom)[0]
   const userProfile = useAtom(UserBasicProfileAtom)[0]
+  const setUserDefaultNsId = useAtom(UserDefaultNamespaceIdAtom)[1]
+  const [currentNsId, setCurrentNsId] = useAtom(CurrentNamespaceIsAtom)
 
   useEffect(() => {
     incrementWaiters()
@@ -39,9 +46,25 @@ export function App(props: { path: string }) {
   }, [])
 
   useEffect(() => {
-    //     if (!AuthenticationService.isLoggedIn) {
+    console.log(`loading app...logged in? `, isLoggedIn)
     if (!isLoggedIn && !userProfile.name) {
       void reachNavigate('/login')
+    }
+  }, [isLoggedIn, userProfile])
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      void initUserDefaultNs()
+    } else {
+    }
+  }, [isLoggedIn])
+
+  const initUserDefaultNs = useCallback(async () => {
+    const ns = await NamespaceService.getOrCreateUserDefaultNs()
+    console.log(`SETTING USER DEFAULT NS ID `, ns._id)
+    setUserDefaultNsId(ns._id)
+    if (!currentNsId) {
+      setCurrentNsId(ns._id)
     }
   }, [])
 
@@ -52,13 +75,12 @@ export function App(props: { path: string }) {
   const tryGetProfile = useCallback(async () => {
     if (idxEnv.self?._did) {
       const profile = await idxEnv.self?.getProfile()
-      console.log(`profile is `, profile)
     }
   }, [])
 
   useEffect(() => {
     // On startup, refresh indexes
-    if (user.defaultNamespaceId !== null && user.defaultNamespaceId !== '') {
+    if (user.defaultNamespaceId) {
       // void IndexStore.GetLatestEntNameIndexes([user.defaultNamespaceId])
       // void IndexStore.GetLatestRelNameIndexes([user.defaultNamespaceId])
       // void IndexStore.GetLatestClsNameIndexes([user.defaultNamespaceId])

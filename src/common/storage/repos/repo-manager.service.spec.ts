@@ -9,7 +9,7 @@ import { EntityRelationResource } from '../../../feat/entity_relation/model/enti
 import { UserFavoriteResource } from '../../../feat/preferences/models/user-favorite.model'
 import { UserFavoriteType } from '../../../feat/preferences/models/UserFavoriteType'
 import { RelationResource } from '../../../feat/relation/models/relation.model'
-import { NamespaceResource } from '../../../feat/spaces/model/namespace.model'
+import { NamespaceResource } from '../../../feat/namespaces/model/namespace.model'
 import { UserResource } from '../../../feat/user/models/user.model'
 import { ConfigService } from '../../config/config.service'
 import { repoMgr } from './repo-manager.service'

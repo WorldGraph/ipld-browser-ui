@@ -9,7 +9,10 @@ import {
 } from '../../../../notifications/stores/notification.state'
 import { IndexedItem } from '../../../../search/IxSearchModel/IndexedItem'
 import { IndexedItemType } from '../../../../search/IxSearchModel/IndexedItemType'
-import { CurrentSpaceAtom } from '../../../../spaces/stores/spaces.state'
+import {
+  CurrentSpaceAtom,
+  CurrentNamespaceIsAtom,
+} from '../../../../namespaces/stores/namespaces.state'
 import { EntityHeaderService } from '../../../services/entity-header.service'
 import * as helpers from './helpers'
 import { LiveTypingPortalProps } from './LiveTypingPortal/LiveTypingPortalProps'
@@ -28,7 +31,8 @@ const selectedItemStyle = css`
 export function LiveTypingPortal(props: LiveTypingPortalProps) {
   const incrementWaiters = useAtom(IncrementWaitersAtom)[1]
   const decrementWaiters = useAtom(DecrementWaitersAtom)[1]
-  const currentSpace = useAtom(CurrentSpaceAtom)[0]
+  //   const currentSpace = useAtom(CurrentSpaceAtom)[0]
+  const currentNsId = useAtom(CurrentNamespaceIsAtom)[0]
 
   const createNewSubjectEntity = React.useCallback(
     async (
@@ -106,10 +110,10 @@ export function LiveTypingPortal(props: LiveTypingPortalProps) {
             }
 
             if (props.searchType === IndexedItemType.ENTITY) {
+              if (!currentNsId) throw new Error(`could not get current namespace`)
               void createNewSubjectEntity(
                 props.inlineSearchString,
-                // TODO - get current namespace
-                currentSpace?._id,
+                currentNsId,
                 props.editor,
                 props.ltBoxTarget,
               )

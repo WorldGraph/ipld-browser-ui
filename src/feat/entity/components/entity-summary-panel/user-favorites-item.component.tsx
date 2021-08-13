@@ -1,5 +1,6 @@
-import { Box, Button, Text } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react'
 import React from 'react'
+
 import { navigateWithCtrlSensitivity } from '../../../../common/util/navigate'
 import { UserFavoriteReadable } from '../../../preferences/models/UserFavoriteReadable'
 

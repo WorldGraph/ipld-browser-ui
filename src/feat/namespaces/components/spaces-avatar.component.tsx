@@ -1,11 +1,17 @@
 import { Button } from '@chakra-ui/react'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { NamespaceService } from '../services/namespace.service'
 import { SpaceSelectModal } from './space-select-modal.component'
 import { css } from 'emotion'
 import { GrCube } from 'react-icons/gr'
-import { AvailableSpaceIdsAtom, CurrentSpaceAtom, CurrentSpaceIdAtom } from '../stores/spaces.state'
+import {
+  AvailableSpaceIdsAtom,
+  CurrentSpaceAtom,
+  CurrentNamespaceIsAtom,
+} from '../stores/namespaces.state'
 import { useAtom } from 'jotai'
+import { getCurrentNode } from '../../entity/components/entity-panel/entity-slate-editor/helpers/liveTypingAnalyzer/getCurrentNode'
+import { getLoggedInDID } from '../../../common/ceramic_utils/client/idx.state'
 
 const styleNavlink = css`
   height: 4rem;
@@ -16,9 +22,10 @@ const styleNavIcon = css`
   margin-right: 10px;
 `
 export function SpacesAvatar(props: { isCollapsed: boolean }) {
-  const setCurrentSpaceId = useAtom(CurrentSpaceIdAtom)[1]
+  const setCurrentSpaceId = useAtom(CurrentNamespaceIsAtom)[1]
   const setAvailableSpaceIds = useAtom(AvailableSpaceIdsAtom)[1]
   const currentSpace = useAtom(CurrentSpaceAtom)[0]
+  const currentSpaceId = useAtom(CurrentNamespaceIsAtom)[0]
 
   const [spaceSelectOpen, setSpaceSelectOpen] = React.useState(false)
 
@@ -33,6 +40,20 @@ export function SpacesAvatar(props: { isCollapsed: boolean }) {
     void getAvailableSpaces()
   }, [])
 
+  const spaceName = useMemo(() => {
+    console.log(
+      `making space name and current space is ${currentSpace}. current ns id is ${currentSpaceId}`,
+    )
+    if (!currentSpace?.name) return '[Select space]'
+    const did = getLoggedInDID()
+
+    if (did === currentSpace.owningUser) {
+      return 'My Private Space'
+    } else {
+      return currentSpace.name
+    }
+  }, [currentSpace])
+
   return (
     <>
       {spaceSelectOpen && <SpaceSelectModal closeModal={() => setSpaceSelectOpen(false)} />}
@@ -45,7 +66,7 @@ export function SpacesAvatar(props: { isCollapsed: boolean }) {
         variant="ghost"
         fill="horizontal"
       >
-        {props.isCollapsed ? undefined : currentSpace?.name || '[Space Select]'}
+        {props.isCollapsed ? undefined : spaceName}
       </Button>
     </>
   )

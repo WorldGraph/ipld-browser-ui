@@ -12,7 +12,7 @@ import {
   CurrentSpaceAtom,
   SelectedSpaceIdsAtom,
   SelectedSpacesAtom,
-} from '../stores/spaces.state'
+} from '../stores/namespaces.state'
 import { SpaceEditModal } from './space-edit-modal.component'
 
 export interface SpaceSelectModalProps {
@@ -55,7 +55,7 @@ export function SpaceSelectModal(props: SpaceSelectModalProps) {
         ))}
         <Button
           leftIcon={<GrAdd size="24px" />}
-          class={css`
+          className={css`
             width: 15rem;
           `}
           onClick={() => {

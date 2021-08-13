@@ -1,12 +1,20 @@
 import { Atom, atom } from 'jotai'
-import { blankNamespace, Namespace } from '../model/namespace.model'
+import { atomWithStorage } from 'jotai/utils'
 
-export const CurrentSpaceIdAtom = atom('')
+import { Namespace } from '../model/namespace.model'
+import { NamespaceService } from '../services/namespace.service'
+
+export const CurrentNamespaceIsAtom = atomWithStorage(
+  'currentNamespaceId',
+  localStorage.getItem('currentNamespaceId') ?? '',
+)
 
 // TODO - connect with service
 export const CurrentSpaceAtom = atom(async (get) => {
-  const currentSpaceId = get(CurrentSpaceIdAtom)
-  return blankNamespace
+  const currentSpaceId = get(CurrentNamespaceIsAtom)
+  console.log(`GETTING CURRENT SPACE for namespace id`, currentSpaceId)
+  const space = await NamespaceService.getById(currentSpaceId)
+  return space
 })
 
 // TODO - connect with service
@@ -24,3 +32,5 @@ export const SelectedSpacesAtom = atom(async (get) => {
 })
 
 export const AvailableSpaceIdsAtom = atom([] as string[])
+
+export const UserDefaultNamespaceIdAtom = atom('')
