@@ -12,7 +12,11 @@ export class NamespaceService {
     return namespaces
   }
 
-  static async createNamespace(name: string, owningUser: string): Promise<Namespace> {
+  static async createNamespace(
+    name: string,
+    owningUser: string,
+    isPrivate: boolean,
+  ): Promise<Namespace> {
     const instance = await repoMgr.namespaces.create(new NamespaceResource(name, owningUser))
     //     await instance.save()
     return instance
@@ -36,7 +40,7 @@ export class NamespaceService {
     if (found) {
       return found
     } else {
-      return await this.createNamespace(did, did)
+      return await this.createNamespace(did, did, true)
     }
   }
 }

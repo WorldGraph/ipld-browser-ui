@@ -11,6 +11,7 @@ PouchDB.plugin(PouchDBSearch)
 export interface ValidPouchType {
   _id: string
   _rev?: string
+  createdAt: number
 }
 
 export class PouchRepository<T extends ValidPouchType> {
@@ -49,7 +50,7 @@ export class PouchRepository<T extends ValidPouchType> {
     }
   }
 
-  public async update(item: T): Promise<T> {
+  private async update(item: T): Promise<T> {
     try {
       //       item._rev = new Date().getTime().toString()
       const res = await this.db.put(item, { schemaValidator: this.validator } as any)
@@ -58,7 +59,7 @@ export class PouchRepository<T extends ValidPouchType> {
       }
       return item
     } catch (err) {
-      console.error(`Error in update function of database ${this.dbName}`)
+      console.error(`Error in update function of database ${this.dbName}`, err)
       console.error(`could not upsert item ${item._id}! tried to set rev to ${item._rev}`)
       throw err
     }

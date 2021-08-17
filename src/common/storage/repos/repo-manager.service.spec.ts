@@ -62,7 +62,9 @@ describe('repo manager should operate', () => {
     expect(retrieve).toBeDefined()
   })
   it('should write and retrieve documents', async () => {
-    const entity = await repoMgr.entDocuments.create(new EntityDocumentResource('docjson'))
+    const entity = await repoMgr.entDocuments.create(
+      new EntityDocumentResource(true, '1', 'docjson'),
+    )
     expect(entity._id).toBeDefined()
 
     const retrieve = await repoMgr.entDocuments.findById(entity._id)

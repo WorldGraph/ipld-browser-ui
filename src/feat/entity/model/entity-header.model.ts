@@ -3,6 +3,7 @@ import { ulid } from 'ulid'
 export interface EntityHeader {
   _id: string
   _rev: string
+  createdAt: number
   namespaceId: string
   name: string
   classId: string
@@ -21,11 +22,13 @@ export const blankEntityHeader: EntityHeader = {
   isDeprecated: false,
   replacedBy: '',
   owningUser: '',
+  createdAt: 0,
 }
 
 export class EntityHeaderResource implements EntityHeader {
   _id: string
   _rev: string
+  createdAt: number
 
   constructor(
     public namespaceId: string,
@@ -37,5 +40,6 @@ export class EntityHeaderResource implements EntityHeader {
   ) {
     this._id = ulid()
     this._rev = '1'
+    this.createdAt = new Date().getTime()
   }
 }

@@ -34,7 +34,7 @@ export function EntityLinkItem(props: RecentActivityItemProps) {
       width="100%"
       textAlign="left"
       variant="ghost"
-      style={{ display: 'block', fontSize: '24px' }}
+      style={{ display: 'block', fontSize: '20px' }}
       color="purple"
       onClick={(e) => {
         navigateWithCtrlSensitivity(`/item/${props.item._id}`, e)

@@ -5,26 +5,24 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Icon,
   Input,
   Spacer,
-  Text,
   useToast,
 } from '@chakra-ui/react'
-import { FaInfoCircle } from 'react-icons/fa'
 import { navigate } from '@reach/router'
 import { Field, Form, Formik } from 'formik'
 import { useAtom } from 'jotai'
 import React, { useCallback, useState } from 'react'
+
 import {
   useIdxEnv,
   useUserLoggedIn,
 } from '../../../../../../common/ceramic_utils/client/hooks/idx-env.hooks'
 import { getLoggedInDID } from '../../../../../../common/ceramic_utils/client/idx.state'
 import { GenericModal } from '../../../../../../common/components'
+import { CopyableStringModal } from '../../../../../../common/components/Input/copyable-string-modal.component'
 import { NotImplementedException } from '../../../../../../common/exceptions/not-implemented.exception'
 import { UserBasicProfileAtom } from '../../../../../user/stores/user.state'
-import { CopyableStringModal } from '../../../../../../common/components/Input/copyable-string-modal.component'
 
 export interface UserProfileEditModalProps {
   closeCallback: () => void
@@ -72,7 +70,6 @@ export function UserProfileEditModal(props: UserProfileEditModalProps) {
         void navigate('/login')
       } else {
         try {
-          console.log(`trying to set profile`)
           await idxEnv.self?.setProfile(profile)
           setBasicProfile(profile)
           props.closeCallback()

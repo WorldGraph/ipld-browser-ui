@@ -13,7 +13,7 @@ import { RecentActivityPanel } from './entity-summary-panel/recent-activity-pane
 import { UserFavoritesPanel } from './entity-summary-panel/user-favorites-panel.component'
 import { userProfileAtom } from '../../user/stores/user.state'
 import { useAtom } from 'jotai'
-import { CurrentSpaceAtom } from '../../namespaces/stores/namespaces.state'
+import { CurrentNamespaceIdAtom, CurrentSpaceAtom } from '../../namespaces/stores/namespaces.state'
 
 export interface EntitySummaryPanelProps {
   path: string
@@ -26,6 +26,7 @@ export function EntitySummaryPanel(props: EntitySummaryPanelProps) {
     nameSearchTerm: '',
     classIds: [],
   })
+  const currentNsId = useAtom(CurrentNamespaceIdAtom)[0]
 
   const user = useAtom(userProfileAtom)[0]
 
@@ -35,10 +36,10 @@ export function EntitySummaryPanel(props: EntitySummaryPanelProps) {
   const createNewEntity = React.useCallback(
     async (name: string) => {
       setNewEntNameInputOpen(false)
-      const newEntity = await EntityHeaderService.createEntity(name, currentSpace?._id)
+      const newEntity = await EntityHeaderService.createEntity(name, currentNsId)
       void Reach.navigate(`/item/${newEntity._id}`)
     },
-    [user.defaultNamespaceId],
+    [user.defaultNamespaceId, currentNsId],
   )
 
   return (

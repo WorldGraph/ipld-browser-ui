@@ -36,14 +36,13 @@ export class EntityDocService {
           _id: entId,
           _rev: '1',
           documentJson: documentJson,
-        })
+        } as any)
         // await instance.save()
       } else {
-        await repoMgr.entDocuments.update({
+        await repoMgr.entDocuments.upsert({
           _id: entId,
-          _rev: '',
           documentJson: documentJson,
-        })
+        } as any)
       }
     } catch (err) {
       console.error(`Error saving document draft`, err)
